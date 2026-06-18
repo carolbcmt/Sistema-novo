@@ -3795,10 +3795,7 @@ async function lerDocumentoParaCampo(file, campoId, statusId) {
     if(texto) {
       const campo = document.getElementById(campoId);
       if(campo) {
-        if(campo.value.trim()) campo.value += '
-
---- ' + file.name + ' ---
-' + texto;
+        if(campo.value.trim()) campo.value += '\n\n--- ' + file.name + ' ---\n' + texto;
         else campo.value = texto;
       }
       if(st) { st.style.color='var(--green)'; st.innerHTML='<i class="ti ti-check" style="font-size:11px"></i> Texto extraido'; setTimeout(()=>{ st.style.display='none'; },5000); }

@@ -1379,8 +1379,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Produto e Problema na Entrega</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Produto comprado <span class="req">*</span></label><input type="text" id="ed-prod" oninput="prog('ed')"></div><div class="field"><label>Valor pago (R$) <span class="req">*</span></label><input type="text" id="ed-valor" oninput="prog('ed')"></div></div>
-        <div class="grid g2"><div class="field"><label>Nº do pedido</label><input type="text" id="ed-pedido"></div><div class="field"><label>Data da compra</label><input type="date" id="ed-datacompra"></div></div>
+        <div id="ed-produtos-lista">
+          <div class="ed-produto-item" id="ed-prod-0">
+            <div class="grid g2" style="margin-bottom:6px">
+              <div class="field"><label>Produto 1 <span class="req">*</span></label><input type="text" id="ed-prod-0-nome" placeholder="Descrição do produto" oninput="prog('ed')"></div>
+              <div class="field"><label>Valor pago (R$) <span class="req">*</span></label><input type="text" id="ed-prod-0-valor" placeholder="0,00" oninput="prog('ed')"></div>
+            </div>
+            <div class="grid g2" style="margin-bottom:6px">
+              <div class="field"><label>Nº do pedido</label><input type="text" id="ed-prod-0-pedido"></div>
+              <div class="field"><label>Data da compra</label><input type="date" id="ed-prod-0-data"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:10px">
+          <button onclick="addProdutoED()" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-plus"></i> Adicionar outro produto</button>
+        </div>
+        <input type="hidden" id="ed-prod">
+        <input type="hidden" id="ed-valor">
+        <input type="hidden" id="ed-pedido">
+        <input type="hidden" id="ed-datacompra">
         <div class="field"><label>Natureza do problema</label>
           <div class="opts" id="og-ed-tipo" style="flex-direction:column;align-items:flex-start">
             <div class="opt" onclick="selOpt('og-ed-tipo',this,'vício de qualidade — produto entregue diferente do pedido (modelo, cor, tamanho)')">Produto diferente do pedido (modelo, cor, tamanho)</div>
@@ -3889,6 +3906,46 @@ function addProdutoNE() {
 function rmProdutoNE(id) {
   const el = document.getElementById(id);
   if (el) el.remove();
+}
+
+let edProdutos = 1;
+function addProdutoED() {
+  const n = edProdutos++;
+  const lista = document.getElementById('ed-produtos-lista');
+  const div = document.createElement('div');
+  div.className = 'ed-produto-item';
+  div.id = 'ed-prod-' + n;
+  div.style.cssText = 'border-top:.5px solid var(--border);padding-top:8px;margin-top:8px';
+  div.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">Produto ${n+1}</span>
+      <button onclick="rmProdutoED('ed-prod-${n}')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="grid g2" style="margin-bottom:6px">
+      <div class="field"><label style="font-size:11px">Descrição</label><input type="text" id="ed-prod-${n}-nome" placeholder="Descrição do produto"></div>
+      <div class="field"><label style="font-size:11px">Valor (R$)</label><input type="text" id="ed-prod-${n}-valor" placeholder="0,00"></div>
+    </div>
+    <div class="grid g2" style="margin-bottom:6px">
+      <div class="field"><label style="font-size:11px">Nº do pedido</label><input type="text" id="ed-prod-${n}-pedido" placeholder="Nº do pedido"></div>
+      <div class="field"><label style="font-size:11px">Data da compra</label><input type="date" id="ed-prod-${n}-data"></div>
+    </div>`;
+  lista.appendChild(div);
+}
+
+function rmProdutoED(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function getProdutosED() {
+  const items = document.querySelectorAll('.ed-produto-item');
+  const prods = [];
+  items.forEach((item, i) => {
+    const nome = item.querySelector('[id$="-nome"]')?.value || '';
+    const valor = item.querySelector('[id$="-valor"]')?.value || '';
+    if (nome) prods.push(`Produto ${i+1}: ${nome} — R$ ${valor}`);
+  });
+  return prods.join('\n');
 }
 
 function getProdutosNE() {

@@ -4068,79 +4068,75 @@ function getProdutosNE() {
 async function baixarWord(pref) {
   const txt = document.getElementById('rt-' + pref)?.textContent || '';
   if (!txt || txt.includes('Gerando')) { alert('Gere a reclamacao primeiro.'); return; }
-  
+
   try {
-    const { Document, Paragraph, TextRun, AlignmentType, Header, Footer, ImageRun, HeadingLevel, BorderStyle } = docx;
-    
+    // A biblioteca docx@8.5.0 expoe tudo via window.docx
+    const D = window.docx;
+    if (!D || !D.Document) { alert('Biblioteca Word nao carregada. Tente recarregar a pagina.'); return; }
+
     const paragrafos = txt.split('\n\n').filter(p => p.trim());
-    const docParags = paragrafos.map(p => {
+
+    const children = [];
+
+    // Cabecalho do documento (nao é o Header da pagina — é um bloco de texto)
+    children.push(new D.Paragraph({
+      children: [
+        new D.TextRun({ text: 'ESTADO DE MATO GROSSO', bold: true, size: 22, font: 'Times New Roman' }),
+        new D.TextRun({ text: '\nPREFEITURA MUNICIPAL DE VARZEA GRANDE', bold: true, size: 22, font: 'Times New Roman', break: 1 }),
+        new D.TextRun({ text: '\nCoordenadoria de Defesa do Consumidor - PROCON/VG', size: 20, font: 'Times New Roman', break: 1 }),
+      ],
+      alignment: D.AlignmentType.CENTER,
+      spacing: { after: 400 },
+      border: { bottom: { style: D.BorderStyle.SINGLE, size: 6, color: 'C62828' } },
+    }));
+
+    // Paragrafos do texto
+    paragrafos.forEach(p => {
       const linhas = p.trim().split('\n');
-      return new Paragraph({
-        children: linhas.map((l, i) => new TextRun({ text: l, break: i > 0 ? 1 : 0 })),
+      children.push(new D.Paragraph({
+        children: linhas.map((l, i) => new D.TextRun({
+          text: l,
+          size: 24,
+          font: 'Times New Roman',
+          break: i > 0 ? 1 : 0,
+        })),
         spacing: { after: 200, line: 360 },
         indent: { firstLine: 709 },
-        alignment: AlignmentType.JUSTIFIED,
-        style: 'Normal',
-      });
+        alignment: D.AlignmentType.JUSTIFIED,
+      }));
     });
 
-    const doc = new Document({
-      styles: {
-        default: {
-          document: {
-            run: { font: 'Times New Roman', size: 24 },
-          },
-        },
-      },
+    // Rodape como ultimo paragrafo
+    children.push(new D.Paragraph({
+      children: [
+        new D.TextRun({ text: 'Av. Castelo Branco, 2500 . Centro Sul . Varzea Grande-MT . Tel.: (65) 3688-8056 . proconvg.mt@gmail.com', size: 16, font: 'Times New Roman', color: '666666' }),
+      ],
+      alignment: D.AlignmentType.CENTER,
+      spacing: { before: 400 },
+      border: { top: { style: D.BorderStyle.SINGLE, size: 4, color: 'C62828' } },
+    }));
+
+    const doc = new D.Document({
       sections: [{
         properties: {
-          page: {
-            margin: { top: 1134, right: 1134, bottom: 1134, left: 1701 },
-          },
+          page: { margin: { top: 1134, right: 1134, bottom: 1134, left: 1701 } },
         },
-        headers: {
-          default: new Header({
-            children: [
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'ESTADO DE MATO GROSSO', bold: true, size: 20 }),
-                  new TextRun({ text: '\nPREFEITURA MUNICIPAL DE VARZEA GRANDE', bold: true, size: 20, break: 1 }),
-                  new TextRun({ text: '\nCoordenadoria de Defesa do Consumidor - PROCON/VG', size: 18, break: 1 }),
-                ],
-                alignment: AlignmentType.CENTER,
-                spacing: { after: 200 },
-                border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'C62828' } },
-              }),
-            ],
-          }),
-        },
-        footers: {
-          default: new Footer({
-            children: [
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'Av. Castelo Branco, 2500 . Centro Sul . Varzea Grande-MT . Tel.: (65) 3688-8056 . proconvg.mt@gmail.com', size: 16, color: '666666' }),
-                ],
-                alignment: AlignmentType.CENTER,
-                border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'C62828' } },
-              }),
-            ],
-          }),
-        },
-        children: docParags,
+        children: children,
       }],
     });
 
-    const blob = await docx.Packer.toBlob(doc);
+    const blob = await D.Packer.toBlob(doc);
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Reclamacao-PROCON-VG.docx';
+    a.download = 'PROCON-VG-' + (pref || 'documento') + '.docx';
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   } catch(e) {
     console.error('Erro ao gerar Word:', e);
-    alert('Erro ao gerar documento Word. Use o botao Imprimir/PDF como alternativa.');
+    alert('Erro: ' + e.message);
   }
 }
 

@@ -14,3 +14,5 @@ export default async function handler(req, res) {
   const data = await response.json();
   res.status(200).json(data);
 }
+4. Clique em "Commit changes"
+A Vercel vai reimplantar automaticamente e a IA vai funcionar! 📍Claude Fable 5 está indisponível no momento.S

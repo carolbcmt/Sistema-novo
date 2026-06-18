@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROCON/VG — Sistema de Atendimento</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
-<script src="https://unpkg.com/docx@7.8.2/build/index.min.js"></script>
+<!-- docx lib removida: Word gerado via HTML Blob -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -4069,80 +4069,42 @@ async function baixarWord(pref) {
   const txt = document.getElementById('rt-' + pref)?.textContent || '';
   if (!txt || txt.includes('Gerando')) { alert('Gere a reclamacao primeiro.'); return; }
 
-  try {
-    // docx v7 expoe via window.docx
-    const D = window.docx || {};
-    if (!D.Document || !D.Packer) {
-      alert('Biblioteca Word ainda carregando. Aguarde 2 segundos e tente novamente.');
-      return;
-    }
+  // Gerar .doc via HTML (funciona em todos os navegadores sem biblioteca externa)
+  const paragrafos = txt.split('\n\n').filter(p => p.trim());
+  const corpo = paragrafos.map(p =>
+    `<p style="text-align:justify;text-indent:1.25cm;font-family:'Times New Roman',serif;font-size:12pt;line-height:1.5;margin:0 0 6pt 0">${p.replace(/\n/g,'<br>')}</p>`
+  ).join('');
 
-    const paragrafos = txt.split('\n\n').filter(p => p.trim());
+  const html = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8">
+<style>
+  @page { margin: 3cm 2cm 2cm 3cm; }
+  body { font-family: 'Times New Roman', serif; font-size: 12pt; }
+  .cabecalho { text-align:center; font-size:11pt; font-weight:bold; border-bottom:2px solid #C62828; padding-bottom:8pt; margin-bottom:16pt; }
+  .rodape { text-align:center; font-size:9pt; color:#666; border-top:1px solid #C62828; padding-top:6pt; margin-top:24pt; }
+</style>
+</head>
+<body>
+<div class="cabecalho">
+ESTADO DE MATO GROSSO<br>
+PREFEITURA MUNICIPAL DE VARZEA GRANDE<br>
+<span style="font-weight:normal;font-size:10pt">Coordenadoria de Defesa do Consumidor - PROCON/VG</span>
+</div>
+${corpo}
+<div class="rodape">Av. Castelo Branco, 2500 - Centro Sul - Varzea Grande-MT - Tel.: (65) 3688-8056 - proconvg.mt@gmail.com</div>
+</body></html>`;
 
-    const children = [];
-
-    // Cabecalho do documento (nao é o Header da pagina — é um bloco de texto)
-    children.push(new D.Paragraph({
-      children: [
-        new D.TextRun({ text: 'ESTADO DE MATO GROSSO', bold: true, size: 22, font: { name: 'Times New Roman' } }),
-        new D.TextRun({ text: '\nPREFEITURA MUNICIPAL DE VARZEA GRANDE', bold: true, size: 22, font: { name: 'Times New Roman' }, break: 1 }),
-        new D.TextRun({ text: '\nCoordenadoria de Defesa do Consumidor - PROCON/VG', size: 20, font: { name: 'Times New Roman' }, break: 1 }),
-      ],
-      alignment: D.AlignmentType.CENTER,
-      spacing: { after: 400 },
-      border: { bottom: { style: D.BorderStyle.SINGLE, size: 6, color: 'C62828' } },
-    }));
-
-    // Paragrafos do texto
-    paragrafos.forEach(p => {
-      const linhas = p.trim().split('\n');
-      children.push(new D.Paragraph({
-        children: linhas.map((l, i) => new D.TextRun({
-          text: l,
-          size: 24,
-          font: { name: 'Times New Roman' },
-          break: i > 0 ? 1 : 0,
-        })),
-        spacing: { after: 200, line: 360 },
-        indent: { firstLine: 709 },
-        alignment: D.AlignmentType.JUSTIFIED,
-      }));
-    });
-
-    // Rodape como ultimo paragrafo
-    children.push(new D.Paragraph({
-      children: [
-        new D.TextRun({ text: 'Av. Castelo Branco, 2500 . Centro Sul . Varzea Grande-MT . Tel.: (65) 3688-8056 . proconvg.mt@gmail.com', size: 16, font: { name: 'Times New Roman' }, color: '666666' }),
-      ],
-      alignment: D.AlignmentType.CENTER,
-      spacing: { before: 400 },
-      border: { top: { style: D.BorderStyle.SINGLE, size: 4, color: 'C62828' } },
-    }));
-
-    const doc = new D.Document({
-      sections: [{
-        properties: {
-          page: { margin: { top: 1134, right: 1134, bottom: 1134, left: 1701 } },
-        },
-        children: children,
-      }],
-    });
-
-    const blob = await D.Packer.toBlob(doc);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'PROCON-VG-' + (pref || 'documento') + '.docx';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  } catch(e) {
-    console.error('Erro ao gerar Word:', e);
-    alert('Erro: ' + e.message);
-  }
+  const blob = new Blob([html], { type: 'application/msword;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'PROCON-VG-' + pref + '.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-
 
 // Funcao auxiliar: limpar asteriscos e marcadores do texto gerado pela IA
 
@@ -4377,27 +4339,18 @@ async function gerarMinuta() {
   const docsMin = arqs['ad-min']&&arqs['ad-min'].length ? arqs['ad-min'].map(f=>f.name).join(', ') : 'nenhum';
   const docsAd = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
 
-  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore MINUTA DE DESPACHO ADMINISTRATIVO pronta para revisao e assinatura.
+  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore uma MINUTA DE DESPACHO em texto corrido e fluido, sem titulos, sem numeracao de secoes, sem marcadores.
 
 PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
 RECLAMACAO: ${gv('ad-pedidos')}
 DEFESA APRESENTADA (${gv('ad-datadef')||'data nao informada'}): ${gv('ad-defesa')}
-ANALISE COMPARATIVA: ${analise}
-PROVIDENCIAS DETERMINADAS: ${provAll.join('; ')||'a definir'} ${aud}
-OBSERVACOES DO ATENDENTE: ${gv('ad-obs')||'nenhuma'}
-DOCUMENTOS DA DEFESA: ${docsAd} | DOCUMENTOS ADICIONAIS: ${docsMin}
+ANALISE: ${analise}
+PROVIDENCIAS: ${provAll.join('; ')||'a definir'} ${aud}
+OBSERVACOES: ${gv('ad-obs')||'nenhuma'}
 
-ESTRUTURA OBRIGATORIA DA MINUTA:
+Escreva o despacho como um texto corrido em paragrafos, sem nenhum titulo, sem numeracao, sem negrito, sem asteriscos. O texto deve fluir naturalmente assim: primeiro um paragrafo identificando as partes e resumindo os fatos da reclamacao; depois um paragrafo analisando a defesa apresentada e seu fundamento juridico no CDC; depois um paragrafo com a decisao e providencias determinadas; por fim um paragrafo de encerramento com local, data e espaco para assinatura.
 
-1. RELATORIO - em prosa corrida e concisa: identificar as partes, resumir os fatos da reclamacao e os argumentos da defesa. Extensao mediana - nem muito curto nem muito longo.
-
-2. FUNDAMENTACAO - analisar juridicamente os argumentos apresentados, confrontando com o CDC e demais normas aplicaveis. Apontar o que procede e o que nao procede na defesa. Prosa corrida, sem listas.
-
-3. DECISAO / PROVIDENCIAS - determinar as providencias cabiveis de forma clara e objetiva. Se houver audiencia: informar data, horario e modalidade.
-
-4. ENCERRAMENTO - Varzea Grande-MT, data, espaco para assinatura do atendente e carimbo do PROCON/VG.
-
-FORMATACAO ABNT OBRIGATORIA: texto em prosa corrida, sem marcadores, sem asteriscos, sem markdown, sem listas com tracos ou bullets. Times New Roman 12pt, espacamento 1,5, paragrafos justificados com recuo de 1,25cm. Linguagem administrativa-juridica formal, fluida e concisa.`;
+REGRA ABSOLUTA: sem titulos como RELATORIO, FUNDAMENTACAO, DECISAO. Sem numeracao 1. 2. 3. Sem travessoes separadores. Apenas paragrafos corridos de texto administrativo formal.`;
 
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});

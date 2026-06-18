@@ -4139,4 +4139,182 @@ async function gerarCertidao() {
     txt=document.getElementById('rt-ct'),ra=document.getElementById('ra-ct');
   box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
   load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
-  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-c
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+  const prompt=`Elabore uma CERTIDÃO DE COMPARECIMENTO para o PROCON de Várzea Grande-MT.
+DADOS: Processo nº ${gv('ct-proc')} | Data: ${gv('ct-data')} | Horário: ${gv('ct-hora')}
+Consumidor: ${gv('ct-cn')}, CPF: ${gv('ct-cpf')}
+Empresa reclamada: ${gv('ct-fn')} | Objeto: ${gv('ct-obj')}
+Servidor: ${gv('ct-atend')}, ${gv('ct-cargo')}
+
+REGRAS OBRIGATÓRIAS:
+- Texto ENXUTO, em parágrafo único, SEM tópicos, SEM listas, SEM asteriscos, SEM marcadores
+- Começar com "CERTIFICO que..."
+- Narrar o comparecimento e apresentação de defesa em uma ou duas frases
+- Encerrar com "Nada mais havendo, lavrei a presente certidão."
+- Depois: local, data, linha de assinatura do servidor
+- NÃO use markdown, NÃO use negrito
+
+Modelo exato de tom:
+"CERTIFICO que o(a) Sr(a). [nome], CPF nº [cpf], compareceu a esta Coordenadoria de Defesa do Consumidor — PROCON/VG, em [data], às [hora], e apresentou defesa administrativa no âmbito do processo nº [proc], instaurado em face de [empresa], relativo a [objeto]. Nada mais havendo, lavrei a presente certidão."`;
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
+    txt.textContent=limparTexto(raw);
+    load.classList.remove('show'); txt.classList.add('show'); if(ra)ra.style.display='flex';
+  } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-stamp" style="font-size:18px"></i> Gerar Certidão';
+}
+
+// ---- ANÁLISE DE DEFESA ----
+async function analisarDefesa() {
+  const btn=document.getElementById('btn-analisar'), box=document.getElementById('ir-analise'), txt=document.getElementById('irt-analise');
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
+  box.style.display='none';
+  const prompt=`Você é assessor jurídico do PROCON de Várzea Grande-MT. Analise comparativamente:
+
+PEDIDOS DA INICIAL: ${gv('ad-pedidos')}
+DESPACHO SANEADOR: ${gv('ad-despacho')||'Não informado'}
+RESPOSTA/DEFESA DA FORNECEDORA: ${gv('ad-defesa')}
+
+Elabore análise estruturada com:
+1. PEDIDOS ATENDIDOS — quais pedidos foram aceitos ou reconhecidos pela fornecedora
+2. PEDIDOS NÃO ATENDIDOS — o que foi recusado e os argumentos apresentados
+3. CONTRADIÇÕES E FRAGILIDADES — inconsistências na defesa, argumentos juridicamente frágeis, fatos não contestados
+4. SUGESTÃO DE CONTINUIDADE — próximos passos recomendados para o processo administrativo (novos documentos, audiência, etc.)
+Use linguagem técnica-jurídica, objetiva e clara. Texto contínuo em parágrafos corridos.`;
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível analisar.');
+    box.style.display='block';
+  } catch(e){txt.textContent='Erro ao conectar à IA.';box.style.display='block';}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar análise comparativa com IA';
+}
+
+async function gerarMinuta() {
+  const box=document.getElementById('result-ad'), load=document.getElementById('rl-ad'),
+    txt=document.getElementById('rt-ad'), ra=document.getElementById('ra-ad'), btn=document.getElementById('btn-minuta');
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando minuta...';
+  const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
+  const aud=provAll.some(p=>p.includes('audiência'))?`Audiência agendada: ${gv('ad-auddata')} às ${gv('ad-audhora')}, ${gv('ad-modal')}.`:'';
+  const prompt=`Você é atendente do PROCON de Várzea Grande-MT. Elabore MINUTA DE DESPACHO em texto contínuo, sem listas ou marcadores, em parágrafos corridos, pronta para revisão e assinatura.
+
+PEDIDOS DA INICIAL: ${gv('ad-pedidos')}
+DESPACHO ANTERIOR: ${gv('ad-despacho')||'sem despacho anterior informado'}
+DEFESA DA FORNECEDORA: ${gv('ad-defesa')}
+ANÁLISE: ${document.getElementById('irt-analise').textContent||'não realizada'}
+PROVIDÊNCIAS DETERMINADAS: ${provAll.join('; ')||'a definir'} ${aud}
+OBSERVAÇÕES: ${gv('ad-obs')||'nenhuma'}
+
+Estrutura do despacho:
+1. Relatório breve dos fatos (pedidos × resposta)
+2. Análise sucinta das alegações da fornecedora
+3. Decisão / providências determinadas pelo PROCON
+4. Encerramento com data e espaço para assinatura do atendente
+Tudo em prosa corrida, linguagem administrativa-jurídica, sem listas ou marcadores.`;
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível gerar.');
+    load.classList.remove('show'); txt.classList.add('show'); if(ra)ra.style.display='flex';
+  } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta completa com IA';
+}
+
+async function chatCaso() {
+  const pergunta=gv('ad-pergunta'); if(!pergunta) return;
+  const btn=document.getElementById('ib-chat'), box=document.getElementById('ir-chat'), txt=document.getElementById('irt-chat');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Consultando...'; box.classList.remove('show');
+  const prompt=`Contexto do processo PROCON/VG:
+Pedidos: ${gv('ad-pedidos')}
+Despacho: ${gv('ad-despacho')||'não informado'}
+Defesa: ${gv('ad-defesa')}
+Pergunta do atendente: ${pergunta}
+Responda de forma objetiva e técnica, em linguagem acessível ao atendente do PROCON.`;
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    txt.textContent=d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível responder.';
+    box.classList.add('show');
+  } catch(e){txt.textContent='Erro ao conectar.';box.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i>Perguntar';
+}
+
+// ---- USINA FOTOVOLTAICA ----
+async function gerarFotovoltaica() {
+  const btn=document.getElementById('btn-gerar-fv');
+  const box=document.getElementById('result-fv'),load=document.getElementById('rl-fv'),
+    txt=document.getElementById('rt-fv'),at=document.getElementById('at-fv'),ra=document.getElementById('ra-fv');
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.classList.add('show'); txt.classList.remove('show'); if(at)at.classList.remove('show'); if(ra)ra.classList.remove('show');
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+  const temFin = gv('fv-temfin')==='Sim';
+  const temEn = gv('fv-temen').includes('Sim');
+  const pretAll=[...(pretMulti['fv']||[]),gv('fv-pret-outro')].filter(Boolean);
+  const docs=arqs['fv']&&arqs['fv'].length?arqs['fv'].map(f=>f.name).join(', '):'nenhum';
+  const prompt=`Você é atendente técnico do PROCON de Várzea Grande - MT. Elabore RECLAMAÇÃO FORMAL completa para USINA FOTOVOLTAICA.
+
+ATENDIMENTO: Nº ${gv('fv-num')||'(a definir)'}, Data: ${gv('fv-data')}, Canal: ${gv('fv-canal')}, Atendente: ${gv('fv-atend')}
+
+CONSUMIDOR: ${gv('fv-cn')}, CPF: ${gv('fv-cpf')}, tel: ${gv('fv-tel')}, endereço da instalação: ${gv('fv-end')}
+
+EMPRESA INSTALADORA: ${gv('fv-fn')}, CNPJ: ${gv('fv-fcnpj')}
+FABRICANTE DOS EQUIPAMENTOS: ${gv('fv-fab')}, CNPJ: ${gv('fv-fabcnpj')}
+${temFin?`FINANCIADORA: ${gv('fv-finfn')}, CNPJ: ${gv('fv-fincnpj')}, valor: R$ ${gv('fv-finval')}, parcelas: ${gv('fv-finparc')}, contrato: ${gv('fv-fincontrato')}`:'Sem financiamento.'}
+${temEn?`ENERGISA: CNPJ 03.467.321/0001-99, protocolo: ${gv('fv-enprot')}, situação: ${gv('fv-en-sit')}`:'Energisa não envolvida.'}
+
+SISTEMA: ${gv('fv-potencia')} | Valor total: R$ ${gv('fv-valor')} | Contrato: ${gv('fv-datacontr')} | Prazo: ${gv('fv-prazo')} | Nº contrato: ${gv('fv-contrato')}
+Geração prometida: ${gv('fv-geracao')} kWh/mês | Geração real: ${gv('fv-geracaoreal')} kWh/mês
+
+PROBLEMA: ${gv('fv-tipo')}
+DESCRIÇÃO: ${gv('fv-desc')}
+PRETENSÃO: ${pretAll.join('; ')||'a definir'}
+DOCS: ${docs} | OBS: ${gv('fv-obs')||'sem observações'}
+
+---
+Elabore reclamação com esta estrutura:
+1. TÍTULO "RECLAMAÇÃO FORMAL — PROCON/VG — Usina Fotovoltaica — Data — Nº"
+2. DOS FATOS — prosa corrida, sem listas. Narre: contratação, sistema prometido, problema constatado. ${temEn?'Incluir: situação da homologação junto à Energisa (prazo de 30 dias — Resolução ANEEL 687/2015 e Res. 1.000/2021).':''} ${temFin?'Incluir: contrato de financiamento vinculado à instalação.':''}
+3. DO DIREITO — art. 18 CDC (vício em produto — equipamentos), art. 20 CDC (vício no serviço de instalação), art. 30 CDC (vinculação da oferta). ${temFin?'Incluir: natureza acessória do contrato de financiamento — rescisão do contrato principal implica rescisão do financiamento sem ônus ao consumidor.':''} ${temEn?'Incluir: Resolução ANEEL 687/2015 e Res. 1.000/2021 (prazo 30 dias para conexão).':''}
+4. DOS PEDIDOS — lista numerada com todos os pedidos. ${temFin?'Incluir obrigatoriamente: rescisão do financiamento sem ônus e abstenção de negativação.':''}
+5. ENCERRAMENTO — Várzea Grande-MT, data, atendente PROCON/VG.
+
+FORMATAÇÃO OBRIGATÓRIA (ABNT): fonte Times New Roman 12pt, espaçamento 1,5 entre linhas, parágrafos com recuo de 1,25cm, texto justificado, margens 2cm. SEM asteriscos, SEM marcadores, SEM markdown. Numeração dos pedidos em algarismos arábicos seguidos de ponto.`;
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const texto=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível gerar.');
+    load.classList.remove('show'); txt.textContent=texto; txt.classList.add('show');
+    const reg=/art(?:igo)?s?\.?\s*(\d+(?:\s*[,;e]\s*\d+)*)/gi; const enc=new Set(); let m;
+    while((m=reg.exec(texto))!==null) m[1].split(/[,;e\s]+/).filter(Boolean).forEach(n=>{if(n&&!isNaN(n))enc.add('Art. '+n+' CDC');});
+    if(enc.size&&at){at.innerHTML='';enc.forEach(a=>{const t=document.createElement('span');t.className='art-tag';t.textContent=a;at.appendChild(t);});at.classList.add('show');}
+    if(ra)ra.classList.add('show');
+  } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');if(ra)ra.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação Formal — Usina Fotovoltaica (Arts. 18/20 CDC)';
+}
+
+function copiarRec() {
+  const txt = document.getElementById('rt-vp').textContent;
+  navigator.clipboard.writeText(txt).then(() => { event.currentTarget.innerHTML = '<i class="ti ti-check"></i>Copiado!'; setTimeout(() => { event.currentTarget.innerHTML = '<i class="ti ti-copy"></i>Copiar texto'; }, 2000); });
+}
+
+function imprimirRec() {
+  const txt = document.getElementById('rt-vp').textContent;
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamação PROCON/VG</title>
+  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm;color:#000}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>
+  <body><pre>${txt.replace(/</g, '&lt;')}</pre></body></html>`);
+  w.document.close(); w.focus(); setTimeout(() => w.print(), 500);
+}
+
+function limparRec() {
+  document.getElementById('rt-vp').textContent = '';
+  document.getElementById('rt-vp').classList.remove('show');
+  document.getElementById('result-vp').classList.remove('show');
+}
+</script>
+</body>
+</html>

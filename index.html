@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROCON/VG — Sistema de Atendimento</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -179,7 +180,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .result-body{padding:1.25rem}
 .result-loading{text-align:center;padding:2.5rem;color:var(--text3);font-size:13px;display:none}
 .result-loading.show{display:block}
-.result-text{font-size:12px;line-height:1.5;color:var(--text);white-space:pre-wrap;font-family:"Times New Roman",Times,serif;background:#fff;border-radius:10px;padding:1.5rem 2rem;border:1px solid var(--border);min-height:180px;display:none}
+.result-text{font-size:12pt;line-height:1.5;color:var(--text);white-space:pre-wrap;font-family:"Times New Roman",Times,serif;background:#fff;border-radius:10px;padding:2cm 2.5cm;border:1px solid var(--border);min-height:180px;display:none;text-align:justify}
 .result-text.show{display:block}
 .result-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;display:none}
 .result-actions.show{display:flex}
@@ -274,6 +275,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </style>
 </head>
 <body>
+
+<!-- TELA DE LOGIN -->
+<div id="tela-login" style="position:fixed;inset:0;background:#0d1f35;display:flex;align-items:center;justify-content:center;z-index:9999">
+  <div style="background:#fff;border-radius:16px;padding:2rem 2.5rem;width:320px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)">
+    <div style="margin-bottom:1rem">
+      <div style="font-size:13px;font-weight:700;color:#C62828;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">PROCON/VG</div>
+      <div style="font-size:15px;font-weight:600;color:#1a2e4a">Sistema de Atendimento</div>
+      <div style="font-size:12px;color:#6b7280;margin-top:2px">Acesso restrito — atendentes autorizados</div>
+    </div>
+    <input type="text" id="login-usuario" placeholder="Usuário" style="width:100%;margin-bottom:8px;text-align:center">
+    <input type="password" id="login-senha" placeholder="Senha" style="width:100%;margin-bottom:12px;text-align:center" onkeydown="if(event.key==='Enter')fazerLogin()">
+    <div id="login-erro" style="color:#C62828;font-size:12px;margin-bottom:8px;display:none">Usuário ou senha incorretos.</div>
+    <button onclick="fazerLogin()" style="width:100%;background:#1a2e4a;color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:600;cursor:pointer">Entrar</button>
+  </div>
+</div>
 
 <!-- TOPBAR -->
 <header class="topbar">
@@ -883,6 +899,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Vício / Inadequação do Serviço</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
+        <div class="alert alert-red"><i class="ti ti-alert-triangle"></i><span><strong>Art. 6º, III CDC</strong> — informação clara sobre o serviço. <strong>Art. 39, V CDC</strong> — vedado exigir vantagem excessiva. <strong>Art. 20 CDC</strong> — direito à reexecução, abatimento ou restituição.</span></div>
         <div class="alert alert-yellow"><i class="ti ti-info-circle"></i><span>Use sempre <strong>"vício"</strong>. Art. 20 CDC: serviço com vício de qualidade = não atinge o fim que razoavelmente se esperava / foi executado inadequadamente.</span></div>
         <div class="field" style="margin-top:6px"><label>Natureza do vício no serviço <span class="req">*</span></label>
           <div class="opts" id="og-vs-vicio" style="flex-direction:column;align-items:flex-start">
@@ -1008,7 +1025,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-vs"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC — Lei 8.078/1990</p></div>
         <div class="result-body"><div class="result-loading" id="rl-vs"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação formal...</div>
           <div class="result-text" id="rt-vs"></div><div class="art-tags" id="at-vs"></div>
-          <div class="result-actions" id="ra-vs"><button class="primary" onclick="copiarGenerico('vs')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('vs')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('vs')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-vs"><button class="primary" onclick="copiarGenerico('vs')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('vs')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('vs')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('vs')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1044,11 +1061,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Produto e Compra</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Produto comprado <span class="req">*</span></label><input type="text" id="ne-prod" placeholder="Descrição do produto" oninput="prog('ne')"></div><div class="field"><label>Valor pago (R$) <span class="req">*</span></label><input type="text" id="ne-valor" placeholder="0,00" oninput="prog('ne')"></div></div>
-        <div class="grid g3"><div class="field"><label>Data da compra <span class="req">*</span></label><input type="date" id="ne-datacompra" oninput="prog('ne')"></div><div class="field"><label>Data prometida de entrega</label><input type="date" id="ne-dataprom"></div><div class="field"><label>Nº do pedido</label><input type="text" id="ne-pedido" placeholder="Nº do pedido"></div></div>
+        <div id="ne-produtos-lista">
+          <div class="ne-produto-item" id="ne-prod-0">
+            <div class="grid g2" style="margin-bottom:6px"><div class="field"><label>Produto 1 <span class="req">*</span></label><input type="text" id="ne-prod-0-nome" placeholder="Descrição do produto" oninput="prog('ne')"></div><div class="field"><label>Valor (R$) <span class="req">*</span></label><input type="text" id="ne-prod-0-valor" placeholder="0,00" oninput="prog('ne')"></div></div>
+            <div class="grid g2" style="margin-bottom:6px"><div class="field"><label>Nº do pedido</label><input type="text" id="ne-prod-0-pedido" placeholder="Nº do pedido"></div><div class="field"><label>Data prometida de entrega</label><input type="date" id="ne-prod-0-dataprom"></div></div>
+          </div>
+        </div>
+        <div style="margin-bottom:10px">
+          <button onclick="addProdutoNE()" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-plus"></i> Adicionar outro produto</button>
+        </div>
+        <div class="field"><label>Data da compra <span class="req">*</span></label><input type="date" id="ne-datacompra" oninput="prog('ne')"></div>
+        <input type="hidden" id="ne-prod">
+        <input type="hidden" id="ne-valor">
+        <input type="hidden" id="ne-pedido">
         <div class="field"><label>Canal de compra</label><div class="opts" id="og-ne-local"><div class="opt" onclick="selOpt('og-ne-local',this,'Presencial (loja física)')">Presencial</div><div class="opt" onclick="selOpt('og-ne-local',this,'Online (site/app)')">Online</div><div class="opt" onclick="selOpt('og-ne-local',this,'Telefone')">Telefone</div></div><input type="hidden" id="ne-local"></div>
         <div class="sep"></div>
-        <div class="field"><label>Forma de Pagamento</label><div class="opts" id="og-ne-pgto"><div class="opt" onclick="selOpt('og-ne-pgto',this,'Dinheiro')">Dinheiro</div><div class="opt" onclick="selOpt('og-ne-pgto',this,'Cartão de Crédito')">Crédito</div><div class="opt" onclick="selOpt('og-ne-pgto',this,'Cartão de Débito')">Débito</div><div class="opt" onclick="selOpt('og-ne-pgto',this,'PIX')">PIX</div><div class="opt" onclick="selOpt('og-ne-pgto',this,'Boleto')">Boleto</div></div><input type="hidden" id="ne-pgto"></div>
+        <div class="field"><label>Forma de Pagamento</label>
+          <div class="opts" id="og-ne-pgto">
+            <div class="opt" onclick="selOpt('og-ne-pgto',this,'Dinheiro');hideSubSec('fin-ne')">Dinheiro</div>
+            <div class="opt" onclick="selOpt('og-ne-pgto',this,'Cartão de Crédito');showSubSec('fin-ne')">Crédito</div>
+            <div class="opt" onclick="selOpt('og-ne-pgto',this,'Cartão de Débito');hideSubSec('fin-ne')">Débito</div>
+            <div class="opt" onclick="selOpt('og-ne-pgto',this,'PIX');hideSubSec('fin-ne')">PIX</div>
+            <div class="opt" onclick="selOpt('og-ne-pgto',this,'Boleto');hideSubSec('fin-ne')">Boleto</div>
+            <div class="opt" onclick="selOpt('og-ne-pgto',this,'Financiado');showSubSec('fin-ne')">Financiado</div>
+          </div>
+          <input type="hidden" id="ne-pgto">
+        </div>
+        <div class="fin-sub" id="fin-ne">
+          <div class="grid g3">
+            <div class="field"><label>Valor de entrada (R$)</label><input type="text" id="ne-entrada" placeholder="0,00"></div>
+            <div class="field"><label>Nº de parcelas</label><input type="text" id="ne-nparc" placeholder="Ex: 12"></div>
+            <div class="field"><label>Valor da parcela (R$)</label><input type="text" id="ne-vparcela" placeholder="0,00"></div>
+          </div>
+          <div class="grid g2">
+            <div class="field"><label>Financiadora / Banco</label><input type="text" id="ne-fin" placeholder="Nome do banco"></div>
+            <div class="field"><label>CNPJ da Financiadora</label><input type="text" id="ne-fincnpj" placeholder="00.000.000/0000-00" oninput="maskCNPJ(this)"></div>
+          </div>
+        </div>
       </div></div>
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Situação da Entrega</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
@@ -1154,7 +1203,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ne"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ne"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ne"></div><div class="art-tags" id="at-ne"></div>
-          <div class="result-actions" id="ra-ne"><button class="primary" onclick="copiarGenerico('ne')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ne')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ne')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ne"><button class="primary" onclick="copiarGenerico('ne')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ne')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ne')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ne')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1291,7 +1340,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-cb"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-cb"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-cb"></div><div class="art-tags" id="at-cb"></div>
-          <div class="result-actions" id="ra-cb"><button class="primary" onclick="copiarGenerico('cb')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('cb')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('cb')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-cb"><button class="primary" onclick="copiarGenerico('cb')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('cb')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('cb')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('cb')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1435,7 +1484,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ed"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ed"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ed"></div><div class="art-tags" id="at-ed"></div>
-          <div class="result-actions" id="ra-ed"><button class="primary" onclick="copiarGenerico('ed')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ed')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ed')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ed"><button class="primary" onclick="copiarGenerico('ed')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ed')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ed')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ed')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1574,7 +1623,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-mt"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-mt"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-mt"></div><div class="art-tags" id="at-mt"></div>
-          <div class="result-actions" id="ra-mt"><button class="primary" onclick="copiarGenerico('mt')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('mt')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('mt')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-mt"><button class="primary" onclick="copiarGenerico('mt')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('mt')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('mt')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('mt')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1715,7 +1764,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-of"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-of"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-of"></div><div class="art-tags" id="at-of"></div>
-          <div class="result-actions" id="ra-of"><button class="primary" onclick="copiarGenerico('of')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('of')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('of')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-of"><button class="primary" onclick="copiarGenerico('of')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('of')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('of')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('of')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1907,7 +1956,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-fv"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Arts. 18 e 20 CDC · Financiamento acessório · Resolução ANEEL 687/2015</p></div>
         <div class="result-body"><div class="result-loading" id="rl-fv"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
           <div class="result-text" id="rt-fv"></div><div class="art-tags" id="at-fv"></div>
-          <div class="result-actions" id="ra-fv"><button class="primary" onclick="copiarGenerico('fv')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('fv')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('fv')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-fv"><button class="primary" onclick="copiarGenerico('fv')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('fv')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('fv')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('fv')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -1944,6 +1993,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="sec-body">
         <div class="grid g2"><div class="field"><label>Produto <span class="req">*</span></label><input type="text" id="ga-prod" oninput="prog('ga')"></div><div class="field"><label>Valor (R$)</label><input type="text" id="ga-valor"></div></div>
         <div class="grid g3"><div class="field"><label>Data da compra</label><input type="date" id="ga-datacompra"></div><div class="field"><label>Prazo de garantia</label><input type="text" id="ga-prazo" placeholder="Ex: 12 meses"></div><div class="field"><label>Data do vício / falha</label><input type="date" id="ga-datavicio"></div></div>
+        <div class="alert alert-red"><i class="ti ti-alert-triangle"></i><span><strong>Art. 6º, III CDC</strong> — direito à informação adequada sobre garantia. <strong>Art. 39, IV CDC</strong> — prática abusiva: prevalecer-se da fraqueza ou ignorância do consumidor. <strong>Art. 50 CDC</strong> — garantia contratual é complementar à garantia legal.</span></div>
         <div class="field"><label>Tipo de garantia negada</label>
           <div class="opts" id="og-ga-tipo" style="flex-direction:column;align-items:flex-start">
             <div class="opt" onclick="selOpt('og-ga-tipo',this,'garantia legal (90 dias para duráveis — art. 26 §1º CDC)')">Garantia legal (90 dias — art. 26 CDC)</div>
@@ -2045,7 +2095,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ga"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ga"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ga"></div><div class="art-tags" id="at-ga"></div>
-          <div class="result-actions" id="ra-ga"><button class="primary" onclick="copiarGenerico('ga')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ga')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ga')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ga"><button class="primary" onclick="copiarGenerico('ga')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ga')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ga')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ga')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -2181,7 +2231,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-cd"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC</p></div>
         <div class="result-body"><div class="result-loading" id="rl-cd"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-cd"></div><div class="art-tags" id="at-cd"></div>
-          <div class="result-actions" id="ra-cd"><button class="primary" onclick="copiarGenerico('cd')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('cd')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('cd')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-cd"><button class="primary" onclick="copiarGenerico('cd')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('cd')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('cd')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('cd')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -2322,7 +2372,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-sa"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos da Lei 9.656/1998 e normas ANS</p></div>
         <div class="result-body"><div class="result-loading" id="rl-sa"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-sa"></div><div class="art-tags" id="at-sa"></div>
-          <div class="result-actions" id="ra-sa"><button class="primary" onclick="copiarGenerico('sa')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('sa')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('sa')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-sa"><button class="primary" onclick="copiarGenerico('sa')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('sa')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('sa')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('sa')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -2533,7 +2583,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ve"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>Fundamentos do CDC e jurisprudência sobre financiamento acessório</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ve"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
           <div class="result-text" id="rt-ve"></div><div class="art-tags" id="at-ve"></div>
-          <div class="result-actions" id="ra-ve"><button class="primary" onclick="copiarGenerico('ve')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ve')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ve')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ve"><button class="primary" onclick="copiarGenerico('ve')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ve')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ve')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ve')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -2551,7 +2601,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
         <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="en-cn" oninput="prog('en')"></div><div class="field"><label>CPF / CNPJ <span class="req">*</span></label><input type="text" id="en-cpf" oninput="prog('en')"></div></div>
-        <div class="grid g3"><div class="field"><label>Nº da UC (unidade consumidora)</label><input type="text" id="en-uc" placeholder="Nº da conta/UC"></div><div class="field"><label>Telefone</label><input type="text" id="en-tel"></div><div class="field"><label>E-mail</label><input type="text" id="en-email"></div></div>
+        <div class="grid g3"><div class="field"><label><strong>Nº da UC — Unidade Consumidora <span class="req">*</span></strong></label><input type="text" id="en-uc" placeholder="Nº da unidade consumidora (consta na fatura de energia)"></div><div class="field"><label>Telefone</label><input type="text" id="en-tel"></div><div class="field"><label>E-mail</label><input type="text" id="en-email"></div></div>
         <div class="field"><label>Endereço do imóvel</label><input type="text" id="en-end" placeholder="Endereço completo do imóvel com o problema"></div>
         <div class="field"><label>Área</label>
           <div class="opts" id="og-en-area">
@@ -2698,7 +2748,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-en"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC + Resolução Normativa ANEEL 1.000/2021</p></div>
         <div class="result-body"><div class="result-loading" id="rl-en"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-en"></div><div class="art-tags" id="at-en"></div>
-          <div class="result-actions" id="ra-en"><button class="primary" onclick="copiarGenerico('en')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('en')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('en')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-en"><button class="primary" onclick="copiarGenerico('en')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('en')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('en')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('en')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -2716,7 +2766,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
         <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="ag-cn" oninput="prog('ag')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ag-cpf" oninput="prog('ag')"></div></div>
-        <div class="grid g3"><div class="field"><label>Nº da matrícula DAE</label><input type="text" id="ag-mat"></div><div class="field"><label>Telefone</label><input type="text" id="ag-tel"></div><div class="field"><label>E-mail</label><input type="text" id="ag-email"></div></div>
+        <div class="grid g3"><div class="field"><label><strong>Nº de Matrícula DAE <span class="req">*</span></strong></label><input type="text" id="ag-mat" placeholder="Nº de matrícula (consta na conta de água)"></div><div class="field"><label>Telefone</label><input type="text" id="ag-tel"></div><div class="field"><label>E-mail</label><input type="text" id="ag-email"></div></div>
         <div class="field"><label>Endereço do imóvel</label><input type="text" id="ag-end"></div>
       </div></div>
 
@@ -2844,7 +2894,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ag"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC — Serviço Essencial de Abastecimento de Água</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ag"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ag"></div><div class="art-tags" id="at-ag"></div>
-          <div class="result-actions" id="ra-ag"><button class="primary" onclick="copiarGenerico('ag')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ag')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ag')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ag"><button class="primary" onclick="copiarGenerico('ag')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ag')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ag')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ag')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -2896,7 +2946,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
         <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="ct-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ct-cpf"></div></div>
-        <div class="grid g2"><div class="field"><label>Empresa reclamada</label><input type="text" id="ct-fn"></div><div class="field"><label>Finalidade / Objeto da defesa</label><input type="text" id="ct-obj" placeholder="Ex: apresentação de defesa administrativa referente a..."></div></div>
+        <div class="grid g1"><div class="field"><label>Empresa reclamada</label><input type="text" id="ct-fn"></div></div>
+        <div class="grid g1"><div class="field"><label>Finalidade / Objeto da defesa</label><textarea id="ct-obj" rows="4" placeholder="Descreva detalhadamente o objeto da defesa apresentada, incluindo os pedidos da reclamação, os fatos narrados, documentos juntados e demais informações relevantes..."></textarea></div></div>
       </div></div>
 
       <button class="gen-btn gen-btn-accent" onclick="gerarCertidao()" id="btn-gerar-ct"><i class="ti ti-stamp" style="font-size:18px"></i>Gerar Certidão</button>
@@ -3102,7 +3153,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ec-clt"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC Arts. 6º, III, 39 e 52</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ec-clt"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ec-clt"></div><div class="art-tags" id="at-ec-clt"></div>
-          <div class="result-actions" id="ra-ec-clt"><button class="primary" onclick="copiarGenerico('ec-clt')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-clt')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ec-clt')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ec-clt"><button class="primary" onclick="copiarGenerico('ec-clt')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-clt')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ec-clt')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ec-clt')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -3192,7 +3243,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ec-inss"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC + Lei 8.213/91</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ec-inss"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ec-inss"></div><div class="art-tags" id="at-ec-inss"></div>
-          <div class="result-actions" id="ra-ec-inss"><button class="primary" onclick="copiarGenerico('ec-inss')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-inss')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ec-inss')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ec-inss"><button class="primary" onclick="copiarGenerico('ec-inss')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-inss')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ec-inss')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ec-inss')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -3276,7 +3327,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ec-serv"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC Arts. 6º, III e 39</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ec-serv"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ec-serv"></div><div class="art-tags" id="at-ec-serv"></div>
-          <div class="result-actions" id="ra-ec-serv"><button class="primary" onclick="copiarGenerico('ec-serv')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-serv')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ec-serv')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ec-serv"><button class="primary" onclick="copiarGenerico('ec-serv')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-serv')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ec-serv')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ec-serv')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -3367,7 +3418,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="result-box" id="result-ec-rmc"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC Arts. 6º, III, 39 e 52</p></div>
         <div class="result-body"><div class="result-loading" id="rl-ec-rmc"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
           <div class="result-text" id="rt-ec-rmc"></div><div class="art-tags" id="at-ec-rmc"></div>
-          <div class="result-actions" id="ra-ec-rmc"><button class="primary" onclick="copiarGenerico('ec-rmc')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-rmc')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ec-rmc')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+          <div class="result-actions" id="ra-ec-rmc"><button class="primary" onclick="copiarGenerico('ec-rmc')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ec-rmc')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('ec-rmc')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('ec-rmc')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
         </div>
       </div>
     </div>
@@ -3691,6 +3742,8 @@ Estrutura obrigatória:
 
 5. ENCERRAMENTO — Várzea Grande-MT, data, atendente PROCON/VG.
 
+FORMATAÇÃO OBRIGATÓRIA (ABNT): fonte Times New Roman 12pt, espaçamento 1,5 entre linhas, parágrafos com recuo de 1,25cm, texto justificado, margens 2cm. SEM asteriscos, SEM marcadores, SEM markdown. Numeração dos pedidos em algarismos arábicos seguidos de ponto.
+
 TERMINOLOGIA: "vício" para mau funcionamento/inadequação. "Defeito" apenas para dano à saúde/patrimônio (arts. 12-17 CDC).`;
 
   try {
@@ -3745,7 +3798,9 @@ Elabore reclamação com esta estrutura:
 2. DOS FATOS — prosa corrida, sem listas. Narre: compra (novo/usado), vício constatado, laudo veicular (se não emitido: incluir como pedido), documentação, se houve troca de veículo. Use SEMPRE "vício", NUNCA "defeito".
 3. DO DIREITO — art. 18 CDC (vício em produto durável), art. 26 §3º (prazo para vício oculto), art. 18 §1º (prazo 30 dias), art. 50 CDC (garantia contratual). ${financ?'Incluir: o contrato de financiamento tem natureza ACESSÓRIA à compra e venda — rescindido o contrato principal, rescinde-se o acessório (jurisprudência TJMT consolidada). Mencionar violação à boa-fé objetiva, deveres de informação, transparência e colaboração (art. 4º, III CDC).':''} ${!gv('ve-laudo').includes('emitiu')&&!gv('ve-laudo').includes('Sim')?"Incluir: a não emissão do laudo veicular constitui falha na prestação do serviço e violação ao dever de informação (art. 6º, III CDC).":''}
 4. DOS PEDIDOS — lista numerada com todos os pedidos. ${financ?'Incluir obrigatoriamente: rescisão do contrato de financiamento sem ônus ao consumidor e abstenção de negativação.':''}
-5. ENCERRAMENTO — Várzea Grande-MT, data, atendente PROCON/VG.`;
+5. ENCERRAMENTO — Várzea Grande-MT, data, atendente PROCON/VG.
+
+FORMATAÇÃO OBRIGATÓRIA (ABNT): fonte Times New Roman 12pt, espaçamento 1,5 entre linhas, parágrafos com recuo de 1,25cm, texto justificado, margens 2cm. SEM asteriscos, SEM marcadores, SEM markdown. Numeração dos pedidos em algarismos arábicos seguidos de ponto.`;
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
@@ -3760,6 +3815,165 @@ Elabore reclamação com esta estrutura:
 }
 
 // ---- DOCUMENTOS ADMINISTRATIVOS ----
+
+// ---- SISTEMA DE LOGIN (25 usuários) ----
+const USUARIOS = {
+  "atendente1":"procon2025","atendente2":"procon2025","atendente3":"procon2025",
+  "atendente4":"procon2025","atendente5":"procon2025","atendente6":"procon2025",
+  "atendente7":"procon2025","atendente8":"procon2025","atendente9":"procon2025",
+  "atendente10":"procon2025","atendente11":"procon2025","atendente12":"procon2025",
+  "atendente13":"procon2025","atendente14":"procon2025","atendente15":"procon2025",
+  "atendente16":"procon2025","atendente17":"procon2025","atendente18":"procon2025",
+  "atendente19":"procon2025","atendente20":"procon2025","atendente21":"procon2025",
+  "atendente22":"procon2025","atendente23":"procon2025","atendente24":"procon2025",
+  "coordenador":"proconadmin"
+};
+
+function fazerLogin() {
+  const u = document.getElementById('login-usuario').value.trim().toLowerCase();
+  const s = document.getElementById('login-senha').value;
+  const erro = document.getElementById('login-erro');
+  if (USUARIOS[u] && USUARIOS[u] === s) {
+    document.getElementById('tela-login').style.display = 'none';
+    sessionStorage.setItem('procon-logado', u);
+    erro.style.display = 'none';
+  } else {
+    erro.style.display = 'block';
+  }
+}
+
+// Verificar se já logado
+if (sessionStorage.getItem('procon-logado')) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const tl = document.getElementById('tela-login');
+    if(tl) tl.style.display = 'none';
+  });
+}
+
+// ---- MÚLTIPLOS PRODUTOS (não entregue) ----
+let neProdutos = 1;
+function addProdutoNE() {
+  const n = neProdutos++;
+  const lista = document.getElementById('ne-produtos-lista');
+  const div = document.createElement('div');
+  div.className = 'ne-produto-item';
+  div.id = 'ne-prod-' + n;
+  div.style.borderTop = '.5px solid var(--border)';
+  div.style.paddingTop = '8px';
+  div.style.marginTop = '8px';
+  div.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:12px;font-weight:500;color:var(--text2)">Produto ${n+1}</span>
+      <button onclick="rmProdutoNE('ne-prod-${n}')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="grid g2" style="margin-bottom:6px">
+      <div class="field"><label style="font-size:11px">Descrição</label><input type="text" id="ne-prod-${n}-nome" placeholder="Descrição do produto"></div>
+      <div class="field"><label style="font-size:11px">Valor (R$)</label><input type="text" id="ne-prod-${n}-valor" placeholder="0,00"></div>
+    </div>
+    <div class="grid g2" style="margin-bottom:6px">
+      <div class="field"><label style="font-size:11px">Nº do pedido</label><input type="text" id="ne-prod-${n}-pedido" placeholder="Nº do pedido"></div>
+      <div class="field"><label style="font-size:11px">Data prometida</label><input type="date" id="ne-prod-${n}-dataprom"></div>
+    </div>`;
+  lista.appendChild(div);
+}
+
+function rmProdutoNE(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function getProdutosNE() {
+  const items = document.querySelectorAll('.ne-produto-item');
+  const prods = [];
+  items.forEach((item, i) => {
+    const nome = item.querySelector('[id$="-nome"]')?.value || '';
+    const valor = item.querySelector('[id$="-valor"]')?.value || '';
+    if (nome) prods.push(`Produto ${i+1}: ${nome} — R$ ${valor}`);
+  });
+  return prods.join('\n');
+}
+
+// ---- GERAR DOCUMENTO WORD ----
+async function baixarWord(pref) {
+  const txt = document.getElementById('rt-' + pref)?.textContent || '';
+  if (!txt || txt.includes('Gerando')) { alert('Gere a reclamação primeiro.'); return; }
+  
+  try {
+    const { Document, Paragraph, TextRun, AlignmentType, Header, Footer, ImageRun, HeadingLevel, BorderStyle } = docx;
+    
+    const paragrafos = txt.split('\n\n').filter(p => p.trim());
+    const docParags = paragrafos.map(p => {
+      const linhas = p.trim().split('\n');
+      return new Paragraph({
+        children: linhas.map((l, i) => new TextRun({ text: l, break: i > 0 ? 1 : 0 })),
+        spacing: { after: 200, line: 360 },
+        indent: { firstLine: 709 },
+        alignment: AlignmentType.JUSTIFIED,
+        style: 'Normal',
+      });
+    });
+
+    const doc = new Document({
+      styles: {
+        default: {
+          document: {
+            run: { font: 'Times New Roman', size: 24 },
+          },
+        },
+      },
+      sections: [{
+        properties: {
+          page: {
+            margin: { top: 1134, right: 1134, bottom: 1134, left: 1701 },
+          },
+        },
+        headers: {
+          default: new Header({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({ text: 'ESTADO DE MATO GROSSO', bold: true, size: 20 }),
+                  new TextRun({ text: '\nPREFEITURA MUNICIPAL DE VÁRZEA GRANDE', bold: true, size: 20, break: 1 }),
+                  new TextRun({ text: '\nCoordenadoria de Defesa do Consumidor — PROCON/VG', size: 18, break: 1 }),
+                ],
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 200 },
+                border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'C62828' } },
+              }),
+            ],
+          }),
+        },
+        footers: {
+          default: new Footer({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({ text: 'Av. Castelo Branco, 2500 · Centro Sul · Várzea Grande-MT · Tel.: (65) 3688-8056 · proconvg.mt@gmail.com', size: 16, color: '666666' }),
+                ],
+                alignment: AlignmentType.CENTER,
+                border: { top: { style: BorderStyle.SINGLE, size: 4, color: 'C62828' } },
+              }),
+            ],
+          }),
+        },
+        children: docParags,
+      }],
+    });
+
+    const blob = await docx.Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Reclamacao-PROCON-VG.docx';
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    console.error('Erro ao gerar Word:', e);
+    alert('Erro ao gerar documento Word. Use o botão Imprimir/PDF como alternativa.');
+  }
+}
+
+
 // Função auxiliar: limpar asteriscos e marcadores do texto gerado pela IA
 
 // ---- MÁSCARAS DE CNPJ E CPF ----
@@ -3925,180 +4139,4 @@ async function gerarCertidao() {
     txt=document.getElementById('rt-ct'),ra=document.getElementById('ra-ct');
   box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
   load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
-  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
-  const prompt=`Elabore uma CERTIDÃO DE COMPARECIMENTO para o PROCON de Várzea Grande-MT.
-DADOS: Processo nº ${gv('ct-proc')} | Data: ${gv('ct-data')} | Horário: ${gv('ct-hora')}
-Consumidor: ${gv('ct-cn')}, CPF: ${gv('ct-cpf')}
-Empresa reclamada: ${gv('ct-fn')} | Objeto: ${gv('ct-obj')}
-Servidor: ${gv('ct-atend')}, ${gv('ct-cargo')}
-
-REGRAS OBRIGATÓRIAS:
-- Texto ENXUTO, em parágrafo único, SEM tópicos, SEM listas, SEM asteriscos, SEM marcadores
-- Começar com "CERTIFICO que..."
-- Narrar o comparecimento e apresentação de defesa em uma ou duas frases
-- Encerrar com "Nada mais havendo, lavrei a presente certidão."
-- Depois: local, data, linha de assinatura do servidor
-- NÃO use markdown, NÃO use negrito
-
-Modelo exato de tom:
-"CERTIFICO que o(a) Sr(a). [nome], CPF nº [cpf], compareceu a esta Coordenadoria de Defesa do Consumidor — PROCON/VG, em [data], às [hora], e apresentou defesa administrativa no âmbito do processo nº [proc], instaurado em face de [empresa], relativo a [objeto]. Nada mais havendo, lavrei a presente certidão."`;
-  try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
-    txt.textContent=limparTexto(raw);
-    load.classList.remove('show'); txt.classList.add('show'); if(ra)ra.style.display='flex';
-  } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');}
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-stamp" style="font-size:18px"></i> Gerar Certidão';
-}
-
-// ---- ANÁLISE DE DEFESA ----
-async function analisarDefesa() {
-  const btn=document.getElementById('btn-analisar'), box=document.getElementById('ir-analise'), txt=document.getElementById('irt-analise');
-  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
-  box.style.display='none';
-  const prompt=`Você é assessor jurídico do PROCON de Várzea Grande-MT. Analise comparativamente:
-
-PEDIDOS DA INICIAL: ${gv('ad-pedidos')}
-DESPACHO SANEADOR: ${gv('ad-despacho')||'Não informado'}
-RESPOSTA/DEFESA DA FORNECEDORA: ${gv('ad-defesa')}
-
-Elabore análise estruturada com:
-1. PEDIDOS ATENDIDOS — quais pedidos foram aceitos ou reconhecidos pela fornecedora
-2. PEDIDOS NÃO ATENDIDOS — o que foi recusado e os argumentos apresentados
-3. CONTRADIÇÕES E FRAGILIDADES — inconsistências na defesa, argumentos juridicamente frágeis, fatos não contestados
-4. SUGESTÃO DE CONTINUIDADE — próximos passos recomendados para o processo administrativo (novos documentos, audiência, etc.)
-Use linguagem técnica-jurídica, objetiva e clara. Texto contínuo em parágrafos corridos.`;
-  try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3000,messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível analisar.');
-    box.style.display='block';
-  } catch(e){txt.textContent='Erro ao conectar à IA.';box.style.display='block';}
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar análise comparativa com IA';
-}
-
-async function gerarMinuta() {
-  const box=document.getElementById('result-ad'), load=document.getElementById('rl-ad'),
-    txt=document.getElementById('rt-ad'), ra=document.getElementById('ra-ad'), btn=document.getElementById('btn-minuta');
-  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
-  load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
-  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando minuta...';
-  const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
-  const aud=provAll.some(p=>p.includes('audiência'))?`Audiência agendada: ${gv('ad-auddata')} às ${gv('ad-audhora')}, ${gv('ad-modal')}.`:'';
-  const prompt=`Você é atendente do PROCON de Várzea Grande-MT. Elabore MINUTA DE DESPACHO em texto contínuo, sem listas ou marcadores, em parágrafos corridos, pronta para revisão e assinatura.
-
-PEDIDOS DA INICIAL: ${gv('ad-pedidos')}
-DESPACHO ANTERIOR: ${gv('ad-despacho')||'sem despacho anterior informado'}
-DEFESA DA FORNECEDORA: ${gv('ad-defesa')}
-ANÁLISE: ${document.getElementById('irt-analise').textContent||'não realizada'}
-PROVIDÊNCIAS DETERMINADAS: ${provAll.join('; ')||'a definir'} ${aud}
-OBSERVAÇÕES: ${gv('ad-obs')||'nenhuma'}
-
-Estrutura do despacho:
-1. Relatório breve dos fatos (pedidos × resposta)
-2. Análise sucinta das alegações da fornecedora
-3. Decisão / providências determinadas pelo PROCON
-4. Encerramento com data e espaço para assinatura do atendente
-Tudo em prosa corrida, linguagem administrativa-jurídica, sem listas ou marcadores.`;
-  try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível gerar.');
-    load.classList.remove('show'); txt.classList.add('show'); if(ra)ra.style.display='flex';
-  } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');}
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta completa com IA';
-}
-
-async function chatCaso() {
-  const pergunta=gv('ad-pergunta'); if(!pergunta) return;
-  const btn=document.getElementById('ib-chat'), box=document.getElementById('ir-chat'), txt=document.getElementById('irt-chat');
-  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Consultando...'; box.classList.remove('show');
-  const prompt=`Contexto do processo PROCON/VG:
-Pedidos: ${gv('ad-pedidos')}
-Despacho: ${gv('ad-despacho')||'não informado'}
-Defesa: ${gv('ad-defesa')}
-Pergunta do atendente: ${pergunta}
-Responda de forma objetiva e técnica, em linguagem acessível ao atendente do PROCON.`;
-  try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    txt.textContent=d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível responder.';
-    box.classList.add('show');
-  } catch(e){txt.textContent='Erro ao conectar.';box.classList.add('show');}
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i>Perguntar';
-}
-
-// ---- USINA FOTOVOLTAICA ----
-async function gerarFotovoltaica() {
-  const btn=document.getElementById('btn-gerar-fv');
-  const box=document.getElementById('result-fv'),load=document.getElementById('rl-fv'),
-    txt=document.getElementById('rt-fv'),at=document.getElementById('at-fv'),ra=document.getElementById('ra-fv');
-  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
-  load.classList.add('show'); txt.classList.remove('show'); if(at)at.classList.remove('show'); if(ra)ra.classList.remove('show');
-  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
-  const temFin = gv('fv-temfin')==='Sim';
-  const temEn = gv('fv-temen').includes('Sim');
-  const pretAll=[...(pretMulti['fv']||[]),gv('fv-pret-outro')].filter(Boolean);
-  const docs=arqs['fv']&&arqs['fv'].length?arqs['fv'].map(f=>f.name).join(', '):'nenhum';
-  const prompt=`Você é atendente técnico do PROCON de Várzea Grande - MT. Elabore RECLAMAÇÃO FORMAL completa para USINA FOTOVOLTAICA.
-
-ATENDIMENTO: Nº ${gv('fv-num')||'(a definir)'}, Data: ${gv('fv-data')}, Canal: ${gv('fv-canal')}, Atendente: ${gv('fv-atend')}
-
-CONSUMIDOR: ${gv('fv-cn')}, CPF: ${gv('fv-cpf')}, tel: ${gv('fv-tel')}, endereço da instalação: ${gv('fv-end')}
-
-EMPRESA INSTALADORA: ${gv('fv-fn')}, CNPJ: ${gv('fv-fcnpj')}
-FABRICANTE DOS EQUIPAMENTOS: ${gv('fv-fab')}, CNPJ: ${gv('fv-fabcnpj')}
-${temFin?`FINANCIADORA: ${gv('fv-finfn')}, CNPJ: ${gv('fv-fincnpj')}, valor: R$ ${gv('fv-finval')}, parcelas: ${gv('fv-finparc')}, contrato: ${gv('fv-fincontrato')}`:'Sem financiamento.'}
-${temEn?`ENERGISA: CNPJ 03.467.321/0001-99, protocolo: ${gv('fv-enprot')}, situação: ${gv('fv-en-sit')}`:'Energisa não envolvida.'}
-
-SISTEMA: ${gv('fv-potencia')} | Valor total: R$ ${gv('fv-valor')} | Contrato: ${gv('fv-datacontr')} | Prazo: ${gv('fv-prazo')} | Nº contrato: ${gv('fv-contrato')}
-Geração prometida: ${gv('fv-geracao')} kWh/mês | Geração real: ${gv('fv-geracaoreal')} kWh/mês
-
-PROBLEMA: ${gv('fv-tipo')}
-DESCRIÇÃO: ${gv('fv-desc')}
-PRETENSÃO: ${pretAll.join('; ')||'a definir'}
-DOCS: ${docs} | OBS: ${gv('fv-obs')||'sem observações'}
-
----
-Elabore reclamação com esta estrutura:
-1. TÍTULO "RECLAMAÇÃO FORMAL — PROCON/VG — Usina Fotovoltaica — Data — Nº"
-2. DOS FATOS — prosa corrida, sem listas. Narre: contratação, sistema prometido, problema constatado. ${temEn?'Incluir: situação da homologação junto à Energisa (prazo de 30 dias — Resolução ANEEL 687/2015 e Res. 1.000/2021).':''} ${temFin?'Incluir: contrato de financiamento vinculado à instalação.':''}
-3. DO DIREITO — art. 18 CDC (vício em produto — equipamentos), art. 20 CDC (vício no serviço de instalação), art. 30 CDC (vinculação da oferta). ${temFin?'Incluir: natureza acessória do contrato de financiamento — rescisão do contrato principal implica rescisão do financiamento sem ônus ao consumidor.':''} ${temEn?'Incluir: Resolução ANEEL 687/2015 e Res. 1.000/2021 (prazo 30 dias para conexão).':''}
-4. DOS PEDIDOS — lista numerada com todos os pedidos. ${temFin?'Incluir obrigatoriamente: rescisão do financiamento sem ônus e abstenção de negativação.':''}
-5. ENCERRAMENTO — Várzea Grande-MT, data, atendente PROCON/VG.`;
-  try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    const texto=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível gerar.');
-    load.classList.remove('show'); txt.textContent=texto; txt.classList.add('show');
-    const reg=/art(?:igo)?s?\.?\s*(\d+(?:\s*[,;e]\s*\d+)*)/gi; const enc=new Set(); let m;
-    while((m=reg.exec(texto))!==null) m[1].split(/[,;e\s]+/).filter(Boolean).forEach(n=>{if(n&&!isNaN(n))enc.add('Art. '+n+' CDC');});
-    if(enc.size&&at){at.innerHTML='';enc.forEach(a=>{const t=document.createElement('span');t.className='art-tag';t.textContent=a;at.appendChild(t);});at.classList.add('show');}
-    if(ra)ra.classList.add('show');
-  } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');if(ra)ra.classList.add('show');}
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação Formal — Usina Fotovoltaica (Arts. 18/20 CDC)';
-}
-
-function copiarRec() {
-  const txt = document.getElementById('rt-vp').textContent;
-  navigator.clipboard.writeText(txt).then(() => { event.currentTarget.innerHTML = '<i class="ti ti-check"></i>Copiado!'; setTimeout(() => { event.currentTarget.innerHTML = '<i class="ti ti-copy"></i>Copiar texto'; }, 2000); });
-}
-
-function imprimirRec() {
-  const txt = document.getElementById('rt-vp').textContent;
-  const w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamação PROCON/VG</title>
-  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm;color:#000}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>
-  <body><pre>${txt.replace(/</g, '&lt;')}</pre></body></html>`);
-  w.document.close(); w.focus(); setTimeout(() => w.print(), 500);
-}
-
-function limparRec() {
-  document.getElementById('rt-vp').textContent = '';
-  document.getElementById('rt-vp').classList.remove('show');
-  document.getElementById('result-vp').classList.remove('show');
-}
-</script>
-</body>
-</html>
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-c

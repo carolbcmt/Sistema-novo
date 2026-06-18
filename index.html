@@ -3033,64 +3033,121 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
     <!-- ======== ANÁLISE DE DEFESA ADMINISTRATIVA ======== -->
     <div id="screen-ad" style="display:none">
-      <div class="form-head"><div class="form-head-icon"><i class="ti ti-analyze"></i></div><div><h1>Análise de Defesa Administrativa</h1><p>IA compara pedidos da inicial × despacho × resposta da fornecedora e sugere providências</p></div></div>
+      <div class="form-head"><div class="form-head-icon"><i class="ti ti-analyze"></i></div><div><h1>Análise de Defesa Administrativa</h1><p>PROCON/VG · Reclamação × Defesa × Análise × Sugestão × Minuta — formatação ABNT</p></div></div>
 
-      <div class="sec"><div class="sec-head open" onclick="toggleSec(this)"><div class="sec-num">1</div><span class="sec-title">Pedidos da Inicial (Reclamação Original)</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 1: RECLAMAÇÃO -->
+      <div class="sec"><div class="sec-head open" onclick="toggleSec(this)"><div class="sec-num">1</div><span class="sec-title">Reclamação</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body open">
-        <div class="field"><label>Cole aqui os pedidos da reclamação inicial <span class="req">*</span></label>
-          <textarea id="ad-pedidos" rows="5" placeholder="Cole ou descreva os pedidos feitos na reclamação inicial do consumidor..."></textarea>
+        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Cole ou descreva o inteiro teor da reclamação administrativa — identificação das partes, fatos narrados e pedidos formulados pelo consumidor.</span></div>
+        <div class="grid g3">
+          <div class="field"><label>Nº do processo</label><input type="text" id="ad-proc" placeholder="2025-0001"></div>
+          <div class="field"><label>Consumidor</label><input type="text" id="ad-cons" placeholder="Nome do consumidor"></div>
+          <div class="field"><label>Empresa reclamada</label><input type="text" id="ad-emp" placeholder="Nome da empresa"></div>
+        </div>
+        <div class="field" style="margin-top:6px"><label>Texto da reclamação / pedidos <span class="req">*</span></label>
+          <textarea id="ad-pedidos" rows="6" placeholder="Cole aqui o texto completo da reclamação inicial, incluindo os fatos narrados pelo consumidor e os pedidos formulados..."></textarea>
         </div>
       </div></div>
 
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Síntese do Despacho Saneador</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 2: DEFESA APRESENTADA -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Defesa Apresentada</span><span class="sec-badge"><i class="ti ti-sparkles" style="font-size:12px"></i>IA lê documentos</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="field"><label>Resumo ou transcrição do despacho</label>
-          <textarea id="ad-despacho" rows="4" placeholder="Cole ou resuma o despacho saneador emitido pelo PROCON..."></textarea>
+        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Anexe o documento da defesa e/ou cole o texto. A IA extrai automaticamente os argumentos principais.</span></div>
+        <div class="field" style="margin-bottom:12px"><label>Anexar documento da defesa (PDF, DOCX, imagem)</label>
+          <div class="upload-zone" id="uz-ad" onclick="document.getElementById('fi-ad').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad')">
+            <input type="file" id="fi-ad" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'ad')">
+            <div class="uz-icon"><i class="ti ti-cloud-upload"></i></div>
+            <div class="uz-title">Clique ou arraste a defesa aqui</div>
+            <div class="uz-sub">PDF, DOCX, JPG, PNG · até 10 MB · IA extrai os argumentos automaticamente</div>
+          </div>
+          <div class="file-list" id="fl-ad"></div>
+        </div>
+        <div class="field"><label>Texto da defesa / argumentos da empresa <span class="req">*</span></label>
+          <textarea id="ad-defesa" rows="8" placeholder="Cole aqui a íntegra ou resumo da defesa administrativa apresentada pela fornecedora..."></textarea>
+        </div>
+        <div class="field" style="margin-top:8px"><label>Data de apresentação da defesa</label>
+          <input type="date" id="ad-datadef">
         </div>
       </div></div>
 
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">3</div><span class="sec-title">Resposta da Fornecedora (Defesa)</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 3: ANÁLISE COMPARATIVA -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">3</div><span class="sec-title">Análise Comparativa</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="field"><label>Cole a defesa completa da empresa <span class="req">*</span></label>
-          <textarea id="ad-defesa" rows="8" placeholder="Cole aqui a íntegra da defesa administrativa apresentada pela fornecedora..."></textarea>
-        </div>
-      </div></div>
-
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Análise Comparativa — IA</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
-      <div class="sec-body">
-        <button class="gen-btn" onclick="analisarDefesa()" id="btn-analisar" style="margin-top:0;margin-bottom:12px"><i class="ti ti-sparkles" style="font-size:18px"></i>Gerar análise comparativa com IA</button>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">A IA confronta a reclamação com a defesa e aponta o que foi atendido, o que foi recusado e as fragilidades dos argumentos da empresa.</p>
+        <button class="gen-btn" onclick="analisarDefesa()" id="btn-analisar" style="margin-top:0;margin-bottom:12px;background:var(--blue)"><i class="ti ti-sparkles" style="font-size:18px"></i>Gerar análise comparativa com IA</button>
         <div class="ia-result" id="ir-analise" style="display:none;max-height:none">
-          <div class="ia-result-label"><i class="ti ti-sparkles"></i>Análise da IA</div>
-          <div class="ia-result-text" id="irt-analise" style="font-size:13px;line-height:1.7"></div>
+          <div class="ia-result-label"><i class="ti ti-sparkles"></i>Análise comparativa</div>
+          <div class="ia-result-text" id="irt-analise" style="font-size:13px;line-height:1.7;font-family:'Times New Roman',serif"></div>
+          <div class="ia-result-actions">
+            <button class="use" onclick="document.getElementById('ad-analise-texto').value=document.getElementById('irt-analise').textContent">Usar na minuta</button>
+            <button onclick="fecharIA('ir-analise')">Fechar</button>
+          </div>
+        </div>
+        <div class="field" style="margin-top:10px"><label>Editar / complementar análise</label>
+          <textarea id="ad-analise-texto" rows="4" placeholder="A análise gerada pela IA aparecerá aqui. Você pode editar antes de usar na minuta..."></textarea>
         </div>
       </div></div>
 
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Providências de Continuidade</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 4: SUGESTÃO E PROVIDÊNCIAS -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Sugestão e Providências</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="opts" id="og-ad-prov" style="flex-direction:column;align-items:flex-start">
-          <div class="opt" onclick="toggleMulti(this,'ad','Solicitar novos documentos ao consumidor')"><i class="ti ti-file-plus" style="font-size:14px"></i>Solicitar novos documentos ao consumidor</div>
-          <div class="opt" onclick="toggleMulti(this,'ad','Incluir nova fornecedora no polo passivo')"><i class="ti ti-building-plus" style="font-size:14px"></i>Incluir nova fornecedora</div>
-          <div class="opt" onclick="toggleMulti(this,'ad','Retificação do polo passivo')"><i class="ti ti-edit" style="font-size:14px"></i>Retificação do polo passivo</div>
-          <div class="opt" onclick="toggleMulti(this,'ad','Agendar audiência de conciliação');showSubSec('sub-ad-aud')"><i class="ti ti-calendar-event" style="font-size:14px"></i>Agendar audiência de conciliação</div>
-          <div class="opt" onclick="toggleMulti(this,'ad','Solicitar documentos adicionais à fornecedora')"><i class="ti ti-building" style="font-size:14px"></i>Solicitar docs à fornecedora</div>
+        <div class="field"><label>Providências necessárias <span style="font-size:11px;color:var(--text3)">(pode marcar mais de um)</span></label>
+          <div class="opts" id="og-ad-prov" style="flex-direction:column;align-items:flex-start;margin-top:6px">
+            <div class="opt" onclick="toggleMulti(this,'ad','Solicitar novos documentos ao consumidor')"><i class="ti ti-file-plus" style="font-size:14px"></i>Solicitar novos documentos ao consumidor</div>
+            <div class="opt" onclick="toggleMulti(this,'ad','Incluir nova fornecedora no polo passivo')"><i class="ti ti-building-plus" style="font-size:14px"></i>Incluir nova fornecedora no polo passivo</div>
+            <div class="opt" onclick="toggleMulti(this,'ad','Retificação do polo passivo')"><i class="ti ti-edit" style="font-size:14px"></i>Retificação do polo passivo</div>
+            <div class="opt" onclick="toggleMulti(this,'ad','Agendar audiência de conciliação');showSubSec('sub-ad-aud')"><i class="ti ti-calendar-event" style="font-size:14px"></i>Agendar audiência de conciliação</div>
+            <div class="opt" onclick="toggleMulti(this,'ad','Solicitar documentos adicionais à fornecedora')"><i class="ti ti-building" style="font-size:14px"></i>Solicitar documentos adicionais à fornecedora</div>
+            <div class="opt" onclick="toggleMulti(this,'ad','Encaminhar para autuação de processo administrativo sancionador')"><i class="ti ti-alert-triangle" style="font-size:14px"></i>Encaminhar para autuação sancionadora</div>
+            <div class="opt" onclick="toggleMulti(this,'ad','Arquivar o processo por acordo entre as partes')"><i class="ti ti-archive" style="font-size:14px"></i>Arquivar por acordo</div>
+          </div>
         </div>
         <div class="sub-sec" id="sub-ad-aud">
-          <div class="grid g3"><div class="field"><label>Data da audiência</label><input type="date" id="ad-auddata"></div><div class="field"><label>Horário</label><input type="text" id="ad-audhora" placeholder="09h00"></div><div class="field"><label>Modalidade</label><div class="opts" id="og-ad-modal"><div class="opt" onclick="selOpt('og-ad-modal',this,'Presencial')">Presencial</div><div class="opt" onclick="selOpt('og-ad-modal',this,'Videoconferência')">Videoconferência</div></div><input type="hidden" id="ad-modal"></div></div>
+          <div class="grid g3">
+            <div class="field"><label>Data da audiência</label><input type="date" id="ad-auddata"></div>
+            <div class="field"><label>Horário</label><input type="text" id="ad-audhora" placeholder="09h00"></div>
+            <div class="field"><label>Modalidade</label>
+              <div class="opts" id="og-ad-modal">
+                <div class="opt" onclick="selOpt('og-ad-modal',this,'Presencial')">Presencial</div>
+                <div class="opt" onclick="selOpt('og-ad-modal',this,'Videoconferência')">Videoconferência</div>
+              </div>
+              <input type="hidden" id="ad-modal">
+            </div>
+          </div>
         </div>
-        <div class="field" style="margin-top:8px"><label>Outra providência</label><input type="text" id="ad-prov-outro" placeholder="Descreva outra providência necessária"></div>
+        <div class="field" style="margin-top:8px"><label>Outra providência / sugestão</label>
+          <textarea id="ad-prov-outro" rows="2" placeholder="Descreva outra providência ou sugestão de encaminhamento..."></textarea>
+        </div>
+        <div class="field" style="margin-top:8px"><label>Observações do atendente</label>
+          <textarea id="ad-obs" rows="3" placeholder="Observações internas, alertas de prazo, informações relevantes..."></textarea>
+        </div>
       </div></div>
 
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">6</div><span class="sec-title">Observações Livres do Atendente</span><i class="ti ti-chevron-down sec-arrow"></i></div>
-      <div class="sec-body"><div class="field"><textarea id="ad-obs" rows="3" placeholder="Observações livres..."></textarea></div></div></div>
-
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">7</div><span class="sec-title">Minuta Final — IA</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 5: MINUTA FINAL -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Minuta — Despacho / Decisão</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA · ABNT</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">Gera texto contínuo em parágrafos corridos (sem marcadores), conectando pedidos + despacho + resposta + providências, pronto para revisão.</p>
-        <button class="gen-btn gen-btn-accent" onclick="gerarMinuta()" id="btn-minuta"><i class="ti ti-file-text" style="font-size:18px"></i>Gerar minuta completa com IA</button>
-        <div class="result-box" id="result-ad" style="margin-top:12px"><div class="result-head"><h2><i class="ti ti-file-text"></i>Minuta — PROCON/VG</h2><p>Texto contínuo para revisão e cópia</p></div>
-          <div class="result-body"><div class="result-loading" id="rl-ad"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando minuta...</div>
+        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Gera minuta em prosa corrida, sem marcadores, em linguagem administrativa-jurídica concisa, formatação ABNT — Times New Roman 12pt, espaçamento 1,5, parágrafos justificados com recuo.</span></div>
+        <div class="field" style="margin-bottom:10px"><label>Anexar documentos adicionais para a minuta (opcional)</label>
+          <div class="upload-zone" id="uz-ad-min" onclick="document.getElementById('fi-ad-min').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad-min')">
+            <input type="file" id="fi-ad-min" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'ad-min')">
+            <div class="uz-icon"><i class="ti ti-paperclip"></i></div>
+            <div class="uz-title">Anexar documentos adicionais</div>
+            <div class="uz-sub">Laudos, comprovantes, pareceres · PDF, DOCX, JPG · até 10 MB</div>
+          </div>
+          <div class="file-list" id="fl-ad-min"></div>
+        </div>
+        <button class="gen-btn gen-btn-accent" onclick="gerarMinuta()" id="btn-minuta"><i class="ti ti-file-text" style="font-size:18px"></i>Gerar minuta com IA</button>
+        <div class="result-box" id="result-ad" style="margin-top:12px">
+          <div class="result-head"><h2><i class="ti ti-file-text"></i>Minuta — PROCON/VG</h2><p>Texto em prosa corrida · Formatação ABNT · Pronto para revisão</p></div>
+          <div class="result-body">
+            <div class="result-loading" id="rl-ad"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando minuta...</div>
             <div class="result-text" id="rt-ad"></div>
-            <div class="result-actions" id="ra-ad" style="display:none"><button class="primary" onclick="copiarGenerico('ad')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ad')"><i class="ti ti-printer"></i>Imprimir</button></div>
+            <div class="result-actions" id="ra-ad" style="display:none">
+              <button class="primary" onclick="copiarGenerico('ad')"><i class="ti ti-copy"></i>Copiar</button>
+              <button onclick="imprimirGenerico('ad')"><i class="ti ti-printer"></i>Imprimir</button>
+              <button onclick="baixarWord('ad')"><i class="ti ti-file-word"></i>Word</button>
+              <button onclick="limparGenerico('ad')"><i class="ti ti-refresh"></i>Gerar novamente</button>
+            </div>
           </div>
         </div>
       </div></div>
@@ -4256,23 +4313,34 @@ async function analisarDefesa() {
   const btn=document.getElementById('btn-analisar'), box=document.getElementById('ir-analise'), txt=document.getElementById('irt-analise');
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
   box.style.display='none';
-  const prompt=`Você é assessor jurídico do PROCON de Várzea Grande-MT. Analise comparativamente:
+  const docs = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
+  const prompt=`Você é assessor jurídico do PROCON de Várzea Grande-MT. Analise comparativamente a reclamação e a defesa apresentada.
 
-PEDIDOS DA INICIAL: ${gv('ad-pedidos')}
-DESPACHO SANEADOR: ${gv('ad-despacho')||'Não informado'}
-RESPOSTA/DEFESA DA FORNECEDORA: ${gv('ad-defesa')}
+PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
+RECLAMAÇÃO: ${gv('ad-pedidos')}
+DEFESA DA EMPRESA: ${gv('ad-defesa')}
+DOCUMENTOS ANEXADOS: ${docs}
 
-Elabore análise estruturada com:
-1. PEDIDOS ATENDIDOS — quais pedidos foram aceitos ou reconhecidos pela fornecedora
-2. PEDIDOS NÃO ATENDIDOS — o que foi recusado e os argumentos apresentados
-3. CONTRADIÇÕES E FRAGILIDADES — inconsistências na defesa, argumentos juridicamente frágeis, fatos não contestados
-4. SUGESTÃO DE CONTINUIDADE — próximos passos recomendados para o processo administrativo (novos documentos, audiência, etc.)
-Use linguagem técnica-jurídica, objetiva e clara. Texto contínuo em parágrafos corridos.`;
+Elabore análise comparativa em prosa corrida, texto fluido e conciso, linguagem técnico-jurídica, sem marcadores ou listas, organizada em quatro parágrafos:
+
+Parágrafo 1 — DO CONFRONTO: compare os pedidos da reclamação com os argumentos da defesa, identificando o que foi aceito e o que foi recusado pela empresa.
+
+Parágrafo 2 — DAS FRAGILIDADES: aponte as inconsistências, contradições e argumentos juridicamente frágeis presentes na defesa, e os fatos relevantes não contestados.
+
+Parágrafo 3 — DA SUGESTÃO: indique os próximos passos recomendados para o processo administrativo, com base nos elementos analisados.
+
+Parágrafo 4 — DA CONCLUSÃO: síntese objetiva da posição do PROCON diante da defesa apresentada.
+
+FORMATAÇÃO ABNT: Times New Roman 12pt, espaçamento 1,5, parágrafos justificados, texto em prosa corrida SEM asteriscos, SEM marcadores, SEM markdown.`;
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3000,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
-    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível analisar.');
+    const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível analisar.');
+    txt.textContent=texto;
     box.style.display='block';
+    // Copiar automaticamente para o campo editável
+    const campoEdicao = document.getElementById('ad-analise-texto');
+    if(campoEdicao && !campoEdicao.value.trim()) campoEdicao.value = texto;
   } catch(e){txt.textContent='Erro ao conectar à IA.';box.style.display='block';}
   btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar análise comparativa com IA';
 }
@@ -4284,29 +4352,40 @@ async function gerarMinuta() {
   load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando minuta...';
   const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
-  const aud=provAll.some(p=>p.includes('audiência'))?`Audiência agendada: ${gv('ad-auddata')} às ${gv('ad-audhora')}, ${gv('ad-modal')}.`:'';
-  const prompt=`Você é atendente do PROCON de Várzea Grande-MT. Elabore MINUTA DE DESPACHO em texto contínuo, sem listas ou marcadores, em parágrafos corridos, pronta para revisão e assinatura.
+  const aud=provAll.some(p=>p.includes('audiência'))?`Audiência agendada: ${gv('ad-auddata')} às ${gv('ad-audhora')}, modalidade: ${gv('ad-modal')}.`:'';
+  const analise = gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || 'análise não realizada';
+  const docsMin = arqs['ad-min']&&arqs['ad-min'].length ? arqs['ad-min'].map(f=>f.name).join(', ') : 'nenhum';
+  const docsAd = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
 
-PEDIDOS DA INICIAL: ${gv('ad-pedidos')}
-DESPACHO ANTERIOR: ${gv('ad-despacho')||'sem despacho anterior informado'}
-DEFESA DA FORNECEDORA: ${gv('ad-defesa')}
-ANÁLISE: ${document.getElementById('irt-analise').textContent||'não realizada'}
+  const prompt=`Você é atendente técnico do PROCON de Várzea Grande-MT. Elabore MINUTA DE DESPACHO ADMINISTRATIVO pronta para revisão e assinatura.
+
+PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
+RECLAMAÇÃO: ${gv('ad-pedidos')}
+DEFESA APRESENTADA (${gv('ad-datadef')||'data não informada'}): ${gv('ad-defesa')}
+ANÁLISE COMPARATIVA: ${analise}
 PROVIDÊNCIAS DETERMINADAS: ${provAll.join('; ')||'a definir'} ${aud}
-OBSERVAÇÕES: ${gv('ad-obs')||'nenhuma'}
+OBSERVAÇÕES DO ATENDENTE: ${gv('ad-obs')||'nenhuma'}
+DOCUMENTOS DA DEFESA: ${docsAd} | DOCUMENTOS ADICIONAIS: ${docsMin}
 
-Estrutura do despacho:
-1. Relatório breve dos fatos (pedidos × resposta)
-2. Análise sucinta das alegações da fornecedora
-3. Decisão / providências determinadas pelo PROCON
-4. Encerramento com data e espaço para assinatura do atendente
-Tudo em prosa corrida, linguagem administrativa-jurídica, sem listas ou marcadores.`;
+ESTRUTURA OBRIGATÓRIA DA MINUTA:
+
+1. RELATÓRIO — em prosa corrida e concisa: identificar as partes, resumir os fatos da reclamação e os argumentos da defesa. Extensão mediana — nem muito curto nem muito longo.
+
+2. FUNDAMENTAÇÃO — analisar juridicamente os argumentos apresentados, confrontando com o CDC e demais normas aplicáveis. Apontar o que procede e o que não procede na defesa. Prosa corrida, sem listas.
+
+3. DECISÃO / PROVIDÊNCIAS — determinar as providências cabíveis de forma clara e objetiva. Se houver audiência: informar data, horário e modalidade.
+
+4. ENCERRAMENTO — Várzea Grande-MT, data, espaço para assinatura do atendente e carimbo do PROCON/VG.
+
+FORMATAÇÃO ABNT OBRIGATÓRIA: texto em prosa corrida, sem marcadores, sem asteriscos, sem markdown, sem listas com traços ou bullets. Times New Roman 12pt, espaçamento 1,5, parágrafos justificados com recuo de 1,25cm. Linguagem administrativa-jurídica formal, fluida e concisa.`;
+
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível gerar.');
     load.classList.remove('show'); txt.classList.add('show'); if(ra)ra.style.display='flex';
   } catch(e){load.classList.remove('show');txt.textContent='Erro ao gerar.';txt.classList.add('show');}
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta completa com IA';
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta com IA';
 }
 
 async function chatCaso() {
@@ -4314,19 +4393,21 @@ async function chatCaso() {
   const btn=document.getElementById('ib-chat'), box=document.getElementById('ir-chat'), txt=document.getElementById('irt-chat');
   btn.disabled=true; btn.innerHTML='<span class="spin"></span> Consultando...'; box.classList.remove('show');
   const prompt=`Contexto do processo PROCON/VG:
-Pedidos: ${gv('ad-pedidos')}
-Despacho: ${gv('ad-despacho')||'não informado'}
+Processo: ${gv('ad-proc')} | Consumidor: ${gv('ad-cons')} | Empresa: ${gv('ad-emp')}
+Reclamação: ${gv('ad-pedidos')}
 Defesa: ${gv('ad-defesa')}
+Análise: ${gv('ad-analise-texto')||'não realizada'}
 Pergunta do atendente: ${pergunta}
-Responda de forma objetiva e técnica, em linguagem acessível ao atendente do PROCON.`;
+Responda de forma objetiva e técnica, em linguagem acessível ao atendente do PROCON. SEM asteriscos, SEM markdown.`;
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
-    txt.textContent=d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível responder.';
+    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível responder.');
     box.classList.add('show');
   } catch(e){txt.textContent='Erro ao conectar.';box.classList.add('show');}
   btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i>Perguntar';
 }
+
 
 // ---- USINA FOTOVOLTAICA ----
 async function gerarFotovoltaica() {

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROCON/VG — Sistema de Atendimento</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
-<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
+<script src="https://unpkg.com/docx@7.8.2/build/index.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -536,7 +536,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
         <div class="sec-body">
           <div class="grid g2">
             <div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="vp-cn" placeholder="Nome completo" oninput="progVP()"></div>
-            <div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="vp-cpf" placeholder="000.000.000-00" oninput="progVP()"></div>
+            <div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="vp-cpf" placeholder="000.000.000-00" oninput="maskCPF(this);progVP()"></div>
           </div>
           <div class="grid g2">
             <div class="field"><label>Telefone</label><input type="text" id="vp-tel" placeholder="(65) 99999-0000"></div>
@@ -874,7 +874,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="vs-cn" placeholder="Nome completo" oninput="prog('vs')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="vs-cpf" placeholder="000.000.000-00" oninput="prog('vs')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="vs-cn" placeholder="Nome completo" oninput="prog('vs')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="vs-cpf" placeholder="000.000.000-00" oninput="maskCPF(this);prog('vs')"></div></div>
         <div class="grid g2"><div class="field"><label>Telefone</label><input type="text" id="vs-tel" placeholder="(65) 99999-0000"></div><div class="field"><label>E-mail</label><input type="text" id="vs-email" placeholder="email@exemplo.com"></div></div>
         <div class="field"><label>Endereço</label><input type="text" id="vs-end" placeholder="Rua, número, bairro, cidade"></div>
       </div></div>
@@ -1238,7 +1238,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="cb-cn" placeholder="Nome completo" oninput="prog('cb')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="cb-cpf" oninput="prog('cb')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="cb-cn" placeholder="Nome completo" oninput="prog('cb')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="cb-cpf" oninput="maskCPF(this);prog('cb')"></div></div>
         <div class="grid g2"><div class="field"><label>Telefone</label><input type="text" id="cb-tel"></div><div class="field"><label>E-mail</label><input type="text" id="cb-email"></div></div>
       </div></div>
 
@@ -2027,7 +2027,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="ga-cn" oninput="prog('ga')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ga-cpf" oninput="prog('ga')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="ga-cn" oninput="prog('ga')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ga-cpf" oninput="maskCPF(this);prog('ga')"></div></div>
         <div class="grid g2"><div class="field"><label>Telefone</label><input type="text" id="ga-tel"></div><div class="field"><label>E-mail</label><input type="text" id="ga-email"></div></div>
       </div></div>
 
@@ -2165,7 +2165,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="cd-cn" oninput="prog('cd')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="cd-cpf" oninput="prog('cd')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="cd-cn" oninput="prog('cd')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="cd-cpf" oninput="maskCPF(this);prog('cd')"></div></div>
         <div class="grid g2"><div class="field"><label>Telefone</label><input type="text" id="cd-tel"></div><div class="field"><label>E-mail</label><input type="text" id="cd-email"></div></div>
       </div></div>
 
@@ -2301,7 +2301,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor / Beneficiário</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="sa-cn" oninput="prog('sa')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="sa-cpf" oninput="prog('sa')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="sa-cn" oninput="prog('sa')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="sa-cpf" oninput="maskCPF(this);prog('sa')"></div></div>
         <div class="grid g2"><div class="field"><label>Telefone</label><input type="text" id="sa-tel"></div><div class="field"><label>E-mail</label><input type="text" id="sa-email"></div></div>
         <div class="grid g2"><div class="field"><label>Nº da carteirinha / matrícula</label><input type="text" id="sa-carteira"></div><div class="field"><label>Tipo de plano</label><div class="opts" id="og-sa-tipo"><div class="opt" onclick="selOpt('og-sa-tipo',this,'Individual/Familiar')">Individual/Familiar</div><div class="opt" onclick="selOpt('og-sa-tipo',this,'Coletivo empresarial')">Coletivo Empresarial</div><div class="opt" onclick="selOpt('og-sa-tipo',this,'Coletivo por adesão')">Coletivo por Adesão</div></div><input type="hidden" id="sa-tipo"></div></div>
       </div></div>
@@ -2443,7 +2443,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="ve-cn" oninput="prog('ve')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ve-cpf" oninput="prog('ve')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="ve-cn" oninput="prog('ve')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ve-cpf" oninput="maskCPF(this);prog('ve')"></div></div>
         <div class="grid g2"><div class="field"><label>Telefone</label><input type="text" id="ve-tel"></div><div class="field"><label>E-mail</label><input type="text" id="ve-email"></div></div>
         <div class="field"><label>Endereço</label><input type="text" id="ve-end"></div>
       </div></div>
@@ -2653,7 +2653,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="en-cn" oninput="prog('en')"></div><div class="field"><label>CPF / CNPJ <span class="req">*</span></label><input type="text" id="en-cpf" oninput="prog('en')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="en-cn" oninput="prog('en')"></div><div class="field"><label>CPF / CNPJ <span class="req">*</span></label><input type="text" id="en-cpf" oninput="maskCPF(this);prog('en')"></div></div>
         <div class="grid g3"><div class="field"><label><strong>Nº da UC — Unidade Consumidora <span class="req">*</span></strong></label><input type="text" id="en-uc" placeholder="Nº da unidade consumidora (consta na fatura de energia)"></div><div class="field"><label>Telefone</label><input type="text" id="en-tel"></div><div class="field"><label>E-mail</label><input type="text" id="en-email"></div></div>
         <div class="field"><label>Endereço do imóvel</label><input type="text" id="en-end" placeholder="Endereço completo do imóvel com o problema"></div>
         <div class="field"><label>Área</label>
@@ -2818,7 +2818,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="ag-cn" oninput="prog('ag')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ag-cpf" oninput="prog('ag')"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="ag-cn" oninput="prog('ag')"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ag-cpf" oninput="maskCPF(this);prog('ag')"></div></div>
         <div class="grid g3"><div class="field"><label><strong>Nº de Matrícula DAE <span class="req">*</span></strong></label><input type="text" id="ag-mat" placeholder="Nº de matrícula (consta na conta de água)"></div><div class="field"><label>Telefone</label><input type="text" id="ag-tel"></div><div class="field"><label>E-mail</label><input type="text" id="ag-email"></div></div>
         <div class="field"><label>Endereço do imóvel</label><input type="text" id="ag-end"></div>
       </div></div>
@@ -2969,7 +2969,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="dc-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="dc-cpf"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="dc-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="dc-cpf" oninput="maskCPF(this)"></div></div>
         <div class="grid g2"><div class="field"><label>Empresa reclamada</label><input type="text" id="dc-fn" placeholder="Nome da empresa reclamada"></div><div class="field"><label>Finalidade / Motivo do comparecimento</label><input type="text" id="dc-motivo" placeholder="Ex: Apresentação de documentos, defesa administrativa..."></div></div>
       </div></div>
 
@@ -2998,7 +2998,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Consumidor</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="ct-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ct-cpf"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="ct-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="ct-cpf" oninput="maskCPF(this)"></div></div>
         <div class="grid g1"><div class="field"><label>Empresa reclamada</label><input type="text" id="ct-fn"></div></div>
         <div class="grid g1"><div class="field"><label>Finalidade / Objeto da defesa</label><textarea id="ct-obj" rows="4" placeholder="Descreva detalhadamente o objeto da defesa apresentada, incluindo os pedidos da reclamação, os fatos narrados, documentos juntados e demais informações relevantes..."></textarea></div></div>
       </div></div>
@@ -3029,7 +3029,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Dados do Requerente (Consumidor)</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="rq-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="rq-cpf"></div></div>
+        <div class="grid g2"><div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" id="rq-cn"></div><div class="field"><label>CPF <span class="req">*</span></label><input type="text" id="rq-cpf" oninput="maskCPF(this)"></div></div>
         <div class="grid g2"><div class="field"><label>Empresa reclamada</label><input type="text" id="rq-fn"></div><div class="field"><label>Telefone</label><input type="text" id="rq-tel"></div></div>
       </div></div>
 
@@ -4070,9 +4070,12 @@ async function baixarWord(pref) {
   if (!txt || txt.includes('Gerando')) { alert('Gere a reclamacao primeiro.'); return; }
 
   try {
-    // A biblioteca docx@8.5.0 expoe tudo via window.docx
-    const D = window.docx;
-    if (!D || !D.Document) { alert('Biblioteca Word nao carregada. Tente recarregar a pagina.'); return; }
+    // docx v7 expoe via window.docx
+    const D = window.docx || {};
+    if (!D.Document || !D.Packer) {
+      alert('Biblioteca Word ainda carregando. Aguarde 2 segundos e tente novamente.');
+      return;
+    }
 
     const paragrafos = txt.split('\n\n').filter(p => p.trim());
 
@@ -4081,9 +4084,9 @@ async function baixarWord(pref) {
     // Cabecalho do documento (nao é o Header da pagina — é um bloco de texto)
     children.push(new D.Paragraph({
       children: [
-        new D.TextRun({ text: 'ESTADO DE MATO GROSSO', bold: true, size: 22, font: 'Times New Roman' }),
-        new D.TextRun({ text: '\nPREFEITURA MUNICIPAL DE VARZEA GRANDE', bold: true, size: 22, font: 'Times New Roman', break: 1 }),
-        new D.TextRun({ text: '\nCoordenadoria de Defesa do Consumidor - PROCON/VG', size: 20, font: 'Times New Roman', break: 1 }),
+        new D.TextRun({ text: 'ESTADO DE MATO GROSSO', bold: true, size: 22, font: { name: 'Times New Roman' } }),
+        new D.TextRun({ text: '\nPREFEITURA MUNICIPAL DE VARZEA GRANDE', bold: true, size: 22, font: { name: 'Times New Roman' }, break: 1 }),
+        new D.TextRun({ text: '\nCoordenadoria de Defesa do Consumidor - PROCON/VG', size: 20, font: { name: 'Times New Roman' }, break: 1 }),
       ],
       alignment: D.AlignmentType.CENTER,
       spacing: { after: 400 },
@@ -4097,7 +4100,7 @@ async function baixarWord(pref) {
         children: linhas.map((l, i) => new D.TextRun({
           text: l,
           size: 24,
-          font: 'Times New Roman',
+          font: { name: 'Times New Roman' },
           break: i > 0 ? 1 : 0,
         })),
         spacing: { after: 200, line: 360 },
@@ -4109,7 +4112,7 @@ async function baixarWord(pref) {
     // Rodape como ultimo paragrafo
     children.push(new D.Paragraph({
       children: [
-        new D.TextRun({ text: 'Av. Castelo Branco, 2500 . Centro Sul . Varzea Grande-MT . Tel.: (65) 3688-8056 . proconvg.mt@gmail.com', size: 16, font: 'Times New Roman', color: '666666' }),
+        new D.TextRun({ text: 'Av. Castelo Branco, 2500 . Centro Sul . Varzea Grande-MT . Tel.: (65) 3688-8056 . proconvg.mt@gmail.com', size: 16, font: { name: 'Times New Roman' }, color: '666666' }),
       ],
       alignment: D.AlignmentType.CENTER,
       spacing: { before: 400 },

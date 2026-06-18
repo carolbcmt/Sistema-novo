@@ -4343,19 +4343,16 @@ async function analisarDefesa() {
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
   box.style.display='none';
   const docs = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
-  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Analise a defesa apresentada pela empresa e produza um texto SUCINTO e OBJETIVO para subsidiar o atendente.
+  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Leia a reclamacao e a defesa e escreva um texto corrido, fluido e sucinto analisando a situacao.
 
 PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
 RECLAMACAO: ${gv('ad-pedidos')}
 DEFESA DA EMPRESA: ${gv('ad-defesa')}
 DOCUMENTOS ANEXADOS: ${docs}
 
-Produza um texto curto com NO MAXIMO 3 paragrafos curtos:
-1. O que a empresa alegou na defesa (2-3 linhas).
-2. Se a defesa e satisfatoria ou nao, e por que (2-3 linhas, citando so os artigos CDC mais relevantes).
-3. Recomendacao objetiva: arquivar, notificar novamente, agendar audiencia ou autuar (1-2 linhas).
+Escreva um unico texto corrido de 3 a 5 frases que: resuma o que a empresa alegou, diga se a defesa e satisfatoria ou nao (mencionando brevemente o fundamento legal), e indique a providencia recomendada.
 
-REGRAS: prosa corrida, sem topicos, sem asteriscos, sem titulos, sem markdown. Linguagem direta. Maximo 15 linhas.`;
+REGRAS ABSOLUTAS: texto continuo sem divisoes, sem numeros, sem topicos, sem titulos, sem asteriscos, sem markdown, sem subtitulos. Um so bloco de texto fluido como um parecer oral.`;
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();

@@ -644,16 +644,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
           <i class="ti ti-chevron-down sec-arrow"></i>
         </div>
         <div class="sec-body">
-          <div class="alert alert-yellow"><i class="ti ti-info-circle"></i><span>Use sempre <strong>"vício"</strong> (nunca "defeito"). Vício = produto não funciona adequadamente. Defeito = causou dano à saúde/patrimônio (acidente de consumo — arts. 12-17 CDC).</span></div>
+          <div class="alert alert-red"><i class="ti ti-alert-triangle"></i><span><strong>Art. 6º, III CDC</strong> — direito à informação adequada e clara sobre produto. <strong>Art. 39, IV CDC</strong> — prática abusiva: prevalecer-se da fraqueza do consumidor. <strong>Art. 18 CDC</strong> — respondem solidariamente fornecedor e fabricante.</span></div>
+        <div class="alert alert-yellow"><i class="ti ti-info-circle"></i><span>Use sempre <strong>"vício"</strong> (nunca "defeito"). Vício = produto não funciona adequadamente. Defeito = causou dano à saúde/patrimônio (acidente de consumo — arts. 12-17 CDC).</span></div>
           <div class="field" style="margin-top:4px">
-            <label>Natureza do vício <span class="req">*</span></label>
+            <label>Natureza do vício <span class="req">*</span> <span style="font-size:11px;color:var(--text3)">(pode marcar mais de um)</span></label>
             <div class="opts" id="og-vicio" style="flex-direction:column;align-items:flex-start">
-              <div class="opt" onclick="selOpt('og-vicio',this,'vício de qualidade — produto não funciona adequadamente')">Não funciona / para de funcionar</div>
-              <div class="opt" onclick="selOpt('og-vicio',this,'vício de qualidade — produto apresenta funcionamento intermitente')">Funcionamento intermitente / instável</div>
-              <div class="opt" onclick="selOpt('og-vicio',this,'vício de qualidade — produto apresenta avaria estética (amassado, riscado, quebrado)')">Avaria estética (amassado, riscado, quebrado)</div>
-              <div class="opt" onclick="selOpt('og-vicio',this,'vício de quantidade — produto entregue em quantidade inferior à contratada')">Quantidade inferior à contratada</div>
-              <div class="opt" onclick="selOpt('og-vicio',this,'vício oculto — vício não aparente, constatado após o uso')">Vício oculto (apareceu depois do uso)</div>
-              <div class="opt" onclick="selOpt('og-vicio',this,'vício de qualidade — produto apresenta problema no problema de entrega / montagem incorreta')">Problema na entrega ou montagem</div>
+              <div class="opt" onclick="toggleMulti(this,'vp','vício de qualidade — produto não funciona adequadamente')">Não funciona / para de funcionar</div>
+              <div class="opt" onclick="toggleMulti(this,'vp','vício de qualidade — produto apresenta funcionamento intermitente')">Funcionamento intermitente / instável</div>
+              <div class="opt" onclick="toggleMulti(this,'vp','vício de qualidade — produto apresenta avaria estética (amassado, riscado, quebrado)')">Avaria estética (amassado, riscado, quebrado)</div>
+              <div class="opt" onclick="toggleMulti(this,'vp','vício de quantidade — produto entregue em quantidade inferior à contratada')">Quantidade inferior à contratada</div>
+              <div class="opt" onclick="toggleMulti(this,'vp','vício oculto — vício não aparente, constatado após o uso')">Vício oculto (apareceu depois do uso)</div>
+              <div class="opt" onclick="toggleMulti(this,'vp','vício de qualidade — produto apresenta problema no problema de entrega / montagem incorreta')">Problema na entrega ou montagem</div>
             </div>
             <input type="hidden" id="vp-vicio" oninput="progVP()">
           </div>
@@ -1237,7 +1238,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Detalhes da Cobrança</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="grid g2"><div class="field"><label>Valor cobrado indevidamente (R$) <span class="req">*</span></label><input type="text" id="cb-valor" placeholder="0,00" oninput="prog('cb')"></div><div class="field"><label>Data da cobrança</label><input type="date" id="cb-datacoб"></div></div>
+        <div class="grid g3">
+          <div class="field"><label>Valor cobrado indevidamente (R$) <span class="req">*</span></label><input type="text" id="cb-valor" placeholder="0,00" oninput="prog('cb')"></div>
+          <div class="field"><label>Data da cobrança</label><input type="date" id="cb-datacoб"></div>
+          <div class="field"><label>Forma de cobrança</label>
+            <div class="opts" id="og-cb-forma">
+              <div class="opt" onclick="selOpt('og-cb-forma',this,'débito em conta')">Débito em conta</div>
+              <div class="opt" onclick="selOpt('og-cb-forma',this,'fatura/boleto')">Fatura/Boleto</div>
+              <div class="opt" onclick="selOpt('og-cb-forma',this,'parcelado');showSubSec('fin-cb')">Parcelado</div>
+            </div>
+            <input type="hidden" id="cb-forma">
+          </div>
+        </div>
+        <div class="fin-sub" id="fin-cb">
+          <div class="grid g3">
+            <div class="field"><label>Nº de parcelas cobradas</label><input type="text" id="cb-nparc" placeholder="Ex: 12"></div>
+            <div class="field"><label>Valor de cada parcela (R$)</label><input type="text" id="cb-vparcela" placeholder="0,00"></div>
+            <div class="field"><label>Valor de entrada cobrado (R$)</label><input type="text" id="cb-entrada" placeholder="0,00"></div>
+          </div>
+        </div>
         <div class="field"><label>Natureza da cobrança indevida</label>
           <div class="opts" id="og-cb-tipo" style="flex-direction:column;align-items:flex-start">
             <div class="opt" onclick="selOpt('og-cb-tipo',this,'cobrança por serviço não contratado')">Serviço não contratado</div>
@@ -2802,13 +2821,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="sec-body">
         <div class="field"><label>Tipo de reclamação <span class="req">*</span></label>
           <div class="opts" id="og-ag-tipo" style="flex-direction:column;align-items:flex-start">
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'aumento injustificado de consumo de água')">Aumento injustificado de consumo</div>
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'corte indevido do abastecimento de água')">Corte indevido</div>
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'parcelamento de débito negado ou condições abusivas')">Parcelamento de débito</div>
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'troca de titularidade negada')">Troca de titularidade</div>
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'leitura realizada por média sem vistoria')">Leitura por média</div>
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'falta de abastecimento — solicitação de caminhão pipa');showSubSec('sub-ag-pipa')">Falta de abastecimento / caminhão pipa</div>
-            <div class="opt" onclick="selOpt('og-ag-tipo',this,'cobrança indevida ou incorreta')">Cobrança indevida</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','aumento injustificado de consumo de água')">Aumento injustificado de consumo</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','corte indevido do abastecimento de água')">Corte indevido</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','parcelamento de débito negado ou condições abusivas')">Parcelamento de débito</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','troca de titularidade negada')">Troca de titularidade</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','leitura realizada por média sem vistoria')">Leitura por média</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','falta de abastecimento — solicitação de caminhão pipa');showSubSec('sub-ag-pipa')">Falta de abastecimento / caminhão pipa</div>
+            <div class="opt" onclick="toggleMulti(this,'ag','cobrança indevida ou incorreta')">Cobrança indevida</div>
           </div><input type="hidden" id="ag-tipo" oninput="prog('ag')">
         </div>
         <div class="sub-sec" id="sub-ag-pipa">

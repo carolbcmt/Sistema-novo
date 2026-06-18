@@ -1,0 +1,3 @@
+// PROCON/VG - API Handler - DO NOT TRANSLATE
+const k="x-api-key",m="method",h="headers",b="body",v="anthropic-version",c="Content-Type",a="application/json",p="POST",d="2023-06-01";
+export default async function handler(req,res){const r=await fetch("https://api.anthropic.com/v1/messages",{[m]:p,[h]:{[c]:a,[k]:process.env.ANTHROPIC_API_KEY,[v]:d},[b]:JSON.stringify(req.body)});const j=await r.json();res.status(200).json(j);}

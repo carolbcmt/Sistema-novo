@@ -4343,26 +4343,21 @@ async function analisarDefesa() {
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
   box.style.display='none';
   const docs = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
-  const prompt=`Voce e assessor juridico do PROCON de Varzea Grande-MT. Analise comparativamente a reclamacao e a defesa apresentada.
+  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Analise a defesa apresentada pela empresa e produza um texto SUCINTO e OBJETIVO para subsidiar o atendente.
 
 PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
 RECLAMACAO: ${gv('ad-pedidos')}
 DEFESA DA EMPRESA: ${gv('ad-defesa')}
 DOCUMENTOS ANEXADOS: ${docs}
 
-Elabore analise comparativa em prosa corrida, texto fluido e conciso, linguagem tecnico-juridica, sem marcadores ou listas, organizada em quatro paragrafos:
+Produza um texto curto com NO MAXIMO 3 paragrafos curtos:
+1. O que a empresa alegou na defesa (2-3 linhas).
+2. Se a defesa e satisfatoria ou nao, e por que (2-3 linhas, citando so os artigos CDC mais relevantes).
+3. Recomendacao objetiva: arquivar, notificar novamente, agendar audiencia ou autuar (1-2 linhas).
 
-Paragrafo 1 - DO CONFRONTO: compare os pedidos da reclamacao com os argumentos da defesa, identificando o que foi aceito e o que foi recusado pela empresa.
-
-Paragrafo 2 - DAS FRAGILIDADES: aponte as inconsistencias, contradicoes e argumentos juridicamente frageis presentes na defesa, e os fatos relevantes nao contestados.
-
-Paragrafo 3 - DA SUGESTAO: indique os proximos passos recomendados para o processo administrativo, com base nos elementos analisados.
-
-Paragrafo 4 - DA CONCLUSAO: sintese objetiva da posicao do PROCON diante da defesa apresentada.
-
-FORMATACAO ABNT: Times New Roman 12pt, espacamento 1,5, paragrafos justificados, texto em prosa corrida SEM asteriscos, SEM marcadores, SEM markdown.`;
+REGRAS: prosa corrida, sem topicos, sem asteriscos, sem titulos, sem markdown. Linguagem direta. Maximo 15 linhas.`;
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3000,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel analisar.');
     txt.textContent=texto;

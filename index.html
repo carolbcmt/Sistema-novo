@@ -4306,32 +4306,46 @@ async function analisarDefesa() {
   const btn=document.getElementById('btn-analisar'), box=document.getElementById('ir-analise'), txt=document.getElementById('irt-analise');
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
   box.style.display='none';
-  const docs = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
-  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Leia a reclamacao e a defesa e escreva um texto corrido, fluido e sucinto analisando a situacao.
 
-PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
-RECLAMACAO: ${gv('ad-pedidos')}
-DEFESA DA EMPRESA: ${gv('ad-defesa')}
-DOCUMENTOS ANEXADOS: ${docs}
+  const reclamacao = gv('ad-pedidos');
+  const defesa = gv('ad-defesa');
 
-Escreva um unico texto corrido de 3 a 5 frases que: resuma o que a empresa alegou, diga se a defesa e satisfatoria ou nao (mencionando brevemente o fundamento legal), e indique a providencia recomendada.
+  // Validar campos obrigatorios
+  if (!reclamacao.trim() && !defesa.trim()) {
+    txt.textContent='Preencha pelo menos o texto da reclamacao ou da defesa antes de analisar.';
+    box.style.display='block';
+    btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
+    return;
+  }
 
-REGRAS ABSOLUTAS: texto continuo sem divisoes, sem numeros, sem topicos, sem titulos, sem asteriscos, sem markdown, sem subtitulos. Um so bloco de texto fluido como um parecer oral.`;
+  // Truncar textos muito longos para nao exceder limite da API
+  const recTrunc = reclamacao.substring(0, 3000);
+  const defTrunc = defesa.substring(0, 3000);
+
+  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Com base na reclamacao e na defesa abaixo, escreva um texto corrido e fluido de 3 a 5 frases: resuma o que a empresa alegou, diga se a defesa e satisfatoria ou nao com fundamento no CDC, e indique a providencia. Sem titulos, sem numeracao, sem topicos, sem asteriscos. PROCESSO: ' + gv('ad-proc') + ' CONSUMIDOR: ' + gv('ad-cons') + ' EMPRESA: ' + gv('ad-emp') + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada') + ' --- DEFESA: ' + (defTrunc || 'nao informada')
+
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    console.log('API analise resp:', JSON.stringify(d).substring(0,300));
-    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
-    const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel analisar.');
-    txt.textContent=texto;
-    box.style.display='block';
-    // Copiar automaticamente para o campo editavel
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 800,
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
+    const d = await r.json();
+    console.log('API analise:', d.type || d.error || 'ok', d.content ? d.content.length + ' blocos' : '');
+    if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const texto = limparTexto(d.content && d.content[0] ? d.content[0].text.trim() : 'Sem resposta da API.');
+    txt.textContent = texto;
+    box.style.display = 'block';
     const campoEdicao = document.getElementById('ad-analise-texto');
-    if(campoEdicao && !campoEdicao.value.trim()) campoEdicao.value = texto;
-  } catch(e){
+    if (campoEdicao && !campoEdicao.value.trim()) campoEdicao.value = texto;
+  } catch(e) {
     console.error('Erro analise:', e);
-    txt.textContent='Erro: '+e.message;
-    box.style.display='block';
+    txt.textContent = 'Erro: ' + e.message;
+    box.style.display = 'block';
   }
   btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
 }

@@ -3790,6 +3790,8 @@ async function lerDocumentoParaCampo(file, campoId, statusId) {
     const r = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:4000, messages:[{role:'user', content: msgContent}] }) });
     const d = await r.json();
+    console.log('API response lerDoc:', JSON.stringify(d).substring(0,200));
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const texto = d.content&&d.content[0] ? d.content[0].text.trim() : '';
     
     if(texto) {
@@ -3803,7 +3805,8 @@ async function lerDocumentoParaCampo(file, campoId, statusId) {
       if(st) { st.style.color='#92400e'; st.innerHTML='<i class="ti ti-info-circle" style="font-size:11px"></i> Sem texto'; setTimeout(()=>{ st.style.display='none'; },4000); }
     }
   } catch(e) {
-    if(st) { st.style.color='var(--red)'; st.innerHTML='<i class="ti ti-alert-triangle" style="font-size:11px"></i> Erro'; setTimeout(()=>{ st.style.display='none'; },4000); }
+    console.error('Erro lerDocumento:', e);
+    if(st) { st.style.display='inline-flex'; st.style.color='var(--red)'; st.innerHTML='<i class="ti ti-alert-triangle" style="font-size:11px"></i> Erro: '+e.message; }
   }
 }
 
@@ -4317,13 +4320,19 @@ REGRAS ABSOLUTAS: texto continuo sem divisoes, sem numeros, sem topicos, sem tit
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
+    console.log('API analise resp:', JSON.stringify(d).substring(0,300));
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel analisar.');
     txt.textContent=texto;
     box.style.display='block';
     // Copiar automaticamente para o campo editavel
     const campoEdicao = document.getElementById('ad-analise-texto');
     if(campoEdicao && !campoEdicao.value.trim()) campoEdicao.value = texto;
-  } catch(e){txt.textContent='Erro ao conectar a IA.';box.style.display='block';}
+  } catch(e){
+    console.error('Erro analise:', e);
+    txt.textContent='Erro: '+e.message;
+    box.style.display='block';
+  }
   btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
 }
 

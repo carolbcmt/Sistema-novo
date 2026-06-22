@@ -4534,7 +4534,18 @@ async function gerarMinuta() {
   load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando minuta...';
   const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
-  const aud=provAll.some(p=>p.includes('audiencia'))?'Audiencia agendada: '+gv('ad-auddata')+' as '+gv('ad-audhora')+', modalidade: '+gv('ad-modal')+'.':'';
+
+  // Dados da audiência — buscar diretamente nos campos
+  const audData = gv('ad-auddata');
+  const audHora = gv('ad-audhora');
+  const audModal = gv('ad-modal') || document.getElementById('ad-modal')?.value || '';
+  const temAud = provAll.some(p=>p.includes('audiencia')) || audData;
+  const aud = temAud
+    ? 'Fica designada audiencia de conciliacao para o dia ' + (audData || 'a definir')
+      + ' as ' + (audHora || 'a definir')
+      + ', na modalidade ' + (audModal || 'presencial')
+      + '. As partes deverao comparecer devidamente representadas.'
+    : '';
   const analise = gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || 'analise nao realizada';
   const docsMin = arqs['ad-min']&&arqs['ad-min'].length ? arqs['ad-min'].map(f=>f.name).join(', ') : 'nenhum';
   const empresas = getEmpresasAD();
@@ -4565,15 +4576,23 @@ async function gerarMinuta() {
   });
   const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : gv('ad-obs') || 'nenhuma interacao registrada';
 
-  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Elabore uma MINUTA DE DESPACHO em texto corrido e fluido, sem titulos, sem numeracao de secoes, sem asteriscos, sem marcadores. '
+  const prompt = 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore uma MINUTA DE DESPACHO ADMINISTRATIVO completa, em texto corrido e fluido, sem titulos de secoes, sem numeracao, sem asteriscos, sem marcadores. '
     + instrucaoEmpresas
-    + ' O texto deve fluir em paragrafos: primeiro identifique as partes e resuma brevemente a reclamacao (nao mais que 3 linhas); depois analise a defesa de cada empresa com fundamento no CDC (nao mais que 3 linhas por empresa); se houve tentativa de resolucao por telefone ou acordo, mencione; depois indique as providencias determinadas; por fim encerre com local, data e espaco para assinatura.'
-    + ' PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
-    + ' | RECLAMACAO (resumida): ' + gv('ad-pedidos').substring(0,800)
+    + ' A minuta deve ter os seguintes paragrafos em sequencia: '
+    + '(1) Identificacao das partes — processo, consumidor, empresa(s) reclamada(s); '
+    + '(2) Relatorio dos fatos — narrar a reclamacao com detalhes suficientes para compreensao do caso; '
+    + '(3) Analise da defesa — examinar os argumentos apresentados por cada empresa, indicando se procedem ou nao, com fundamento nos artigos aplicaveis do CDC; '
+    + '(4) Interacoes — se houve tentativa de acordo por telefone ou negociacao, mencionar o resultado; '
+    + '(5) Decisao e providencias — determinar as medidas que serao adotadas; '
+    + (temAud ? '(6) Designacao de audiencia — inserir obrigatoriamente: ' + aud + '; ' : '')
+    + '(7) Encerramento — Varzea Grande-MT, data em extenso, linha de assinatura do atendente tecnico, cargo e carimbo do PROCON/VG. '
+    + 'PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
+    + ' | RECLAMACAO: ' + gv('ad-pedidos').substring(0,1200)
     + ' | ' + defesasTexto
-    + ' | ANALISE: ' + analise.substring(0,600)
-    + ' | INTERACOES E TENTATIVAS DE ACORDO: ' + interacoesTexto
-    + ' | PROVIDENCIAS: ' + (provAll.join('; ')||'a definir') + ' ' + aud
+    + ' | ANALISE PREVIA: ' + analise.substring(0,800)
+    + ' | INTERACOES: ' + interacoesTexto
+    + ' | PROVIDENCIAS SELECIONADAS: ' + (provAll.join('; ')||'notificar empresa')
+    + (temAud ? ' | AUDIENCIA: ' + aud : '')
     + ' | OBSERVACOES: ' + (gv('ad-obs')||'nenhuma');
 
   try {

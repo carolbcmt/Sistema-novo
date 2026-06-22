@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROCON/VG — Sistema de Atendimento</title>
+<title>PROCON/VG — Sistema de Atendimento v202606221752</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <!-- docx lib removida: Word gerado via HTML Blob -->
 <style>
@@ -273,6 +273,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn-tel-gerar:disabled{background:#9ca3af;cursor:not-allowed}
 .acordo-tag{display:inline-block;background:#e1f5ee;color:#0f6e56;border:1px solid #6ee7b7;border-radius:5px;font-size:11px;padding:2px 8px;margin-right:4px;margin-top:4px}
 </style>
+
+
+<script>
+</script>
 </head>
 <body>
 
@@ -3056,10 +3060,20 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       <div class="sec"><div class="sec-head open" onclick="toggleSec(this)"><div class="sec-num">1</div><span class="sec-title">Reclamação</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body open">
         <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Cole ou descreva o inteiro teor da reclamação administrativa — identificação das partes, fatos narrados e pedidos formulados pelo consumidor.</span></div>
-        <div class="grid g3">
+        <div class="grid g2">
           <div class="field"><label>Nº do processo</label><input type="text" id="ad-proc" placeholder="2025-0001"></div>
           <div class="field"><label>Consumidor</label><input type="text" id="ad-cons" placeholder="Nome do consumidor"></div>
-          <div class="field"><label>Empresa reclamada</label><input type="text" id="ad-emp" placeholder="Nome da empresa"></div>
+        </div>
+        <div class="field">
+          <label>Empresas reclamadas <span style="font-size:11px;color:var(--text3)">(adicione quantas forem necessárias)</span></label>
+          <div id="ad-empresas-lista">
+            <div class="ad-empresa-item" id="ad-emp-0" style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+              <input type="text" id="ad-emp-0-nome" placeholder="Empresa reclamada 1" style="flex:1;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px" oninput="atualizarTitulosDefesasAD()">
+              <input type="text" id="ad-emp-0-cnpj" placeholder="CNPJ (opcional)" style="width:180px;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px" oninput="maskCNPJ(this)">
+            </div>
+          </div>
+          <button onclick="addEmpresaAD()" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;margin-top:4px"><i class="ti ti-plus"></i> Adicionar outra empresa reclamada</button>
+          <input type="hidden" id="ad-emp">
         </div>
         <div class="field" style="margin-bottom:10px;margin-top:6px"><label>Anexar reclamação inicial (PDF, DOCX, imagem)</label>
           <div class="upload-zone" id="uz-ad-rec" onclick="document.getElementById('fi-ad-rec').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad-rec')">
@@ -3075,25 +3089,32 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
         </div>
       </div></div>
 
-      <!-- SEÇÃO 2: DEFESA APRESENTADA -->
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Defesa Apresentada</span><span class="sec-badge"><i class="ti ti-sparkles" style="font-size:12px"></i>IA lê documentos</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 2: DEFESAS APRESENTADAS -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Defesas Apresentadas</span><span class="sec-badge"><i class="ti ti-sparkles" style="font-size:12px"></i>IA lê documentos</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Anexe o documento da defesa e/ou cole o texto. A IA extrai automaticamente os argumentos principais.</span></div>
-        <div class="field" style="margin-bottom:12px"><label>Anexar documento da defesa (PDF, DOCX, imagem)</label>
-          <div class="upload-zone" id="uz-ad" onclick="document.getElementById('fi-ad').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad')">
-            <input type="file" id="fi-ad" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'ad')">
-            <div class="uz-icon"><i class="ti ti-cloud-upload"></i></div>
-            <div class="uz-title">Clique ou arraste a defesa aqui</div>
-            <div class="uz-sub">PDF, DOCX, JPG, PNG · até 10 MB · IA extrai os argumentos automaticamente</div>
+        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Para cada empresa reclamada, informe a defesa apresentada. A IA analisará e gerará despacho individualizado para cada uma.</span></div>
+        <div id="ad-defesas-lista">
+          <div class="ad-defesa-item" id="ad-def-bloco-0" style="background:#f7f8fa;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px">
+            <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:6px"><i class="ti ti-building"></i> <span id="ad-def-titulo-0">Empresa 1</span></div>
+            <div class="field" style="margin-bottom:8px"><label style="font-size:11px">Anexar defesa (PDF, DOCX, imagem)</label>
+              <div class="upload-zone" id="uz-ad" onclick="document.getElementById('fi-ad').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad')" style="padding:.75rem">
+                <input type="file" id="fi-ad" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'ad')">
+                <div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div>
+                <div class="uz-title" style="font-size:12px">Clique ou arraste</div>
+                <div class="uz-sub">PDF, DOCX, JPG, PNG · até 10 MB</div>
+              </div>
+              <div class="file-list" id="fl-ad"></div>
+            </div>
+            <div class="field" style="margin-bottom:6px"><label style="font-size:11px">Texto da defesa / argumentos <span class="req">*</span></label>
+              <textarea id="ad-defesa" autocomplete="off" rows="5" placeholder="Cole ou edite o texto extraído da defesa..."></textarea>
+            </div>
+            <div class="field"><label style="font-size:11px">Data da defesa</label>
+              <input type="date" id="ad-datadef" style="font-size:12px;padding:6px 10px;border:1px solid var(--border);border-radius:7px">
+            </div>
           </div>
-          <div class="file-list" id="fl-ad"></div>
         </div>
-        <div class="field"><label>Texto da defesa / argumentos da empresa <span class="req">*</span></label>
-          <textarea id="ad-defesa" autocomplete="off" rows="8" placeholder="Cole aqui a íntegra ou resumo da defesa administrativa apresentada pela fornecedora..."></textarea>
-        </div>
-        <div class="field" style="margin-top:8px"><label>Data de apresentação da defesa</label>
-          <input type="date" id="ad-datadef">
-        </div>
+        <div id="ad-defesas-extras"></div>
+        <button onclick="addDefesaAD()" id="btn-add-defesa" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;display:none;align-items:center;gap:5px;margin-top:4px"><i class="ti ti-plus"></i> Adicionar defesa de outra empresa</button>
       </div></div>
 
       <!-- SEÇÃO 3: ANÁLISE COMPARATIVA -->
@@ -3628,7 +3649,11 @@ Estrutura: 1) TITULO "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No"  2
   btn.disabled=false; btn.innerHTML=`<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamacao - ${tipoRec} (${artigo})`;
 }
 function copiarGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; navigator.clipboard.writeText(txt).then(()=>{event.currentTarget.innerHTML='<i class="ti ti-check"></i>Copiado!';setTimeout(()=>{event.currentTarget.innerHTML='<i class="ti ti-copy"></i>Copiar';},2000);}); }
-function imprimirGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),500); }
+function imprimirGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style>
+
+<script>
+</script>
+</head><body><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),500); }
 function limparGenerico(pref){ document.getElementById('rt-'+pref).textContent=''; document.getElementById('rt-'+pref).classList.remove('show'); document.getElementById('result-'+pref).classList.remove('show'); }
 
 // Estado global
@@ -3761,10 +3786,17 @@ function doFiles(files, tid) {
       <button class="frm" onclick="rmArq('${tid}',${idx})"><i class="ti ti-x"></i></button>`;
     li.appendChild(el);
     if (/\.(jpe?g|png|webp|gif)$/i.test(f.name)) autoFill(f, tid, idx);
-    // Para campos de analise de defesa: ler qualquer tipo de documento
-    if (tid === 'ad' || tid === 'ad-rec') {
-      const campoAlvo = tid === 'ad' ? 'ad-defesa' : 'ad-pedidos';
-      lerDocumentoParaCampo(f, campoAlvo, `fst-${tid}-${idx}`);
+    // Leitura automatica para todos os uploads de documentos (PDF, DOCX, imagem)
+    const mapaLeitura = {
+      'ad': 'ad-defesa', 'ad-rec': 'ad-pedidos',
+      'vp': 'vp-desc', 'vs': 'vs-desc', 've': 've-desc',
+      'fv': 'fv-desc', 'ne': 'ne-desc', 'cb': 'cb-desc',
+      'en': 'en-desc', 'ag': 'ag-desc', 'ga': 'ga-desc',
+      'cd': 'cd-desc', 'sa': 'sa-desc', 'of': 'of-desc',
+      'ed': 'ed-desc', 'mt': 'mt-desc'
+    };
+    if (mapaLeitura[tid]) {
+      lerDocumentoParaCampo(f, mapaLeitura[tid], `fst-${tid}-${idx}`);
     }
   });
 }
@@ -3981,6 +4013,161 @@ FORMATACAO OBRIGATORIA (ABNT): fonte Times New Roman 12pt, espacamento 1,5 entre
 
 // ---- DOCUMENTOS ADMINISTRATIVOS ----
 
+// ---- MÚLTIPLAS EMPRESAS NA ANÁLISE DE DEFESA ----
+let adEmpresas = 1;
+let adDefesas = 1;
+
+function addEmpresaAD() {
+  const n = adEmpresas++;
+  const lista = document.getElementById('ad-empresas-lista');
+  const div = document.createElement('div');
+  div.className = 'ad-empresa-item';
+  div.id = 'ad-emp-' + n;
+  div.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:6px';
+  div.innerHTML = '<input type="text" id="ad-emp-' + n + '-nome" placeholder="Empresa reclamada ' + (n+1) + '" style="flex:1;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px" oninput="atualizarTitulosDefesasAD()">'
+    + '<input type="text" id="ad-emp-' + n + '-cnpj" placeholder="CNPJ (opcional)" style="width:180px;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px" oninput="maskCNPJ(this)">'
+    + '<button onclick="rmEmpresaAD(' + n + ')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:0"><i class="ti ti-x"></i></button>';
+  lista.appendChild(div);
+  // Mostrar botão de adicionar defesa
+  document.getElementById('btn-add-defesa').style.display = 'flex';
+  // Adicionar bloco de defesa correspondente
+  addDefesaAD(n);
+}
+
+function rmEmpresaAD(n) {
+  const el = document.getElementById('ad-emp-' + n);
+  if (el) el.remove();
+  const def = document.getElementById('ad-def-bloco-' + n);
+  if (def) def.remove();
+  atualizarTitulosDefesasAD();
+}
+
+function addDefesaAD(idx) {
+  const n = idx !== undefined ? idx : adDefesas++;
+  const container = document.getElementById('ad-defesas-extras');
+  const nomeEmp = document.getElementById('ad-emp-' + n + '-nome')?.value || ('Empresa ' + (n+1));
+  const div = document.createElement('div');
+  div.className = 'ad-defesa-item';
+  div.id = 'ad-def-bloco-' + n;
+  div.style.cssText = 'background:#f7f8fa;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px';
+
+  // Criar elementos DOM diretamente (sem innerHTML com aspas aninhadas)
+  const titulo = document.createElement('div');
+  titulo.style.cssText = 'font-size:12px;font-weight:600;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:6px';
+  titulo.innerHTML = '<i class="ti ti-building"></i> <span id="ad-def-titulo-' + n + '">' + nomeEmp + '</span>';
+  div.appendChild(titulo);
+
+  // Upload zone
+  const fieldUpload = document.createElement('div');
+  fieldUpload.className = 'field';
+  fieldUpload.style.marginBottom = '8px';
+  fieldUpload.innerHTML = '<label style="font-size:11px">Anexar defesa (PDF, DOCX, imagem)</label>';
+  const uz = document.createElement('div');
+  uz.className = 'upload-zone';
+  uz.id = 'uz-ad-' + n;
+  uz.style.padding = '.75rem';
+  uz.innerHTML = '<div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div><div class="uz-title" style="font-size:12px">Clique ou arraste</div><div class="uz-sub">PDF, DOCX, JPG, PNG · ate 10 MB</div>';
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.id = 'fi-ad-' + n; inp.multiple = true;
+  inp.accept = '.pdf,.jpg,.jpeg,.png,.docx';
+  uz.insertBefore(inp, uz.firstChild);
+  uz.onclick = function() { inp.click(); };
+  uz.ondragover = function(e) { e.preventDefault(); uz.classList.add('drag'); };
+  uz.ondragleave = function() { uz.classList.remove('drag'); };
+  uz.ondrop = function(e) { e.preventDefault(); uz.classList.remove('drag'); doFilesDefesaExtra(e.dataTransfer.files, n); };
+  fieldUpload.appendChild(uz);
+  const fl = document.createElement('div');
+  fl.className = 'file-list'; fl.id = 'fl-ad-' + n;
+  fieldUpload.appendChild(fl);
+  div.appendChild(fieldUpload);
+
+  // Textarea defesa
+  const fieldTxt = document.createElement('div');
+  fieldTxt.className = 'field';
+  fieldTxt.style.marginBottom = '6px';
+  fieldTxt.innerHTML = '<label style="font-size:11px">Texto da defesa <span class="req">*</span></label>';
+  const ta = document.createElement('textarea');
+  ta.id = 'ad-defesa-' + n; ta.rows = 5; ta.autocomplete = 'off';
+  ta.placeholder = 'Cole ou edite o texto da defesa desta empresa...';
+  ta.style.width = '100%';
+  fieldTxt.appendChild(ta);
+  div.appendChild(fieldTxt);
+
+  // Data
+  const fieldData = document.createElement('div');
+  fieldData.className = 'field';
+  fieldData.innerHTML = '<label style="font-size:11px">Data da defesa</label>';
+  const dt = document.createElement('input');
+  dt.type = 'date'; dt.id = 'ad-datadef-' + n;
+  dt.style.cssText = 'font-size:12px;padding:6px 10px;border:1px solid var(--border);border-radius:7px';
+  fieldData.appendChild(dt);
+  div.appendChild(fieldData);
+
+  container.appendChild(div);
+  if (!arqs['ad-' + n]) arqs['ad-' + n] = [];
+  inp.addEventListener('change', function() { doFilesDefesaExtra(this.files, n); });
+}
+
+function doFilesDefesaExtra(files, idx) {
+  if (!arqs['ad-'+idx]) arqs['ad-'+idx] = [];
+  Array.from(files).forEach(f => {
+    if (f.size > 10*1024*1024) { alert('Arquivo muito grande: ' + f.name); return; }
+    const listEl = document.getElementById('fl-ad-'+idx);
+    const fileIdx = arqs['ad-'+idx].length;
+    arqs['ad-'+idx].push(f);
+    const ic = f.name.match(/\.(jpg|jpeg|png)$/i) ? 'ti-photo' : 'ti-file-type-pdf';
+    const kb = Math.round(f.size/1024) + ' KB';
+    const el = document.createElement('div'); el.className='file-item'; el.id='fi-ad-'+idx+'-'+fileIdx;
+    el.innerHTML = '<i class="ti '+ic+'" style="font-size:16px;color:var(--blue)"></i><span class="fn">'+f.name+'</span><span class="fsz">'+kb+'</span><span class="fst" id="fst-ad-'+idx+'-'+fileIdx+'"></span>';
+    const btnRm = document.createElement('button');
+    btnRm.className = 'frm';
+    btnRm.innerHTML = '<i class="ti ti-x"></i>';
+    btnRm.onclick = (function(t,i){return function(){rmArqExtra(t,i);};}('ad-'+idx, fileIdx));
+    el.appendChild(btnRm);
+    if (listEl) listEl.appendChild(el);
+    lerDocumentoParaCampo(f, 'ad-defesa-'+idx, 'fst-ad-'+idx+'-'+fileIdx);
+  });
+}
+
+function rmArqExtra(tid, idx) {
+  if (arqs[tid]) arqs[tid].splice(idx,1);
+  const el = document.getElementById('fi-'+tid+'-'+idx);
+  if (el) el.remove();
+}
+
+function atualizarTitulosDefesasAD() {
+  // Sincronizar nomes das empresas nos títulos dos blocos de defesa
+  document.querySelectorAll('.ad-empresa-item').forEach((item, i) => {
+    const nomeInput = item.querySelector('input[type="text"]');
+    const titulo = document.getElementById('ad-def-titulo-' + i);
+    if (titulo && nomeInput) titulo.textContent = nomeInput.value || ('Empresa ' + (i+1));
+  });
+}
+
+function getEmpresasAD() {
+  // Retorna array com {nome, cnpj, defesa, datadef} para cada reclamada
+  const result = [];
+  document.querySelectorAll('.ad-empresa-item').forEach((item, i) => {
+    const nomeEl = document.getElementById('ad-emp-' + i + '-nome');
+    const cnpjEl = document.getElementById('ad-emp-' + i + '-cnpj');
+    const defField = i === 0 ? document.getElementById('ad-defesa') : document.getElementById('ad-defesa-' + i);
+    const dataField = i === 0 ? document.getElementById('ad-datadef') : document.getElementById('ad-datadef-' + i);
+    const nome = nomeEl?.value?.trim() || '';
+    if (nome) {
+      result.push({
+        nome: nome,
+        cnpj: cnpjEl?.value?.trim() || '',
+        defesa: defField?.value?.trim() || '',
+        datadef: dataField?.value || ''
+      });
+    }
+  });
+  // Atualizar campo legado ad-emp
+  const empLegado = document.getElementById('ad-emp');
+  if (empLegado) empLegado.value = result.map(e => e.nome).join('; ');
+  return result;
+}
+
 // ---- SISTEMA DE LOGIN ----
 // (USUARIOS e fazerLogin definidos no inicio do body)
 
@@ -4087,6 +4274,10 @@ async function baixarWord(pref) {
   .cabecalho { text-align:center; font-size:11pt; font-weight:bold; border-bottom:2px solid #C62828; padding-bottom:8pt; margin-bottom:16pt; }
   .rodape { text-align:center; font-size:9pt; color:#666; border-top:1px solid #C62828; padding-top:6pt; margin-top:24pt; }
 </style>
+
+
+<script>
+</script>
 </head>
 <body>
 <div class="cabecalho">
@@ -4206,7 +4397,11 @@ function imprimirTel(pref) {
   const cn = gv(pref + '-cn') || '';
   const w = window.open('', '_blank');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Registro Telefonico - PROCON/VG</title>
-  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>
+  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style>
+
+<script>
+</script>
+</head>
   <body><h3 style="text-align:center;margin-bottom:1rem">PROCON/VG - Registro de Atendimento Telefonico</h3><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`);
   w.document.close(); w.focus(); setTimeout(() => w.print(), 500);
 }
@@ -4308,9 +4503,9 @@ async function analisarDefesa() {
   box.style.display='none';
 
   const reclamacao = gv('ad-pedidos');
-  const defesa = gv('ad-defesa');
+  const empresas = getEmpresasAD();
+  const defesa = empresas.length > 0 ? empresas.map((e,i) => (empresas.length>1?'['+e.nome+']: ':'') + e.defesa).join(' | ') : gv('ad-defesa');
 
-  // Validar campos obrigatorios
   if (!reclamacao.trim() && !defesa.trim()) {
     txt.textContent='Preencha pelo menos o texto da reclamacao ou da defesa antes de analisar.';
     box.style.display='block';
@@ -4318,11 +4513,11 @@ async function analisarDefesa() {
     return;
   }
 
-  // Truncar textos muito longos para nao exceder limite da API
-  const recTrunc = reclamacao.substring(0, 3000);
-  const defTrunc = defesa.substring(0, 3000);
+  const recTrunc = reclamacao.substring(0, 2000);
+  const defTrunc = defesa.substring(0, 2000);
+  const nomeEmpresas = empresas.map(e=>e.nome).join(', ') || gv('ad-emp');
 
-  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Com base na reclamacao e na defesa abaixo, escreva um texto corrido e fluido de 3 a 5 frases: resuma o que a empresa alegou, diga se a defesa e satisfatoria ou nao com fundamento no CDC, e indique a providencia. Sem titulos, sem numeracao, sem topicos, sem asteriscos. PROCESSO: ' + gv('ad-proc') + ' CONSUMIDOR: ' + gv('ad-cons') + ' EMPRESA: ' + gv('ad-emp') + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada') + ' --- DEFESA: ' + (defTrunc || 'nao informada')
+  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Com base na reclamacao e nas defesas abaixo, escreva um texto corrido e fluido de 3 a 5 frases analisando cada empresa reclamada: resuma o que cada empresa alegou, diga se cada defesa e satisfatoria ou nao com fundamento no CDC, e indique a providencia recomendada para cada uma. Sem titulos, sem numeracao, sem topicos, sem asteriscos. PROCESSO: ' + gv('ad-proc') + ' CONSUMIDOR: ' + gv('ad-cons') + ' EMPRESAS: ' + nomeEmpresas + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada') + ' --- DEFESAS: ' + (defTrunc || 'nao informada')
 
   try {
     const r = await fetch('/api/chat', {
@@ -4357,23 +4552,47 @@ async function gerarMinuta() {
   load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando minuta...';
   const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
-  const aud=provAll.some(p=>p.includes('audiencia'))?`Audiencia agendada: ${gv('ad-auddata')} as ${gv('ad-audhora')}, modalidade: ${gv('ad-modal')}.`:'';
+  const aud=provAll.some(p=>p.includes('audiencia'))?'Audiencia agendada: '+gv('ad-auddata')+' as '+gv('ad-audhora')+', modalidade: '+gv('ad-modal')+'.':'';
   const analise = gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || 'analise nao realizada';
   const docsMin = arqs['ad-min']&&arqs['ad-min'].length ? arqs['ad-min'].map(f=>f.name).join(', ') : 'nenhum';
-  const docsAd = arqs['ad']&&arqs['ad'].length ? arqs['ad'].map(f=>f.name).join(', ') : 'nenhum';
+  const empresas = getEmpresasAD();
+  const nomeEmpresas = empresas.map(e=>e.nome).join(', ') || gv('ad-emp') || 'empresa nao informada';
 
-  const prompt=`Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore uma MINUTA DE DESPACHO em texto corrido e fluido, sem titulos, sem numeracao de secoes, sem marcadores.
+  // Montar seção de defesas individualizadas
+  let defesasTexto = '';
+  if (empresas.length > 1) {
+    defesasTexto = empresas.map((e,i) => 'DEFESA DE ' + e.nome.toUpperCase() + ' (' + (e.datadef||'data nao informada') + '): ' + (e.defesa.substring(0,1500)||'sem defesa')).join(' ||| ');
+  } else {
+    const defPrincipal = empresas[0]?.defesa || gv('ad-defesa');
+    const dataPrincipal = empresas[0]?.datadef || gv('ad-datadef') || 'data nao informada';
+    defesasTexto = 'DEFESA (' + dataPrincipal + '): ' + defPrincipal.substring(0,2000);
+  }
 
-PROCESSO: ${gv('ad-proc')} | CONSUMIDOR: ${gv('ad-cons')} | EMPRESA: ${gv('ad-emp')}
-RECLAMACAO: ${gv('ad-pedidos')}
-DEFESA APRESENTADA (${gv('ad-datadef')||'data nao informada'}): ${gv('ad-defesa')}
-ANALISE: ${analise}
-PROVIDENCIAS: ${provAll.join('; ')||'a definir'} ${aud}
-OBSERVACOES: ${gv('ad-obs')||'nenhuma'}
+  const instrucaoEmpresas = empresas.length > 1
+    ? 'Ha ' + empresas.length + ' empresas reclamadas. Analise e decida sobre cada uma individualmente, dedicando um paragrafo para cada empresa.'
+    : '';
 
-Escreva o despacho como um texto corrido em paragrafos, sem nenhum titulo, sem numeracao, sem negrito, sem asteriscos. O texto deve fluir naturalmente assim: primeiro um paragrafo identificando as partes e resumindo os fatos da reclamacao; depois um paragrafo analisando a defesa apresentada e seu fundamento juridico no CDC; depois um paragrafo com a decisao e providencias determinadas; por fim um paragrafo de encerramento com local, data e espaco para assinatura.
+  // Coletar interações de telefone registradas nos formulários
+  const interacoesTel = [];
+  ['vp','vs','ne','cb','ve','fv','en','ag','ga','cd','sa','ed','mt','of','ec-clt','ec-inss','ec-serv','ec-rmc'].forEach(p => {
+    const res = document.getElementById('tel-res-'+p)?.value;
+    const acordo = document.getElementById('tel-acordo-'+p)?.value;
+    const empresa = document.getElementById('tel-empresa-'+p)?.value;
+    const dataTel = document.getElementById('tel-data-'+p)?.value;
+    if (res || acordo) interacoesTel.push((empresa?empresa+': ':'')+res+(acordo?' — '+acordo:'')+(dataTel?' ('+dataTel+')':''));
+  });
+  const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : gv('ad-obs') || 'nenhuma interacao registrada';
 
-REGRA ABSOLUTA: sem titulos como RELATORIO, FUNDAMENTACAO, DECISAO. Sem numeracao 1. 2. 3. Sem travessoes separadores. Apenas paragrafos corridos de texto administrativo formal.`;
+  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Elabore uma MINUTA DE DESPACHO em texto corrido e fluido, sem titulos, sem numeracao de secoes, sem asteriscos, sem marcadores. '
+    + instrucaoEmpresas
+    + ' O texto deve fluir em paragrafos: primeiro identifique as partes e resuma brevemente a reclamacao (nao mais que 3 linhas); depois analise a defesa de cada empresa com fundamento no CDC (nao mais que 3 linhas por empresa); se houve tentativa de resolucao por telefone ou acordo, mencione; depois indique as providencias determinadas; por fim encerre com local, data e espaco para assinatura.'
+    + ' PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
+    + ' | RECLAMACAO (resumida): ' + gv('ad-pedidos').substring(0,800)
+    + ' | ' + defesasTexto
+    + ' | ANALISE: ' + analise.substring(0,600)
+    + ' | INTERACOES E TENTATIVAS DE ACORDO: ' + interacoesTexto
+    + ' | PROVIDENCIAS: ' + (provAll.join('; ')||'a definir') + ' ' + aud
+    + ' | OBSERVACOES: ' + (gv('ad-obs')||'nenhuma');
 
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
@@ -4467,7 +4686,11 @@ function imprimirRec() {
   const txt = document.getElementById('rt-vp').textContent;
   const w = window.open('', '_blank');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title>
-  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm;color:#000}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>
+  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm;color:#000}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style>
+
+<script>
+</script>
+</head>
   <body><pre>${txt.replace(/</g, '&lt;')}</pre></body></html>`);
   w.document.close(); w.focus(); setTimeout(() => w.print(), 500);
 }

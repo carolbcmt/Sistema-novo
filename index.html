@@ -2207,7 +2207,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
         <div class="opts" id="og-cd-pret" style="flex-direction:column;align-items:flex-start">
           <div class="opt" onclick="toggleMulti(this,'cd','Exclusão imediata do nome dos cadastros de proteção ao crédito')"><i class="ti ti-user-check" style="font-size:14px"></i>Exclusão imediata do cadastro negativo</div>
           <div class="opt" onclick="toggleMulti(this,'cd','Confirmação de quitação e baixa definitiva da dívida')"><i class="ti ti-check" style="font-size:14px"></i>Confirmação de quitação</div>
-          <div class="opt" onclick="toggleMulti(this,'cd','Indenização por danos morais decorrentes da negativação indevida')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos morais</div>
+          <div class="opt" onclick="toggleMulti(this,'cd','Orientar consumidor sobre dano moral via Defensoria Publica ou advogado (nao cabe em sede administrativa)')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos morais</div>
           <div class="opt" onclick="toggleMulti(this,'cd','Abstenção de novas negativações sobre a mesma dívida')"><i class="ti ti-ban" style="font-size:14px"></i>Abstenção de novas negativações</div>
         </div>
         <div class="field" style="margin-top:8px"><label>Outro pedido</label><input type="text" id="cd-pret-outro"></div>
@@ -3330,7 +3330,8 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Natureza da Reclamação</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="alert alert-red"><i class="ti ti-alert-triangle"></i><span><strong>Atenção:</strong> Empréstimo contratado por beneficiário do LOAS/BPC é <strong>VEDADO</strong> por lei — o benefício é impenhorável (art. 115, II, Lei 8.213/91). Verificar se houve fraude na contratação.</span></div>
+        <div class="alert alert-red"><i class="ti ti-alert-triangle"></i><span><strong>Atenção:</strong> Empréstimo para beneficiário do LOAS/BPC é <strong>VEDADO</strong> — benefício impenhorável (Lei 8.213/91, art. 115, II). Verificar fraude.</span></div>
+        <div class="alert alert-yellow" style="margin-top:6px"><i class="ti ti-info-circle"></i><span><strong>Limites legais INSS (IN 138/2022, art. 5º + Lei 10.820/2003, art. 6º):</strong> Margem máxima: 45% do benefício (35% empréstimo + 5% RMC + 5% RCC). Prazo máximo: 84 parcelas. Juros máximos: 1,70% a.m. CET (empréstimo) e 2,62% a.m. (cartão). Exige depósito na conta do benefício (art. 5º, VII, IN 138/2022). Exige TCE com biometria para RMC/RCC (art. 15, I).</span></div>
         <div class="field" style="margin-top:8px"><label>Natureza da reclamação</label>
           <div class="opts" id="og-ec-inss-tipo" style="flex-direction:column;align-items:flex-start">
             <div class="opt" onclick="selOpt('og-ec-inss-tipo',this,'contratação fraudulenta — empréstimo não reconhecido pelo beneficiário')">Contratação fraudulenta (não reconhecida)</div>
@@ -3361,7 +3362,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
           <div class="opt" onclick="toggleMulti(this,'ec-inss','Portabilidade de crédito para instituição com menor taxa')"><i class="ti ti-arrows-exchange" style="font-size:14px"></i>Portabilidade de crédito</div>
           <div class="opt" onclick="toggleMulti(this,'ec-inss','Cancelamento do seguro prestamista não solicitado com restituição')"><i class="ti ti-shield-off" style="font-size:14px"></i>Cancelamento do seguro prestamista</div>
           <div class="opt" onclick="toggleMulti(this,'ec-inss','Exclusão de cadastros restritivos de crédito')"><i class="ti ti-user-check" style="font-size:14px"></i>Exclusão do cadastro negativo</div>
-          <div class="opt" onclick="toggleMulti(this,'ec-inss','Indenização por danos morais e materiais')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos</div>
+          <div class="opt" onclick="toggleMulti(this,'ec-inss','Orientar consumidor sobre dano moral via Defensoria Publica ou advogado (nao cabe em sede administrativa)')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos</div>
         </div>
         <div class="field" style="margin-top:8px"><label>Outro pedido</label><input type="text" id="ec-inss-pret-outro"></div>
       </div></div>
@@ -3445,7 +3446,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
           <div class="opt" onclick="toggleMulti(this,'ec-serv','Restituição dos valores descontados indevidamente')"><i class="ti ti-cash-banknote" style="font-size:14px"></i>Restituição dos valores indevidos</div>
           <div class="opt" onclick="toggleMulti(this,'ec-serv','Cancelamento do contrato por vício de consentimento')"><i class="ti ti-file-off" style="font-size:14px"></i>Cancelamento do contrato</div>
           <div class="opt" onclick="toggleMulti(this,'ec-serv','Suspensão imediata dos descontos em contracheque')"><i class="ti ti-ban" style="font-size:14px"></i>Suspensão dos descontos</div>
-          <div class="opt" onclick="toggleMulti(this,'ec-serv','Indenização por danos morais e materiais')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos</div>
+          <div class="opt" onclick="toggleMulti(this,'ec-serv','Orientar consumidor sobre dano moral via Defensoria Publica ou advogado (nao cabe em sede administrativa)')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos</div>
         </div>
         <div class="field" style="margin-top:8px"><label>Outro pedido</label><input type="text" id="ec-serv-pret-outro"></div>
       </div></div>
@@ -3504,22 +3505,110 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
         <div class="grid g2"><div class="field"><label>Valor da fatura contestada (R$)</label><input type="text" id="ec-rmc-valor"></div><div class="field"><label>Taxa de juros do rotativo (%)</label><input type="text" id="ec-rmc-juros" placeholder="% ao mês"></div></div>
       </div></div>
 
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Natureza da Reclamação</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Checklist Jurídico RMC/RDC</span><span class="sec-badge" style="background:#fef9ec;color:#b45309"><i class="ti ti-gavel" style="font-size:11px"></i>TJRN · TJMT</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
-        <div class="alert alert-yellow"><i class="ti ti-info-circle"></i><span><strong>RMC/RDC:</strong> O desconto em benefício/folha é autorizado, mas há limites. <strong>Art. 39, V CDC</strong> — vedado exigir vantagem excessiva. Verificar se juros do rotativo ultrapassam patamares razoáveis e se o cartão foi contratado sem conhecimento do beneficiário.</span></div>
-        <div class="field" style="margin-top:8px"><label>Natureza da reclamação</label>
-          <div class="opts" id="og-ec-rmc-tipo" style="flex-direction:column;align-items:flex-start">
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'cartão RMC/RDC enviado sem solicitação do consumidor')">Cartão enviado sem solicitação</div>
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'cobrança de anuidade e taxas não informadas no contrato')">Anuidade e taxas não informadas</div>
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'juros do rotativo abusivos — acima dos limites legais')">Juros do rotativo abusivos</div>
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'desconto em benefício/folha acima do limite da margem consignável')">Desconto acima da margem</div>
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'cobrança de seguros e produtos não solicitados na fatura')">Seguros/produtos não solicitados na fatura</div>
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'saque RDC realizado sem autorização do consumidor')">Saque RDC sem autorização</div>
-            <div class="opt" onclick="selOpt('og-ec-rmc-tipo',this,'negativação indevida após cancelamento do cartão')">Negativação após cancelamento</div>
-          </div><input type="hidden" id="ec-rmc-tipo">
+        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Responda cada pergunta. A conclusão será gerada com base na <strong>Lei 10.820/2003</strong>, <strong>IN PRES/INSS nº 138/2022</strong>, <strong>CDC</strong> e jurisprudência do TJRN e TJMT.</span></div>
+        <div class="alert alert-yellow" style="margin-top:6px"><i class="ti ti-info-circle"></i><span><strong>Limites IN 138/2022 (art. 5º):</strong> Margem total: 45% do benefício. Sendo: até 35% para empréstimo consignado + até 5% para RMC (cartão de crédito) + até 5% para RCC (cartão de benefício). Prazo máximo: 84 parcelas. Juros máximos: 2,62% a.m. (CET). Exige Termo de Consentimento Esclarecido (TCE) com reconhecimento biométrico — <strong>Lei 10.820/2003, art. 6º, §1º</strong>.</span></div>
+
+        <!-- BLOCO A: NATUREZA DO CONTRATO -->
+        <div style="background:#f0f5ff;border-left:3px solid var(--blue);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">A — Natureza do Contrato</div>
+          <div class="field"><label style="font-size:12px">A1. O consumidor acreditava estar contratando um empréstimo consignado comum (e não um cartão RMC/RDC)?</label>
+            <div class="opts" id="og-rmc-a1" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-a1',this,'Sim');calcConclusaoRMC()">Sim</div><div class="opt" onclick="selOpt('og-rmc-a1',this,'Nao');calcConclusaoRMC()">Não</div><div class="opt" onclick="selOpt('og-rmc-a1',this,'Nao sabe informar');calcConclusaoRMC()">Não sabe informar</div></div>
+            <input type="hidden" id="rmc-a1">
+          </div>
+          <div class="field"><label style="font-size:12px">A2. O valor foi creditado em conta via TED/PIX (como num empréstimo comum)?</label>
+            <div class="opts" id="og-rmc-a2" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-a2',this,'Sim');calcConclusaoRMC()">Sim</div><div class="opt" onclick="selOpt('og-rmc-a2',this,'Nao');calcConclusaoRMC()">Não</div></div>
+            <input type="hidden" id="rmc-a2">
+          </div>
+          <div class="field"><label style="font-size:12px">A3. O consumidor recebeu e utilizou o cartão físico para compras no comércio?</label>
+            <div class="opts" id="og-rmc-a3" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-a3',this,'Sim');calcConclusaoRMC()">Sim, utilizou</div><div class="opt" onclick="selOpt('og-rmc-a3',this,'Nao — apenas recebeu TED/saque');calcConclusaoRMC()">Não — só TED/saque</div><div class="opt" onclick="selOpt('og-rmc-a3',this,'Nao recebeu o cartão físico');calcConclusaoRMC()">Não recebeu o cartão</div></div>
+            <input type="hidden" id="rmc-a3">
+          </div>
         </div>
-        <div class="field" style="margin-top:8px"><label>Descrição detalhada <span class="req">*</span></label>
-          <div class="ia-wrap"><textarea id="ec-rmc-desc" rows="4" placeholder="Descreva o problema com o cartão RMC/RDC consignado..."></textarea>
+
+        <!-- BLOCO B: INFORMAÇÃO E CONSENTIMENTO -->
+        <div style="background:#fff8f0;border-left:3px solid #e67e22;border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:#e67e22;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">B — Informação e Consentimento (Art. 6º, III CDC)</div>
+          <div class="field"><label style="font-size:12px">B1. O banco comprova que informou claramente as diferenças entre RMC e empréstimo consignado (amortização, juros rotativos, prazo indeterminado)?</label>
+            <div class="opts" id="og-rmc-b1" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-b1',this,'Sim — há prova documental clara');calcConclusaoRMC()">Sim, há prova</div><div class="opt" onclick="selOpt('og-rmc-b1',this,'Nao — sem comprovação do dever de informação');calcConclusaoRMC()">Não comprova</div><div class="opt" onclick="selOpt('og-rmc-b1',this,'Parcialmente — há assinatura digital mas sem prova de entendimento');calcConclusaoRMC()">Só assinatura digital</div></div>
+            <input type="hidden" id="rmc-b1">
+          </div>
+          <div class="field"><label style="font-size:12px">B2. Os descontos mensais amortizam o saldo devedor principal ou apenas pagam o mínimo (perpetuando a dívida)?</label>
+            <div class="opts" id="og-rmc-b2" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-b2',this,'Amortizam normalmente como empréstimo');calcConclusaoRMC()">Amortizam o saldo</div><div class="opt" onclick="selOpt('og-rmc-b2',this,'Pagam apenas o mínimo — saldo não diminui (dívida perpétua)');calcConclusaoRMC()">Só pagamento mínimo</div></div>
+            <input type="hidden" id="rmc-b2">
+          </div>
+          <div class="field"><label style="font-size:12px">B3. O consumidor é idoso (60+ anos) ou hipervulnerável?</label>
+            <div class="opts" id="og-rmc-b3" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-b3',this,'Sim — idoso/hipervulneravel');calcConclusaoRMC()">Sim</div><div class="opt" onclick="selOpt('og-rmc-b3',this,'Nao');calcConclusaoRMC()">Não</div></div>
+            <input type="hidden" id="rmc-b3">
+          </div>
+        </div>
+
+        <!-- BLOCO C: CONDUTA DO BANCO -->
+        <div style="background:#fff0f0;border-left:3px solid var(--red);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">C — Conduta do Banco (Art. 42 CDC · Repetição)</div>
+          <div class="field"><label style="font-size:12px">C1. Há evidência de má-fé ou conduta dolosa do banco (ex: comprovante de saque complementar falso, assinatura fraudada)?</label>
+            <div class="opts" id="og-rmc-c1" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-c1',this,'Sim — indícios de má-fé ou fraude');calcConclusaoRMC()">Sim</div><div class="opt" onclick="selOpt('og-rmc-c1',this,'Nao — apenas falha informacional sem dolo aparente');calcConclusaoRMC()">Não, só falha informacional</div></div>
+            <input type="hidden" id="rmc-c1">
+          </div>
+          <div class="field"><label style="font-size:12px">C2. O banco apresentou provas produzidas unilateralmente (print de sistema interno) sem extrato de órgão oficial?</label>
+            <div class="opts" id="og-rmc-c2" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-c2',this,'Sim — apenas prints internos, sem extrato oficial');calcConclusaoRMC()">Sim, só prints internos</div><div class="opt" onclick="selOpt('og-rmc-c2',this,'Nao — apresentou documentos oficiais');calcConclusaoRMC()">Não, docs oficiais</div></div>
+            <input type="hidden" id="rmc-c2">
+          </div>
+          <div class="field"><label style="font-size:12px">C3. Os descontos comprometem benefício previdenciário de natureza alimentar (aposentadoria/pensão)?</label>
+            <div class="opts" id="og-rmc-c3" style="margin-top:4px"><div class="opt" onclick="selOpt('og-rmc-c3',this,'Sim — benefício previdenciário alimentar');calcConclusaoRMC()">Sim</div><div class="opt" onclick="selOpt('og-rmc-c3',this,'Nao — salário CLT ou outro');calcConclusaoRMC()">Não</div></div>
+            <input type="hidden" id="rmc-c3">
+          </div>
+        </div>
+
+        <!-- BLOCO D: VIOLAÇÕES ESPECÍFICAS DA IN 138/2022 -->
+        <div style="background:#f0fff4;border-left:3px solid var(--green);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">D — Violações IN 138/2022 e Lei 10.820/2003</div>
+          <div class="field"><label style="font-size:12px">D1. O banco exigiu ou usou biometria/reconhecimento formal para constituir a RMC (requisito obrigatório — IN 138/2022, art. 15, I)?</label>
+            <div class="opts" id="og-rmc-d1" style="margin-top:4px">
+              <div class="opt" onclick="selOpt('og-rmc-d1',this,'Sim — biometria realizada');calcConclusaoRMC()">Sim, com biometria</div>
+              <div class="opt" onclick="selOpt('og-rmc-d1',this,'Nao — sem biometria ou TCE');calcConclusaoRMC()">Não / sem TCE</div>
+              <div class="opt" onclick="selOpt('og-rmc-d1',this,'Nao sabe informar');calcConclusaoRMC()">Não sabe</div>
+            </div>
+            <input type="hidden" id="rmc-d1">
+          </div>
+          <div class="field"><label style="font-size:12px">D2. O total dos descontos (empréstimo + RMC + RCC) ultrapassa 45% do benefício (limite global — IN 138/2022, art. 5º, V)?</label>
+            <div class="opts" id="og-rmc-d2" style="margin-top:4px">
+              <div class="opt" onclick="selOpt('og-rmc-d2',this,'Sim — ultrapassa 45%');calcConclusaoRMC()">Sim, ultrapassa 45%</div>
+              <div class="opt" onclick="selOpt('og-rmc-d2',this,'Nao — dentro do limite');calcConclusaoRMC()">Não, dentro do limite</div>
+              <div class="opt" onclick="selOpt('og-rmc-d2',this,'Nao verificado');calcConclusaoRMC()">Não verificado</div>
+            </div>
+            <input type="hidden" id="rmc-d2">
+          </div>
+          <div class="field"><label style="font-size:12px">D3. A taxa de juros do cartão supera 2,62% ao mês (limite máximo CET — IN 138/2022 atualizada pela IN 144/2023)?</label>
+            <div class="opts" id="og-rmc-d3" style="margin-top:4px">
+              <div class="opt" onclick="selOpt('og-rmc-d3',this,'Sim — taxa acima de 2,62% ao mes');calcConclusaoRMC()">Sim, acima de 2,62% a.m.</div>
+              <div class="opt" onclick="selOpt('og-rmc-d3',this,'Nao — dentro do limite');calcConclusaoRMC()">Não / dentro do limite</div>
+              <div class="opt" onclick="selOpt('og-rmc-d3',this,'Nao informado no contrato');calcConclusaoRMC()">Não informado</div>
+            </div>
+            <input type="hidden" id="rmc-d3">
+          </div>
+          <div class="field"><label style="font-size:12px">D4. O contrato previu o Termo de Consentimento Esclarecido (TCE) com a declaração de que o consumidor sabia que existem modalidades com juros menores (empréstimo consignado)?</label>
+            <div class="opts" id="og-rmc-d4" style="margin-top:4px">
+              <div class="opt" onclick="selOpt('og-rmc-d4',this,'Sim — TCE com todas as declaracoes exigidas');calcConclusaoRMC()">Sim, TCE completo</div>
+              <div class="opt" onclick="selOpt('og-rmc-d4',this,'Nao — sem TCE ou TCE incompleto');calcConclusaoRMC()">Não / incompleto</div>
+              <div class="opt" onclick="selOpt('og-rmc-d4',this,'Nao sabe informar');calcConclusaoRMC()">Não sabe</div>
+            </div>
+            <input type="hidden" id="rmc-d4">
+          </div>
+        </div>
+
+        <!-- CONCLUSÃO AUTOMÁTICA -->
+        <div id="rmc-conclusao" style="display:none;background:linear-gradient(135deg,#0d1f35,#1a2e4a);border-radius:12px;padding:14px 16px;margin-top:6px">
+          <div style="font-size:11px;font-weight:700;color:#8da8c8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px"><i class="ti ti-gavel" style="font-size:14px"></i>CONCLUSÃO JURÍDICA — com base em TJRN e TJMT</div>
+          <div id="rmc-conclusao-texto" style="font-size:13px;color:#fff;line-height:1.7"></div>
+          <div id="rmc-fundamento" style="font-size:11px;color:#8da8c8;margin-top:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px"></div>
+        </div>
+
+        <input type="hidden" id="ec-rmc-tipo">
+        <div class="sep"></div>
+        <div class="field"><label>Descrição complementar</label>
+          <div class="ia-wrap"><textarea id="ec-rmc-desc" rows="3" placeholder="Acrescente detalhes relevantes não cobertos pelo checklist..."></textarea>
             <button class="ia-btn" onclick="iaGenerico('ec-rmc')" id="ib-ec-rmc"><i class="ti ti-sparkles"></i>Sugerir com IA</button>
           </div>
           <div class="ia-result" id="ir-ec-rmc"><div class="ia-result-label"><i class="ti ti-sparkles"></i>Sugestão</div><div class="ia-result-text" id="irt-ec-rmc"></div>
@@ -3536,7 +3625,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
           <div class="opt" onclick="toggleMulti(this,'ec-rmc','Revisão dos juros com recálculo da dívida')"><i class="ti ti-calculator" style="font-size:14px"></i>Revisão dos juros</div>
           <div class="opt" onclick="toggleMulti(this,'ec-rmc','Suspensão dos descontos em benefício/folha')"><i class="ti ti-ban" style="font-size:14px"></i>Suspensão dos descontos</div>
           <div class="opt" onclick="toggleMulti(this,'ec-rmc','Exclusão de cadastros restritivos de crédito')"><i class="ti ti-user-check" style="font-size:14px"></i>Exclusão do cadastro negativo</div>
-          <div class="opt" onclick="toggleMulti(this,'ec-rmc','Indenização por danos morais e materiais')"><i class="ti ti-receipt" style="font-size:14px"></i>Indenização por danos</div>
+          <div class="opt" onclick="toggleMulti(this,'ec-rmc','Orientacao para buscar indenizacao por danos morais via Defensoria Publica ou advogado (nao cabe em sede administrativa)')"><i class="ti ti-info-circle" style="font-size:14px;color:#e67e22"></i>Orientar sobre dano moral (via Judiciário)</div>
         </div>
         <div class="field" style="margin-top:8px"><label>Outro pedido</label><input type="text" id="ec-rmc-pret-outro"></div>
       </div></div>
@@ -4157,6 +4246,108 @@ function getEmpresasAD() {
   const empLegado = document.getElementById('ad-emp');
   if (empLegado) empLegado.value = result.map(e => e.nome).join('; ');
   return result;
+}
+
+// ---- CHECKLIST JURÍDICO RMC/RDC ----
+function calcConclusaoRMC() {
+  const a1 = document.getElementById('rmc-a1')?.value || '';
+  const a2 = document.getElementById('rmc-a2')?.value || '';
+  const a3 = document.getElementById('rmc-a3')?.value || '';
+  const b1 = document.getElementById('rmc-b1')?.value || '';
+  const b2 = document.getElementById('rmc-b2')?.value || '';
+  const b3 = document.getElementById('rmc-b3')?.value || '';
+  const c1 = document.getElementById('rmc-c1')?.value || '';
+  const c2 = document.getElementById('rmc-c2')?.value || '';
+  const c3 = document.getElementById('rmc-c3')?.value || '';
+  const d1 = document.getElementById('rmc-d1')?.value || '';
+  const d2 = document.getElementById('rmc-d2')?.value || '';
+  const d3 = document.getElementById('rmc-d3')?.value || '';
+  const d4 = document.getElementById('rmc-d4')?.value || '';
+
+  // Pontuação para determinar força do caso
+  let vicioConsentimento = 0;
+  let falhaInfo = 0;
+  let mafe = false;
+  let idoso = b3.includes('idoso');
+  let alimentar = c3.includes('alimentar');
+
+  if (a1.includes('Sim')) vicioConsentimento += 2;
+  if (a1.includes('Nao sabe')) vicioConsentimento += 1;
+  if (a2.includes('Sim')) vicioConsentimento += 1;
+  if (a3.includes('apenas TED') || a3.includes('nao recebeu')) vicioConsentimento += 2;
+  if (b1.includes('Nao')) falhaInfo += 2;
+  if (b1.includes('Parcialmente')) falhaInfo += 1;
+  if (b2.includes('minimo')) { vicioConsentimento += 1; falhaInfo += 1; }
+  if (c1.includes('mae-fe') || c1.includes('fraude')) mafe = true;
+  if (c2.includes('prints internos')) falhaInfo += 1;
+
+  // Violações específicas da IN 138/2022 e Lei 10.820/2003
+  const semTCE = d1.includes('sem biometria') || d4.includes('sem TCE') || d4.includes('incompleto');
+  const excedeMargem = d2.includes('ultrapassa 45%');
+  const jurosAbusivos = d3.includes('acima de 2,62%');
+  if (semTCE) { falhaInfo += 2; vicioConsentimento += 1; }
+  if (excedeMargem) falhaInfo += 2;
+  if (jurosAbusivos) falhaInfo += 1;
+
+  // Calcular conclusoes
+  const temVicio = vicioConsentimento >= 3;
+  const temFalha = falhaInfo >= 2;
+  const conversao = temVicio || temFalha;
+  const repeticaoDobro = mafe || (alimentar && (temVicio || temFalha));
+  const danoMoral = (idoso && alimentar && temVicio) || mafe;
+
+  if (!a1 && !b1 && !c1 && !d1) {
+    document.getElementById('rmc-conclusao').style.display = 'none';
+    return;
+  }
+
+  // Montar texto da conclusao
+  let conclusao = [];
+  let fundamentos = [];
+  let tipoRmc = '';
+
+  if (conversao) {
+    let fundIN138 = [];
+    if (semTCE) fundIN138.push('sem TCE/biometria — IN 138/2022, art. 15, I');
+    if (excedeMargem) fundIN138.push('excede margem de 45% — IN 138/2022, art. 5, V; Lei 10.820/2003, art. 6, §5');
+    if (jurosAbusivos) fundIN138.push('juros acima de 2,62% a.m. — IN 138/2022 c/c IN 144/2023');
+    const fundIN138txt = fundIN138.length > 0 ? ' Violacoes adicionais: ' + fundIN138.join('; ') + '.' : '';
+    conclusao.push('CONVERSAO DO CONTRATO: configurado vicio de consentimento por falha no dever de informacao (CDC, art. 6, III; Lei 10.820/2003, art. 6, §1; IN PRES/INSS 138/2022, art. 15).' + fundIN138txt + ' O contrato deve ser CONVERTIDO em emprestimo consignado comum, com aplicacao da taxa media de mercado divulgada pelo Banco Central a epoca da contratacao (CC, art. 170 — conservacao dos negocios juridicos). Juros: limite de 1,70% a.m. CET para emprestimo consignado INSS (IN 144/2023).');
+    fundamentos.push('CDC art. 6, III · Lei 10.820/2003, art. 6, §1 · IN PRES/INSS 138/2022, art. 5 e 15 · CC art. 170 · TJMT: N.U 1034357-09.2025.8.11.0041 · TJRN: AC 0867722-81.2024.8.20.5001');
+    tipoRmc = 'vicio de consentimento por falha no dever de informacao — conversao em emprestimo consignado comum (Lei 10.820/2003 + IN 138/2022)';
+  }
+
+  if (repeticaoDobro && mafe) {
+    conclusao.push('RESTITUICAO EM DOBRO: configurada ma-fe da instituicao financeira. Cabivel repeticao do indebito em dobro nos termos do art. 42, paragrafo unico, do CDC, acrescida de correcao pelo INPC e juros de 1% ao mes a partir do primeiro desconto indevido (Sumula 43 STJ).');
+    fundamentos.push('CDC art. 42 par. unico · TJRN: AC 0867722-81.2024.8.20.5001');
+  } else if (conversao) {
+    conclusao.push('RESTITUICAO SIMPLES: ausente prova de ma-fe, a restituicao dos valores pagos a maior apos o recalculo deve ocorrer de forma SIMPLES, com correcao pelo IPCA/INPC a partir de cada desconto (Sumula 43 STJ) e juros de 1% ao mes a partir da citacao. (CDC art. 42 par. unico — inaplicavel sem ma-fe: TJMT).');
+    fundamentos.push('CDC art. 42 · Sumula 43 STJ · TJMT: N.U 1034357-09.2025.8.11.0041');
+  }
+
+  // Orientacao sobre dano moral (nao cabe no PROCON — apenas judicial)
+  if (danoMoral) {
+    conclusao.push('DANO MORAL — ORIENTACAO AO CONSUMIDOR: no ambito administrativo do PROCON nao e possivel pleitear dano moral (materia exclusiva do Poder Judiciario). Contudo, os fatos apurados — idoso, beneficio alimentar, contrato abusivo — configuram dano moral in re ipsa conforme TJRN (AC 0867722-81.2024.8.20.5001), cabendo ORIENTAR o consumidor a buscar assistencia juridica ou Defensoria Publica para ajuizamento de acao indenizatoria.');
+    fundamentos.push('CDC art. 14 · TJRN: AC 0867722-81.2024.8.20.5001 · Sumula 479 STJ — acao judicial');
+  } else if (conversao) {
+    conclusao.push('DANO MORAL — ORIENTACAO: o PROCON nao tem competencia para condenar em dano moral. Se o consumidor desejar indenizacao, deve ser orientado a procurar a Defensoria Publica ou advogado para acao judicial. No caso concreto, a jurisprudencia do TJMT indica que a falha informacional sem dolo, por si so, nao gera dano moral indenizavel.');
+    fundamentos.push('TJMT: N.U 1034357-09.2025.8.11.0041 — acao judicial se necessario');
+  }
+
+  // Atualizar campo tipo para usar na reclamacao
+  const tipoEl = document.getElementById('ec-rmc-tipo');
+  if (tipoEl) tipoEl.value = tipoRmc || 'cartao RMC/RDC com vicio de consentimento';
+
+  // Exibir conclusao
+  const box = document.getElementById('rmc-conclusao');
+  const txtEl = document.getElementById('rmc-conclusao-texto');
+  const fundEl = document.getElementById('rmc-fundamento');
+
+  if (box && txtEl) {
+    txtEl.innerHTML = conclusao.map((c,i) => '<div style="margin-bottom:8px"><span style="background:rgba(255,255,255,.15);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;margin-right:6px">' + (i+1) + '</span>' + c + '</div>').join('');
+    if (fundEl) fundEl.textContent = 'Fundamentos: ' + [...new Set(fundamentos)].join(' | ');
+    box.style.display = 'block';
+  }
 }
 
 // ---- SISTEMA DE LOGIN ----

@@ -272,12 +272,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn-tel-gerar:hover{background:#1a2e4a}
 .btn-tel-gerar:disabled{background:#9ca3af;cursor:not-allowed}
 .acordo-tag{display:inline-block;background:#e1f5ee;color:#0f6e56;border:1px solid #6ee7b7;border-radius:5px;font-size:11px;padding:2px 8px;margin-right:4px;margin-top:4px}
-</style>
-
-
-<script>
-</script>
-</head>
+</style></head>
 <body>
 
 <script>
@@ -3649,11 +3644,7 @@ Estrutura: 1) TITULO "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No"  2
   btn.disabled=false; btn.innerHTML=`<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamacao - ${tipoRec} (${artigo})`;
 }
 function copiarGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; navigator.clipboard.writeText(txt).then(()=>{event.currentTarget.innerHTML='<i class="ti ti-check"></i>Copiado!';setTimeout(()=>{event.currentTarget.innerHTML='<i class="ti ti-copy"></i>Copiar';},2000);}); }
-function imprimirGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style>
-
-<script>
-</script>
-</head><body><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),500); }
+function imprimirGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>body><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),500); }
 function limparGenerico(pref){ document.getElementById('rt-'+pref).textContent=''; document.getElementById('rt-'+pref).classList.remove('show'); document.getElementById('result-'+pref).classList.remove('show'); }
 
 // Estado global
@@ -4273,12 +4264,7 @@ async function baixarWord(pref) {
   body { font-family: 'Times New Roman', serif; font-size: 12pt; }
   .cabecalho { text-align:center; font-size:11pt; font-weight:bold; border-bottom:2px solid #C62828; padding-bottom:8pt; margin-bottom:16pt; }
   .rodape { text-align:center; font-size:9pt; color:#666; border-top:1px solid #C62828; padding-top:6pt; margin-top:24pt; }
-</style>
-
-
-<script>
-</script>
-</head>
+</style></head>
 <body>
 <div class="cabecalho">
 ESTADO DE MATO GROSSO<br>
@@ -4397,11 +4383,7 @@ function imprimirTel(pref) {
   const cn = gv(pref + '-cn') || '';
   const w = window.open('', '_blank');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Registro Telefonico - PROCON/VG</title>
-  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style>
-
-<script>
-</script>
-</head>
+  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>
   <body><h3 style="text-align:center;margin-bottom:1rem">PROCON/VG - Registro de Atendimento Telefonico</h3><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`);
   w.document.close(); w.focus(); setTimeout(() => w.print(), 500);
 }
@@ -4686,11 +4668,7 @@ function imprimirRec() {
   const txt = document.getElementById('rt-vp').textContent;
   const w = window.open('', '_blank');
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title>
-  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm;color:#000}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style>
-
-<script>
-</script>
-</head>
+  <style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm;color:#000}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>
   <body><pre>${txt.replace(/</g, '&lt;')}</pre></body></html>`);
   w.document.close(); w.focus(); setTimeout(() => w.print(), 500);
 }

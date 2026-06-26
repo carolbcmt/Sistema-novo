@@ -438,6 +438,11 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
     </div>
 
     <div class="nav-divider"></div>
+    <div class="sidebar-section"><div class="sidebar-section-label">Fraude Bancária</div></div>
+    <div class="nav-item" id="nav-fb" onclick="openForm('fb')">
+      <i class="ti ti-shield-exclamation" style="font-size:18px"></i>
+      <span>Fraude Bancária</span>
+    </div>
     <div class="sidebar-section"><div class="sidebar-section-label">Empréstimos Consignados</div></div>
     <div class="nav-item" id="nav-ec-clt" onclick="openForm('ec-clt')">
       <i class="ti ti-building-factory"></i>
@@ -3647,12 +3652,233 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       </div>
     </div>
 
+  <!-- FORMULÁRIO: FRAUDE BANCÁRIA -->
+  <div id="screen-fb" style="display:none">
+    <div class="form-head"><div class="form-head-icon" style="background:linear-gradient(135deg,#7b1fa2,#c62828)"><i class="ti ti-shield-exclamation"></i></div><div><h1>Reclamação — Fraude Bancária</h1><p>CDC · Súmula 479 STJ · Res. BCB 01/2020 (art. 32 e 39-B) · Res. BCB 4.658/2018 · Fortuito Interno</p></div></div>
+
+    <!-- SEÇÃO 1: IDENTIFICAÇÃO -->
+    <div class="sec open"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">1</div><span class="sec-title">Identificação do Processo</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+    <div class="sec-body">
+      <div class="grid g2">
+        <div class="field"><label>Nº do processo</label><input type="text" id="fb-proc" placeholder="2025-0001"></div>
+        <div class="field"><label>Data do atendimento</label><input type="date" id="fb-data"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field"><label>Nome do consumidor <span class="req">*</span></label><input type="text" id="fb-cons" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="fb-cpf" placeholder="000.000.000-00" oninput="maskCPF(this)"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field"><label>Telefone</label><input type="text" id="fb-tel" placeholder="(65) 99000-0000"></div>
+        <div class="field"><label>E-mail</label><input type="text" id="fb-email" placeholder="email@exemplo.com"></div>
+      </div>
+    </div></div>
+
+    <!-- SEÇÃO 2: INSTITUIÇÕES FINANCEIRAS -->
+    <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Bancos / Instituições Envolvidas</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+    <div class="sec-body">
+      <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Adicione todas as instituições envolvidas. A legitimidade passiva é reconhecida mesmo que a fraude tenha sido perpetrada por terceiro (CDC art. 3º + Súmula 479 STJ).</span></div>
+      <div id="fb-bancos-lista">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+          <input type="text" id="fb-banco-0" placeholder="Nome do banco ou instituição financeira" style="flex:1;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px">
+          <input type="text" id="fb-banco-0-cnpj" placeholder="CNPJ (opcional)" style="width:180px;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px" oninput="maskCNPJ(this)">
+        </div>
+      </div>
+      <button onclick="addBancoFB()" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;margin-top:4px"><i class="ti ti-plus"></i> Adicionar outro banco</button>
+    </div></div>
+
+    <!-- SEÇÃO 3: MODALIDADE DA FRAUDE -->
+    <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">3</div><span class="sec-title">Modalidade da Fraude</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+    <div class="sec-body">
+      <div class="alert alert-yellow"><i class="ti ti-info-circle"></i><span><strong>Res. BCB 01/2020, art. 39-B:</strong> O banco TEM O DEVER de bloquear transações com suspeita de fraude, avaliando: notificações de infração, tempo de abertura da conta receptora, horário, perfil do pagador e recorrência. A inação configura fortuito interno (Súmula 479 STJ).</span></div>
+      <div class="field"><label>Selecione a modalidade da fraude <span class="req">*</span></label>
+        <div class="opts" id="og-fb-modalidade" style="flex-direction:column;align-items:flex-start">
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Golpe do PIX — ligacao falsa de funcionario do banco');calcConclusaoFB()"><i class="ti ti-phone" style="font-size:14px"></i> Golpe do PIX (ligação falsa do banco)</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Golpe do WhatsApp — contato via aplicativo com logomarca do banco');calcConclusaoFB()"><i class="ti ti-brand-whatsapp" style="font-size:14px"></i> Golpe do WhatsApp (logomarca do banco)</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Golpe presencial — comparecimento a residencia do consumidor (cesta basica, premio, brinde)');calcConclusaoFB()"><i class="ti ti-home" style="font-size:14px"></i> Golpe presencial (cesta básica / prêmio / brinde)</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Golpe do frete — pagamento de frete para receber premio falso ou produto nao entregue');calcConclusaoFB()"><i class="ti ti-truck" style="font-size:14px"></i> Golpe do frete / prêmio falso</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Golpe do familiar ou amigo — contato fingindo ser familiar em apuros solicitando PIX urgente');calcConclusaoFB()"><i class="ti ti-users" style="font-size:14px"></i> Golpe do familiar / amigo em apuros</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'PIX nao identificado — transferencia realizada sem reconhecimento do consumidor');calcConclusaoFB()"><i class="ti ti-transfer" style="font-size:14px"></i> PIX não reconhecido (sem identificação)</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Golpe do motoboy — entrega de cartao e senha a suposto funcionario do banco');calcConclusaoFB()"><i class="ti ti-motorbike" style="font-size:14px"></i> Golpe do motoboy</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Engenharia social — fraudador com dados sigilosos do consumidor (agencia, conta, tipo de conta)');calcConclusaoFB()"><i class="ti ti-user-shield" style="font-size:14px"></i> Engenharia social (dados sigilosos)</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Clonagem de cartao — compras nao reconhecidas na fatura');calcConclusaoFB()"><i class="ti ti-credit-card-off" style="font-size:14px"></i> Clonagem de cartão</div>
+          <div class="opt" onclick="selOpt('og-fb-modalidade',this,'Fraude por preposto — funcionario da instituicao realizou operacoes sem autorizacao');calcConclusaoFB()"><i class="ti ti-user-x" style="font-size:14px"></i> Fraude por preposto / funcionário</div>
+        </div>
+        <input type="hidden" id="fb-modalidade">
+      </div>
+    </div></div>
+
+    <!-- SEÇÃO 4: CHECKLIST DE INDÍCIOS -->
+    <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Checklist de Indícios</span><span class="sec-badge" style="background:#fef9ec;color:#b45309"><i class="ti ti-gavel" style="font-size:11px"></i>Súm. 479 STJ</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+    <div class="sec-body">
+
+      <!-- BLOCO A: Transações atípicas -->
+      <div style="background:#f0f5ff;border-left:3px solid var(--blue);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">A — Transações Atípicas (Res. BCB 01/2020, art. 39-B)</div>
+        <div class="field"><label style="font-size:12px">A1. As transações ocorreram em horário incomum (noite, madrugada, fora do horário comercial)?</label>
+          <div class="opts" id="og-fb-a1" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-a1',this,'Sim');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-a1',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-a1">
+        </div>
+        <div class="field"><label style="font-size:12px">A2. Foram realizadas múltiplas transações em poucos minutos (padrão de fraude)?</label>
+          <div class="opts" id="og-fb-a2" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-a2',this,'Sim — multiplas transacoes em sequencia rapida');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-a2',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-a2">
+        </div>
+        <div class="field"><label style="font-size:12px">A3. Os valores transferidos fogem ao padrão habitual do consumidor?</label>
+          <div class="opts" id="og-fb-a3" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-a3',this,'Sim — valores muito acima do padrao do consumidor');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-a3',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-a3">
+        </div>
+        <div class="field"><label style="font-size:12px">A4. O banco criou algum alerta, bloqueio ou contatou o consumidor antes de efetivar as transações?</label>
+          <div class="opts" id="og-fb-a4" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-a4',this,'Nao — sem alerta nem bloqueio pelo banco');calcConclusaoFB()">Não alertou</div><div class="opt" onclick="selOpt('og-fb-a4',this,'Sim — banco alertou ou bloqueou');calcConclusaoFB()">Sim, alertou</div></div>
+          <input type="hidden" id="fb-a4">
+        </div>
+      </div>
+
+      <!-- BLOCO B: Dados e segurança -->
+      <div style="background:#fff8f0;border-left:3px solid #e67e22;border-radius:8px;padding:10px 14px;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:#e67e22;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">B — Dados e Falha de Segurança (Res. BCB 4.658/2018 · CDC art. 14)</div>
+        <div class="field"><label style="font-size:12px">B1. O fraudador tinha dados sigilosos do consumidor (número de conta, agência, tipo de conta, saldo)?</label>
+          <div class="opts" id="og-fb-b1" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-b1',this,'Sim — fraudador detinha dados sigilosos bancarios');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-b1',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-b1">
+        </div>
+        <div class="field"><label style="font-size:12px">B2. O consumidor agiu de boa-fé, acreditando seguir instruções legítimas do banco?</label>
+          <div class="opts" id="og-fb-b2" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-b2',this,'Sim — consumidor agiu de boa-fe induzido a erro');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-b2',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-b2">
+        </div>
+        <div class="field"><label style="font-size:12px">B3. O consumidor é idoso (60+) ou hipervulnerável?</label>
+          <div class="opts" id="og-fb-b3" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-b3',this,'Sim — idoso ou hipervulneravel');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-b3',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-b3">
+        </div>
+      </div>
+
+      <!-- BLOCO C: Conduta do banco -->
+      <div style="background:#fff0f0;border-left:3px solid var(--red);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">C — Conduta do Banco (CDC art. 14 · Res. BCB 01/2020, art. 32 e 39-B)</div>
+        <div class="field"><label style="font-size:12px">C1. O banco negou o ressarcimento administrativamente?</label>
+          <div class="opts" id="og-fb-c1" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-c1',this,'Sim — banco negou ressarcimento');calcConclusaoFB()">Sim, negou</div><div class="opt" onclick="selOpt('og-fb-c1',this,'Em andamento');calcConclusaoFB()">Em andamento</div><div class="opt" onclick="selOpt('og-fb-c1',this,'Nao — banco ainda nao foi acionado');calcConclusaoFB()">Ainda não acionado</div></div>
+          <input type="hidden" id="fb-c1">
+        </div>
+        <div class="field"><label style="font-size:12px">C2. Há boletim de ocorrência registrado?</label>
+          <div class="opts" id="og-fb-c2" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-c2',this,'Sim — BO registrado');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-c2',this,'Nao ainda');calcConclusaoFB()">Não ainda</div></div>
+          <input type="hidden" id="fb-c2">
+        </div>
+        <div class="field"><label style="font-size:12px">C3. O dinheiro transferido compromete renda alimentar (salário, aposentadoria, benefício)?</label>
+          <div class="opts" id="og-fb-c3" style="margin-top:4px"><div class="opt" onclick="selOpt('og-fb-c3',this,'Sim — valores de natureza alimentar comprometidos');calcConclusaoFB()">Sim</div><div class="opt" onclick="selOpt('og-fb-c3',this,'Nao');calcConclusaoFB()">Não</div></div>
+          <input type="hidden" id="fb-c3">
+        </div>
+      </div>
+
+      <!-- CONCLUSÃO AUTOMÁTICA -->
+      <div id="fb-conclusao" style="display:none;background:linear-gradient(135deg,#1a0a2e,#2d1b4e);border-radius:12px;padding:14px 16px;margin-top:6px">
+        <div style="font-size:11px;font-weight:700;color:#b39ddb;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px"><i class="ti ti-shield-check" style="font-size:14px"></i>CONCLUSÃO JURÍDICA — Súmula 479 STJ + CDC</div>
+        <div id="fb-conclusao-texto" style="font-size:13px;color:#fff;line-height:1.7"></div>
+        <div id="fb-fundamento" style="font-size:11px;color:#b39ddb;margin-top:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px"></div>
+      </div>
+    </div></div>
+
+    <!-- SEÇÃO 5: DOCUMENTOS -->
+    <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Documentos</span><span class="sec-badge"><i class="ti ti-sparkles" style="font-size:12px"></i>IA lê automaticamente</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+    <div class="sec-body">
+      <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Anexe documentos para leitura automática pela IA. O texto extraído preenche os campos automaticamente.</span></div>
+
+      <div style="background:#f7f8fa;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px"><i class="ti ti-file-alert"></i> Boletim de Ocorrência</div>
+        <div class="field" style="margin-bottom:6px"><label style="font-size:11px">Anexar BO (PDF, imagem)</label>
+          <div class="upload-zone" id="uz-fb-bo" style="padding:.75rem">
+            <input type="file" id="fi-fb-bo" accept=".pdf,.jpg,.jpeg,.png" onchange="doFilesDocFB(this.files,'fb-bo','fb-bo-texto')">
+            <div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div>
+            <div class="uz-title" style="font-size:12px">Clique ou arraste o BO</div>
+            <div class="uz-sub">PDF ou imagem · IA extrai automaticamente</div>
+          </div>
+          <div class="file-list" id="fl-fb-bo"></div>
+        </div>
+        <div class="field"><label style="font-size:11px">Texto / dados do boletim de ocorrência</label>
+          <textarea id="fb-bo-texto" rows="4" placeholder="Número do BO, data, delegacia, fatos narrados..."></textarea>
+        </div>
+      </div>
+
+      <div style="background:#f7f8fa;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:8px"><i class="ti ti-file-spreadsheet"></i> Extrato / Comprovante da Transação</div>
+        <div class="field" style="margin-bottom:6px"><label style="font-size:11px">Anexar extrato ou comprovante (PDF, imagem)</label>
+          <div class="upload-zone" id="uz-fb-extrato" style="padding:.75rem">
+            <input type="file" id="fi-fb-extrato" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="doFilesDocFB(this.files,'fb-extrato','fb-extrato-texto')">
+            <div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div>
+            <div class="uz-title" style="font-size:12px">Clique ou arraste</div>
+            <div class="uz-sub">PDF ou imagem · até 10 MB</div>
+          </div>
+          <div class="file-list" id="fl-fb-extrato"></div>
+        </div>
+        <div class="field"><label style="font-size:11px">Dados extraídos / valores e datas das transações</label>
+          <textarea id="fb-extrato-texto" rows="3" placeholder="Ex: 3 PIX de R$ 4.900, R$ 4.950 e R$ 4.999 em 01/12/2022 entre 19h08 e 19h14..."></textarea>
+        </div>
+      </div>
+
+      <div style="background:#f7f8fa;border:1px solid var(--border);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:600;color:#666;margin-bottom:8px"><i class="ti ti-files"></i> Outros Documentos</div>
+        <div class="upload-zone" id="uz-fb-outros" style="padding:.75rem">
+          <input type="file" id="fi-fb-outros" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFilesDocFB(this.files,'fb-outros','fb-outros-texto')">
+          <div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div>
+          <div class="uz-title" style="font-size:12px">Prints de conversas, protocolos, outros</div>
+          <div class="uz-sub">PDF, DOCX, JPG, PNG</div>
+        </div>
+        <div class="file-list" id="fl-fb-outros"></div>
+        <div class="field" style="margin-top:8px"><label style="font-size:11px">Texto extraído / observações</label>
+          <textarea id="fb-outros-texto" rows="2" placeholder="Protocolo de atendimento, prints de conversas, etc..."></textarea>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- SEÇÃO 6: DESCRIÇÃO E PEDIDOS -->
+    <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">6</div><span class="sec-title">Descrição e Pedidos</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+    <div class="sec-body">
+      <div class="field"><label>Descrição dos fatos narrados pelo consumidor <span class="req">*</span></label>
+        <div class="ia-wrap">
+          <textarea id="fb-desc" rows="6" placeholder="Descreva como ocorreu a fraude: data, horário, como o consumidor foi abordado, valores transferidos, dados que o fraudador conhecia, tentativas de solução junto ao banco..."></textarea>
+          <button class="ia-btn" onclick="iaGenerico('fb')" id="ib-fb"><i class="ti ti-sparkles"></i>Sugerir com IA</button>
+        </div>
+        <div class="ia-result" id="ir-fb"><div class="ia-result-label"><i class="ti ti-sparkles"></i>Sugestão</div><div class="ia-result-text" id="irt-fb"></div>
+          <div class="ia-result-actions"><button class="use" onclick="usarIA('irt-fb','fb-desc','ir-fb')">Usar</button><button onclick="iaGenerico('fb')">Gerar outro</button><button onclick="fecharIA('ir-fb')">Descartar</button></div>
+        </div>
+      </div>
+      <div class="field"><label>Valor total envolvido</label>
+        <input type="text" id="fb-valor" placeholder="R$ 0,00">
+      </div>
+      <div class="field"><label>Pedidos do consumidor</label>
+        <div class="opts" id="og-fb-pedidos" style="flex-wrap:wrap">
+          <div class="opt multi" onclick="toggleMulti(this,'fb','restituicao integral dos valores transferidos indevidamente')"><i class="ti ti-coins" style="font-size:14px"></i> Restituição dos valores</div>
+          <div class="opt multi" onclick="toggleMulti(this,'fb','declaracao de inexigibilidade dos debitos decorrentes da fraude')"><i class="ti ti-x" style="font-size:14px"></i> Inexigibilidade dos débitos</div>
+          <div class="opt multi" onclick="toggleMulti(this,'fb','suspensao imediata das cobranças e estorno das transacoes fraudulentas')"><i class="ti ti-ban" style="font-size:14px"></i> Suspensão de cobranças</div>
+          <div class="opt multi" onclick="toggleMulti(this,'fb','cancelamento de contratos de emprestimo contratados fraudulentamente')"><i class="ti ti-file-off" style="font-size:14px"></i> Cancelamento de contratos</div>
+          <div class="opt multi" onclick="toggleMulti(this,'fb','exclusao imediata de negativacao indevida nos orgaos de protecao ao credito')"><i class="ti ti-database-off" style="font-size:14px"></i> Retirada de negativação</div>
+          <div class="opt multi" onclick="toggleMulti(this,'fb','orientar consumidor sobre dano moral via Defensoria Publica ou advogado (nao cabe em sede administrativa)')"><i class="ti ti-info-circle" style="font-size:14px;color:#e67e22"></i> Orientar sobre dano moral (via Judiciário)</div>
+        </div>
+        <input type="hidden" id="fb-pedidos-sel">
+      </div>
+      <div class="field"><label>Observações adicionais</label>
+        <div class="ia-wrap">
+          <textarea id="fb-obs" rows="2"></textarea>
+          <button class="ia-btn" onclick="iaObsGenerico('fb')" id="ib-obs-fb"><i class="ti ti-sparkles"></i>Sugerir com IA</button>
+        </div>
+        <div class="ia-result" id="ir-obs-fb"><div class="ia-result-label"><i class="ti ti-sparkles"></i>Sugestão</div><div class="ia-result-text" id="irt-obs-fb"></div>
+          <div class="ia-result-actions"><button class="use" onclick="usarIA('irt-obs-fb','fb-obs','ir-obs-fb')">Usar</button><button onclick="iaObsGenerico('fb')">Gerar outro</button><button onclick="fecharIA('ir-obs-fb')">Descartar</button></div>
+        </div>
+      </div>
+    </div></div>
+
+    <button class="gen-btn gen-btn-accent" onclick="gerarFraude()" id="btn-gerar-fb" style="background:linear-gradient(135deg,#7b1fa2,#c62828)"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Fraude Bancária</button>
+    <div class="result-box" id="result-fb"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Reclamação Formal — PROCON/VG</h2><p>CDC · Súmula 479 STJ · Res. BCB 01/2020</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-fb"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando...</div>
+        <div class="result-text" id="rt-fb"></div><div class="art-tags" id="at-fb"></div>
+        <div class="result-actions" id="ra-fb"><button class="primary" onclick="copiarGenerico('fb')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('fb')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWordFraude()"><i class="ti ti-file-word"></i>Word com Timbrado</button><button onclick="limparGenerico('fb')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+      </div>
+    </div>
+  </div>
+
   </main>
 </div>
 
 <script>
 // Mapa de titulos e artigos por prefixo
 const FORM_INFO = {
+  fb: { titulo: 'Fraude Bancaria', artigo: 'CDC Art. 14 + Sumula 479 STJ' },
   vs: { titulo: 'Vicio no Servico', artigo: 'Art. 20 CDC' },
   ne: { titulo: 'Produto nao entregue', artigo: 'Art. 35 CDC' },
   cb: { titulo: 'Cobranca Indevida', artigo: 'Art. 42 CDC' },
@@ -4246,6 +4472,227 @@ function getEmpresasAD() {
   const empLegado = document.getElementById('ad-emp');
   if (empLegado) empLegado.value = result.map(e => e.nome).join('; ');
   return result;
+}
+
+// ---- FRAUDE BANCÁRIA ----
+let fbBancos = 1;
+const arqsFB = {};
+
+function addBancoFB() {
+  const n = fbBancos++;
+  const lista = document.getElementById('fb-bancos-lista');
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:6px';
+  div.innerHTML = '<input type="text" id="fb-banco-' + n + '" placeholder="Banco ' + (n+1) + '" style="flex:1;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px">'
+    + '<input type="text" id="fb-banco-' + n + '-cnpj" placeholder="CNPJ (opcional)" style="width:180px;font-size:13px;padding:8px 11px;border:1px solid var(--border);border-radius:8px" oninput="maskCNPJ(this)">'
+    + '<button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:0"><i class="ti ti-x"></i></button>';
+  lista.appendChild(div);
+}
+
+function getBancosFB() {
+  const bancos = [];
+  document.querySelectorAll('#fb-bancos-lista input[type="text"]').forEach(inp => {
+    if (inp.id.endsWith('-cnpj')) return;
+    const v = inp.value.trim();
+    if (v) bancos.push(v);
+  });
+  return bancos;
+}
+
+function doFilesDocFB(files, tid, campoId) {
+  if (!arqsFB[tid]) arqsFB[tid] = [];
+  const listEl = document.getElementById('fl-' + tid);
+  const uzEl = document.getElementById('uz-' + tid);
+  if (uzEl) {
+    uzEl.onclick = null;
+    uzEl.style.cursor = 'default';
+  }
+  Array.from(files).forEach(f => {
+    if (f.size > 10*1024*1024) { alert('Arquivo muito grande: ' + f.name); return; }
+    const idx = arqsFB[tid].length;
+    arqsFB[tid].push(f);
+    const ic = f.name.match(/\.(jpg|jpeg|png)$/i) ? 'ti-photo' : 'ti-file-type-pdf';
+    const kb = Math.round(f.size/1024) + ' KB';
+    const el = document.createElement('div'); el.className = 'file-item';
+    el.innerHTML = '<i class="ti ' + ic + '" style="font-size:16px;color:var(--blue)"></i><span class="fn">' + f.name + '</span><span class="fsz">' + kb + '</span><span class="fst" id="fst-' + tid + '-' + idx + '"></span>';
+    const btn = document.createElement('button'); btn.className = 'frm';
+    btn.innerHTML = '<i class="ti ti-x"></i>';
+    btn.onclick = (function(t,i){return function(){arqsFB[t].splice(i,1);el.remove();};}(tid,idx));
+    el.appendChild(btn);
+    if (listEl) listEl.appendChild(el);
+    lerDocumentoParaCampo(f, campoId, 'fst-' + tid + '-' + idx);
+  });
+}
+
+function calcConclusaoFB() {
+  const modal = document.getElementById('fb-modalidade')?.value || '';
+  const a1 = document.getElementById('fb-a1')?.value || '';
+  const a2 = document.getElementById('fb-a2')?.value || '';
+  const a3 = document.getElementById('fb-a3')?.value || '';
+  const a4 = document.getElementById('fb-a4')?.value || '';
+  const b1 = document.getElementById('fb-b1')?.value || '';
+  const b2 = document.getElementById('fb-b2')?.value || '';
+  const b3 = document.getElementById('fb-b3')?.value || '';
+  const c1 = document.getElementById('fb-c1')?.value || '';
+  const c2 = document.getElementById('fb-c2')?.value || '';
+  const c3 = document.getElementById('fb-c3')?.value || '';
+
+  if (!modal && !a1 && !b1) {
+    document.getElementById('fb-conclusao').style.display = 'none';
+    return;
+  }
+
+  let pontos = 0;
+  let fortuito = '';
+  let indícios = [];
+
+  if (a1.includes('Sim')) { pontos++; indícios.push('transacoes em horario incomum'); }
+  if (a2.includes('Sim')) { pontos += 2; indícios.push('multiplas transacoes em poucos minutos'); }
+  if (a3.includes('Sim')) { pontos++; indícios.push('valores acima do padrao do consumidor'); }
+  if (a4.includes('sem alerta')) { pontos++; indícios.push('banco nao alertou nem bloqueou'); }
+  if (b1.includes('Sim')) { pontos += 2; indícios.push('fraudador detinha dados sigilosos bancarios'); }
+  if (b2.includes('Sim')) { pontos++; indícios.push('consumidor agiu de boa-fe'); }
+
+  const temBO = c2.includes('Sim');
+  const idoso = b3.includes('idoso');
+  const alimentar = c3.includes('alimentar');
+
+  fortuito = pontos >= 3 ? 'FORTUITO INTERNO' : pontos >= 1 ? 'POSSIVELMENTE FORTUITO INTERNO' : 'VERIFICAR';
+
+  const conclusoes = [];
+  const fundamentos = [];
+
+  // Conclusão principal
+  if (pontos >= 2) {
+    conclusoes.push('FORTUITO INTERNO CONFIGURADO: a fraude se insere no conceito de fortuito interno, pois decorre de falha no dever de segurança da instituicao financeira. Nos termos da Sumula 479 do STJ, as instituicoes financeiras respondem OBJETIVAMENTE pelos danos gerados por fraudes praticadas por terceiros no ambito de operacoes bancarias. A inacao do banco diante de transacoes atipicas constitui defeito na prestacao do servico (CDC, art. 14).');
+    fundamentos.push('Sumula 479 STJ · CDC art. 14 · Res. BCB 01/2020, art. 32 e 39-B · Res. BCB 4.658/2018');
+  }
+
+  // Indícios específicos
+  if (indícios.length > 0) {
+    conclusoes.push('INDICIOS DE ATIPICIDADE: ' + indícios.join('; ') + '. Conforme o STJ (REsp 1.995.458/SP e REsp 2.052.228/DF), tais circunstancias criam NEXO CAUSAL entre a inacao do banco e o dano, pois a instituicao detinha meios para identificar e bloquear as transacoes suspeitas (Res. BCB 01/2020, art. 39-B, I a V).');
+    fundamentos.push('STJ REsp 1.995.458/SP · STJ REsp 2.052.228/DF · TJMT 1012630-82.2023.8.11.0002');
+  }
+
+  // Restituição
+  conclusoes.push('RESTITUICAO DEVIDA: comprovada a falha na prestacao do servico, e cabivel a restituicao integral dos valores transferidos indevidamente, pois a responsabilidade objetiva do banco nao pode ser repassada ao consumidor. A culpa exclusiva de terceiro NAO e reconhecida como excludente quando o banco falhou no dever de segurança (CDC, art. 14, par. 3).');
+  fundamentos.push('CDC art. 14 · CDC art. 6, VI · TJGO Reclamacao 5276651-19.2023.8.09.0051');
+
+  if (!temBO) {
+    conclusoes.push('ORIENTACAO: recomendar ao consumidor o registro de Boletim de Ocorrencia, fundamental para instruir eventual acao judicial e demonstrar a fraude perante o banco.');
+  }
+
+  // Dano moral — apenas orientação
+  if (idoso || alimentar) {
+    conclusoes.push('DANO MORAL — ORIENTACAO: o PROCON nao tem competencia para condenar em dano moral. Contudo, os fatos apurados indicam circunstancias agravantes (idoso/verba alimentar) que configuram dano moral in re ipsa conforme STJ (REsp 2.170.910/RJ). Orientar o consumidor a buscar a Defensoria Publica ou advogado para acao indenizatoria judicial.');
+    fundamentos.push('STJ REsp 2.170.910/RJ · TJMT 1012630-82.2023.8.11.0002 — acao judicial');
+  }
+
+  const box = document.getElementById('fb-conclusao');
+  const txtEl = document.getElementById('fb-conclusao-texto');
+  const fundEl = document.getElementById('fb-fundamento');
+
+  if (box && txtEl) {
+    txtEl.innerHTML = conclusoes.map((c,i) => '<div style="margin-bottom:8px"><span style="background:rgba(255,255,255,.15);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;margin-right:6px">' + (i+1) + '</span>' + c + '</div>').join('');
+    if (fundEl) fundEl.textContent = 'Fundamentos: ' + [...new Set(fundamentos)].join(' | ');
+    box.style.display = 'block';
+  }
+}
+
+async function gerarFraude() {
+  const btn = document.getElementById('btn-gerar-fb');
+  const box = document.getElementById('result-fb');
+  const load = document.getElementById('rl-fb');
+  const txt = document.getElementById('rt-fb');
+  const ra = document.getElementById('ra-fb');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.style.display = 'block'; txt.textContent = ''; ra.style.display = 'none';
+
+  const bancos = getBancosFB();
+  const modal = document.getElementById('fb-modalidade')?.value || 'nao informada';
+  const pedidos = [...(pretMulti['fb'] || []), document.getElementById('fb-pedidos-sel')?.value || ''].filter(Boolean);
+
+  const prompt = 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore RECLAMACAO ADMINISTRATIVA FORMAL sobre fraude bancaria, em texto corrido e fluido, sem titulos numerados, sem asteriscos, sem marcadores.'
+    + ' PROCESSO: ' + gv('fb-proc') + ' | CONSUMIDOR: ' + gv('fb-cons') + ' | CPF: ' + gv('fb-cpf')
+    + ' | BANCOS ENVOLVIDOS: ' + (bancos.join(', ') || 'nao informado')
+    + ' | MODALIDADE DA FRAUDE: ' + modal
+    + ' | VALOR: ' + (gv('fb-valor') || 'nao informado')
+    + ' | BOLETIM DE OCORRENCIA: ' + (gv('fb-bo-texto') || 'nao anexado')
+    + ' | EXTRATO/TRANSACOES: ' + (gv('fb-extrato-texto') || 'nao informado')
+    + ' | FATOS NARRADOS: ' + gv('fb-desc').substring(0,1500)
+    + ' | OUTROS DOCS: ' + (gv('fb-outros-texto') || 'nenhum')
+    + ' | PEDIDOS: ' + (pedidos.join('; ') || 'ressarcimento dos valores')
+    + ' | OBSERVACOES: ' + (gv('fb-obs') || 'nenhuma')
+    + ' | A reclamacao deve mencionar: (1) os fatos narrados pelo consumidor; (2) a modalidade da fraude e como ocorreu; (3) a obrigacao do banco de identificar transacoes atipicas nos termos do art. 39-B da Res. BCB 01/2020 e da Res. BCB 4.658/2018; (4) a responsabilidade objetiva do banco com base na Sumula 479 do STJ e no art. 14 do CDC; (5) os pedidos de providencias administrativas. NAO mencionar dano moral. Linguagem administrativa formal, texto corrido, maximo 400 palavras.';
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1200, messages:[{role:'user', content:prompt}]})
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const texto = limparTexto(d.content && d.content[0] ? d.content[0].text.trim() : 'Erro ao gerar.');
+    txt.textContent = texto;
+    load.style.display = 'none';
+    ra.style.display = 'flex';
+  } catch(e) {
+    txt.textContent = 'Erro: ' + e.message;
+    load.style.display = 'none';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamacao Formal — Fraude Bancaria';
+}
+
+async function baixarWordFraude() {
+  const txt = document.getElementById('rt-fb')?.textContent || '';
+  if (!txt || txt.includes('Gerando') || !txt.trim()) { alert('Gere a reclamacao primeiro.'); return; }
+
+  const bancos = getBancosFB().join(', ') || 'nao informado';
+  const cons = gv('fb-cons') || '';
+  const cpf = gv('fb-cpf') || '';
+  const proc = gv('fb-proc') || '';
+  const modal = document.getElementById('fb-modalidade')?.value || '';
+  const valor = gv('fb-valor') || '';
+  const bo = gv('fb-bo-texto') || 'nao registrado';
+  const pedidos = (pretMulti['fb'] || []).join('; ') || 'ressarcimento dos valores';
+
+  const paragrafos = txt.split('\n\n').filter(function(p){return p.trim();});
+  const estiloPar = 'text-align:justify;text-indent:1.25cm;font-family:Times New Roman,serif;font-size:12pt;line-height:1.5;margin:0 0 6pt 0';
+  const corpo = paragrafos.map(function(p){return '<p style="'+estiloPar+'">' + p.replace(/\n/g,'<br>') + '</p>';}).join('');;
+
+  const html = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>@page{margin:3cm 2cm 2cm 3cm}body{font-family:Times New Roman,serif;font-size:12pt}.cab{border-bottom:2pt solid #8B0000;margin-bottom:14pt;padding-bottom:8pt}.cab-linha1{font-size:9pt;color:#555;text-align:center}.cab-titulo{font-size:13pt;font-weight:bold;text-align:center;color:#1a1a2e;margin:6pt 0 2pt}.cab-sub{font-size:9pt;text-align:center;color:#555}.info-box{background:#f5f5f5;border:1pt solid #ddd;padding:6pt 10pt;margin-bottom:10pt;font-size:10pt}.info-row{margin:2pt 0}.info-label{font-weight:bold}.secao{font-size:11pt;font-weight:bold;text-transform:uppercase;margin:12pt 0 4pt;border-bottom:0.5pt solid #999}.rodape{border-top:1pt solid #8B0000;margin-top:20pt;padding-top:6pt;font-size:8pt;color:#666;text-align:center}</style></head><body>'
+    + '<div class="cab"><div class="cab-linha1">ESTADO DE MATO GROSSO - PREFEITURA MUNICIPAL DE VARZEA GRANDE</div>'
+    + '<div class="cab-titulo">COORDENADORIA DE DEFESA DO CONSUMIDOR - PROCON/VG</div>'
+    + '<div class="cab-sub">Av. Castelo Branco, 2500 · Centro Sul · Varzea Grande/MT · (65) 3688-8056 · proconvg.mt@gmail.com</div></div>'
+    + '<div class="info-box">'
+    + '<div class="info-row"><span class="info-label">Processo:</span> ' + proc + ' &nbsp;&nbsp; <span class="info-label">Modalidade:</span> Fraude Bancaria</div>'
+    + '<div class="info-row"><span class="info-label">Consumidor:</span> ' + cons + ' &nbsp;&nbsp; <span class="info-label">CPF:</span> ' + cpf + '</div>'
+    + '<div class="info-row"><span class="info-label">Banco(s) reclamado(s):</span> ' + bancos + '</div>'
+    + '<div class="info-row"><span class="info-label">Modalidade da fraude:</span> ' + modal + '</div>'
+    + '<div class="info-row"><span class="info-label">Valor envolvido:</span> ' + valor + ' &nbsp;&nbsp; <span class="info-label">Boletim de Ocorrencia:</span> ' + bo + '</div>'
+    + '</div>'
+    + '<div class="secao">Reclamacao Administrativa Formal</div>'
+    + corpo
+    + '<div class="info-box" style="margin-top:14pt">'
+    + '<div class="info-row"><span class="info-label">Fundamentos juridicos:</span></div>'
+    + '<div class="info-row">CDC, art. 14 (responsabilidade objetiva) · Sumula 479/STJ (fortuito interno) · Res. BCB 01/2020, arts. 32 e 39-B · Res. BCB 4.658/2018</div>'
+    + '<div class="info-row" style="margin-top:4pt"><span class="info-label">Pedidos:</span> ' + pedidos + '</div>'
+    + '</div>'
+    + '<div style="margin-top:30pt;font-size:10pt">'
+    + '<p>Varzea Grande-MT, _______ de _____________ de 20____.</p>'
+    + '<p style="margin-top:30pt">__________________________________________</p>'
+    + '<p>Atendente Tecnico(a) - PROCON/VG</p>'
+    + '<p>[CARIMBO DO PROCON/VG]</p>'
+    + '</div>'
+    + '<div class="rodape">Av. Castelo Branco, 2500 · Centro Sul · Varzea Grande-MT · Tel.: (65) 3688-8056 · proconvg.mt@gmail.com</div>'
+    + '</body></html>';
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 // ---- CHECKLIST JURÍDICO RMC/RDC ----

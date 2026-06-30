@@ -3210,12 +3210,12 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
         <div id="ad-abusividade-bloco" style="display:none;margin-top:10px">
           <div class="field"><label>Natureza da abusividade identificada</label>
             <div class="opts" id="og-ad-abusivo-tipo" style="flex-direction:column;align-items:flex-start;margin-top:4px">
-              <div class="opt" onclick="toggleMulti(this,'ad-abusivo-tipo','juros e encargos manifestamente excessivos')">Juros/encargos manifestamente excessivos</div>
-              <div class="opt" onclick="toggleMulti(this,'ad-abusivo-tipo','clausula que estabelece vantagem manifestamente desproporcional ao consumidor (CDC art. 51, IV)')">Vantagem manifestamente desproporcional</div>
-              <div class="opt" onclick="toggleMulti(this,'ad-abusivo-tipo','ausencia de informacao clara e adequada sobre encargos e condicoes (CDC art. 6, III)')">Falta de informação clara sobre condições</div>
-              <div class="opt" onclick="toggleMulti(this,'ad-abusivo-tipo','clausula que restringe direitos ou obrigacoes fundamentais inerentes a natureza do contrato (CDC art. 51, par. 1, II)')">Restrição de direito fundamental do contrato</div>
-              <div class="opt" onclick="toggleMulti(this,'ad-abusivo-tipo','cobranca de tarifa ou produto nao solicitado pelo consumidor (CDC art. 39, III)')">Cobrança de produto/tarifa não solicitada</div>
-              <div class="opt" onclick="toggleMulti(this,'ad-abusivo-tipo','clausula de eleicao de foro ou renuncia a direito que dificulte a defesa do consumidor')">Cláusula que dificulta a defesa do consumidor</div>
+              <div class="opt" onclick="toggleMultiHidden(this,'ad-abusivo-tipo','juros e encargos manifestamente excessivos')">Juros/encargos manifestamente excessivos</div>
+              <div class="opt" onclick="toggleMultiHidden(this,'ad-abusivo-tipo','clausula que estabelece vantagem manifestamente desproporcional ao consumidor (CDC art. 51, IV)')">Vantagem manifestamente desproporcional</div>
+              <div class="opt" onclick="toggleMultiHidden(this,'ad-abusivo-tipo','ausencia de informacao clara e adequada sobre encargos e condicoes (CDC art. 6, III)')">Falta de informação clara sobre condições</div>
+              <div class="opt" onclick="toggleMultiHidden(this,'ad-abusivo-tipo','clausula que restringe direitos ou obrigacoes fundamentais inerentes a natureza do contrato (CDC art. 51, par. 1, II)')">Restrição de direito fundamental do contrato</div>
+              <div class="opt" onclick="toggleMultiHidden(this,'ad-abusivo-tipo','cobranca de tarifa ou produto nao solicitado pelo consumidor (CDC art. 39, III)')">Cobrança de produto/tarifa não solicitada</div>
+              <div class="opt" onclick="toggleMultiHidden(this,'ad-abusivo-tipo','clausula de eleicao de foro ou renuncia a direito que dificulte a defesa do consumidor')">Cláusula que dificulta a defesa do consumidor</div>
             </div>
             <input type="hidden" id="ad-abusivo-tipo">
           </div>
@@ -4714,6 +4714,21 @@ function toggleMulti(btn, pref, texto) {
   if (btn.classList.contains('on')) { btn.classList.remove('on'); pretMulti[pref] = pretMulti[pref].filter(p => p !== texto); }
   else { btn.classList.add('on'); if (!pretMulti[pref].includes(texto)) pretMulti[pref].push(texto); }
 }
+// Variante que preenche um <input type="hidden"> ao inves de pretMulti — usar quando a leitura
+// posterior for via document.getElementById(id).value (ex: ad-abusivo-tipo)
+const multiHiddenState = {};
+function toggleMultiHidden(btn, hiddenId, texto) {
+  if (!multiHiddenState[hiddenId]) multiHiddenState[hiddenId] = [];
+  if (btn.classList.contains('on')) {
+    btn.classList.remove('on');
+    multiHiddenState[hiddenId] = multiHiddenState[hiddenId].filter(function(t){ return t !== texto; });
+  } else {
+    btn.classList.add('on');
+    if (!multiHiddenState[hiddenId].includes(texto)) multiHiddenState[hiddenId].push(texto);
+  }
+  const hidden = document.getElementById(hiddenId);
+  if (hidden) hidden.value = multiHiddenState[hiddenId].join('; ');
+}
 function prog(pref) {
   const base = [`${pref}-data`,`${pref}-atend`,`${pref}-cn`,`${pref}-cpf`,`${pref}-fn`];
   const extra = {vs:'vs-serv',ne:'ne-prod',cb:'cb-valor',ga:'ga-prod',cd:'cd-valor',sa:'sa-nat'};
@@ -4818,6 +4833,7 @@ function selOpt(groupId, btn, valor) {
   const hidden = document.querySelector('#' + groupId + ' ~ input[type="hidden"]');
   if (hidden) hidden.value = valor;
   progVP();
+  if (groupId === 'og-av-motivo' && window.__onMotivoAVHandler) window.__onMotivoAVHandler(valor);
 }
 
 // Selecionar multiplos (pretensao)
@@ -6216,12 +6232,9 @@ function onMotivoAV(val) {
   if (atraso) atraso.style.display = val.includes('atraso') ? 'block' : 'none';
 }
 
-// Interceptar selOpt para aviacao
-const _origSelOpt = typeof selOpt === 'function' ? selOpt : null;
-function selOpt(groupId, el, val) {
-  if (_origSelOpt) _origSelOpt(groupId, el, val);
-  if (groupId === 'og-av-motivo') onMotivoAV(val);
-}
+// onMotivoAV() e chamado de dentro da selOpt unica (definida uma unica vez, perto do topo do script)
+// quando o grupo selecionado for 'og-av-motivo'. Registrar aqui para uso posterior.
+window.__onMotivoAVHandler = onMotivoAV;
 
 async function gerarAviacao() {
   const btn = document.getElementById('btn-gerar-av');

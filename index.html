@@ -3239,6 +3239,10 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
           </div>
           <div class="file-list" id="fl-ad-min"></div>
         </div>
+        <div class="field" style="margin-bottom:10px;display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="ad-ignorar-analise-previa" style="width:16px;height:16px;cursor:pointer">
+          <label for="ad-ignorar-analise-previa" style="font-size:12px;color:var(--text2);cursor:pointer;margin:0">Ignorar análise comparativa salva acima e fazer a IA reanalisar do zero (use se a análise estiver curta ou desatualizada)</label>
+        </div>
         <button class="gen-btn gen-btn-accent" onclick="gerarMinuta()" id="btn-minuta"><i class="ti ti-file-text" style="font-size:18px"></i>Gerar minuta com IA</button>
         <div class="result-box" id="result-ad" style="margin-top:12px">
           <div class="result-head"><h2><i class="ti ti-file-text"></i>Minuta — PROCON/VG</h2><p>Texto em prosa corrida · Formatação ABNT · Pronto para revisão</p></div>
@@ -5363,14 +5367,19 @@ async function analisarDefesa() {
     return;
   }
 
-  const recTrunc = reclamacao.substring(0, 2000);
-  const defTrunc = defesa.substring(0, 2000);
+  const recTrunc = reclamacao.substring(0, 3000);
+  const defTrunc = defesa.substring(0, 3000);
   const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp');
 
-  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Com base na reclamacao e nas defesas abaixo, escreva um texto corrido e fluido de 3 a 5 frases analisando cada empresa reclamada: resuma o que cada empresa alegou, diga se cada defesa e satisfatoria ou nao com fundamento no CDC, e indique a providencia recomendada para cada uma. Sem titulos, sem numeracao, sem topicos, sem asteriscos. PROCESSO: ' + gv('ad-proc') + ' CONSUMIDOR: ' + gv('ad-cons') + ' EMPRESAS: ' + nomeEmpresas + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada') + ' --- DEFESAS: ' + (defTrunc || 'nao informada');
+  const prompt = 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Escreva uma analise tecnica e fundamentada da defesa apresentada, em texto corrido e fluido (sem titulos, sem numeracao, sem topicos, sem asteriscos), mas TRAZENDO OS DADOS CONCRETOS DO CASO — nao seja generico.'
+    + ' A analise deve: (1) identificar o processo e as partes pelo nome/numero reais informados; (2) resumir o nucleo da reclamacao citando datas, numeros de UC/contrato/protocolo e valores quando informados; (3) resumir o nucleo da defesa apresentada pela empresa, citando especificamente o que ela alegou ou deixou de comprovar; (4) avaliar se a defesa e satisfatoria, indicando precisamente qual prova ou justificativa esta faltando (ex: historico de leituras, memoria de calculo, comprovante, nota fiscal) e com qual fundamento do CDC isso se relaciona (ex: art. 6, VIII — onus da prova; art. 14 — responsabilidade objetiva; art. 31 — informacao adequada); (5) indicar a providencia recomendada de forma especifica (ex: notificar a empresa para apresentar X documento em 10 dias consecutivos, ou arquivar, ou agendar audiencia).'
+    + ' Escreva entre 2 e 4 paragrafos curtos, completos e especificos ao caso — nem telegrafico nem prolixo. Traga os dados reais (numeros, datas, nomes) sempre que estiverem disponiveis nos textos abaixo; nao invente dados que nao foram informados.'
+    + ' PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
+    + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada')
+    + ' --- DEFESAS: ' + (defTrunc || 'nao informada');
 
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1600,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel analisar.');
@@ -5401,11 +5410,11 @@ async function gerarMinuta() {
 
   let defesasTexto = '';
   if (empresas.length > 1) {
-    defesasTexto = empresas.map(function(e){return 'DEFESA DE ' + e.nome.toUpperCase() + ' (' + (e.datadef||'data nao informada') + '): ' + (e.defesa.substring(0,800)||'sem defesa');}).join(' ||| ');
+    defesasTexto = empresas.map(function(e){return 'DEFESA DE ' + e.nome.toUpperCase() + ' (' + (e.datadef||'data nao informada') + '): ' + (e.defesa.substring(0,1500)||'sem defesa');}).join(' ||| ');
   } else {
     const defPrincipal = empresas[0]?.defesa || gv('ad-defesa');
     const dataPrincipal = empresas[0]?.datadef || gv('ad-datadef') || 'data nao informada';
-    defesasTexto = 'DEFESA (' + dataPrincipal + '): ' + defPrincipal.substring(0,800);
+    defesasTexto = 'DEFESA (' + dataPrincipal + '): ' + defPrincipal.substring(0,1500);
   }
 
   const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
@@ -5420,7 +5429,8 @@ async function gerarMinuta() {
       + '. As partes deverao comparecer devidamente representadas.'
     : '';
 
-  const analise = gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || 'analise nao realizada';
+  const ignorarAnalisePrevia = document.getElementById('ad-ignorar-analise-previa')?.checked;
+  const analise = ignorarAnalisePrevia ? '' : (gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || '');
 
   // Coletar interacoes de telefone registradas nos formularios
   const interacoesTel = [];
@@ -5433,28 +5443,47 @@ async function gerarMinuta() {
   });
   const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : (gv('ad-obs') || 'nenhuma interacao registrada');
 
-  const recTruncMin = gv('ad-pedidos').substring(0,400);
-  const analiseTrunc = analise.substring(0,400);
+  const recTruncMin = gv('ad-pedidos').substring(0,1500);
+  const analiseTrunc = analise ? analise.substring(0,1500) : '';
+  const linhaAnalisePrevia = analiseTrunc
+    ? 'RASCUNHO INFORMAL FEITO ANTES PELO ATENDENTE, APENAS PARA SUA REFERENCIA (pode ser curto ou incompleto — IGNORE a extensao dele; voce DEVE produzir uma analise muito mais completa e profunda que este rascunho, usando-o so como pista do que ja foi percebido, nunca como modelo de tamanho ou limite de profundidade): ' + analiseTrunc + '\n'
+    : '';
 
-  const prompt = 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore MINUTA DE DESPACHO ADMINISTRATIVO curta e objetiva, em texto corrido, sem titulos, sem numeracao, sem asteriscos. '
+  const prompt = 'TAREFA: Redigir uma minuta de despacho administrativo do PROCON de Varzea Grande-MT com EXATAMENTE 4 partes, nesta ordem. Copie o formato abaixo literalmente, substituindo apenas o conteudo.\n\n'
+    + 'PARTE 1 = um paragrafo curto (3-5 linhas) contando o relatorio da reclamacao inicial: quem reclama, contra quem, e qual e o problema, com datas e numeros especificos.\n\n'
+    + 'PARTE 2 = um paragrafo curto (3-5 linhas), SEPARADO da parte 1, contando apenas o que a empresa disse na defesa dela.\n\n'
+    + 'PARTE 3 = a parte MAIS LONGA. No MINIMO 2 paragrafos. Aqui voce analisa a fundo: compara o que o consumidor disse com o que a empresa respondeu, fala especificamente o que a empresa NAO PROVOU (documentos faltando, justificativa tecnica ausente, etc), e cita os artigos do CDC aplicaveis (art. 6 III, art. 6 VIII, art. 14, art. 18, art. 20, art. 31 — conforme o caso) explicando o porque de cada um se aplicar. Esta parte sozinha deve ser maior que as partes 1 e 2 somadas.\n\n'
+    + 'PARTE 4 = OBRIGATORIAMENTE em formato de lista com alineas. Comece com a frase fixa "Diante do exposto, fica a empresa notificada para cumprir as seguintes obrigacoes:" e depois liste de 2 a 5 itens, CADA UM em sua propria linha, EXATAMENTE assim:\n'
+    + 'a) [primeira obrigacao especifica]\n'
+    + 'b) [segunda obrigacao especifica]\n'
+    + 'c) [terceira obrigacao especifica, se houver]\n'
+    + 'A ultima alinea deve terminar fixando o prazo: "no prazo de 10 (dez) dias CONSECUTIVOS, contados do recebimento desta notificacao."\n\n'
+    + 'REGRAS GERAIS: nao escreva titulos como "PARTE 1" ou "RELATORIO" no texto final — apenas separe as 4 partes por linha em branco. As partes 1, 2 e 3 sao prosa corrida sem alineas; SO a parte 4 tem alineas. Nao use asteriscos nem markdown. Nao escreva encerramento, assinatura, local ou data ao final — o papel timbrado ja tem esse espaco. Use sempre os dados reais (numeros, datas, nomes) fornecidos abaixo; nunca invente dado que nao foi informado.\n\n'
+    + 'EXEMPLO DE COMO O RESULTADO FINAL DEVE FICAR (siga este padrao de extensao e formato, mas com o conteudo do caso real informado abaixo):\n\n'
+    + 'Trata-se de reclamacao formulada por Joao da Silva em face da Vivo S.A., relativa a fatura de fevereiro de 2026, no valor de R$ 340,00, na qual o consumidor alega cobranca de pacote de dados internacionais que nunca contratou nem utilizou, tendo realizado contato previo com a central de atendimento da empresa sob o protocolo no 998877, sem solucao.\n\n'
+    + 'A empresa apresentou defesa limitando-se a informar que o servico foi habilitado por solicitacao registrada em seu sistema interno, sem contudo anexar gravacao da ligacao, print de tela do aplicativo ou qualquer outro elemento que comprove a manifestacao de vontade do consumidor para a contratacao do servico impugnado.\n\n'
+    + 'A defesa apresentada e manifestamente insuficiente. O onus de comprovar a regularidade da contratacao e do fornecedor, e nao do consumidor, nos termos do art. 6, inciso VIII, do Codigo de Defesa do Consumidor, que autoriza a inversao do onus da prova em favor da parte hipossuficiente sempre que verossimil a alegacao. No caso, a empresa se limitou a alegar a existencia de registro interno, prova unilateral que nao se presta a demonstrar, por si so, a higidez da contratacao, sobretudo porque o consumidor nega expressamente ter solicitado o servico. Ademais, o art. 14 do Codigo de Defesa do Consumidor estabelece a responsabilidade objetiva do fornecedor de servicos pelos danos causados ao consumidor por defeitos na prestacao, somente afastada mediante prova de culpa exclusiva do consumidor ou de terceiro — prova que tambem nao foi produzida nos autos. Por fim, a cobranca de servico nao expressamente autorizado contraria o dever de informacao clara e adequada previsto no art. 6, inciso III, do mesmo diploma legal, que pressupoe o consentimento informado do consumidor para a contratacao de qualquer servico adicional.\n\n'
+    + 'Diante do exposto, fica a empresa notificada para cumprir as seguintes obrigacoes:\n'
+    + 'a) apresentar gravacao da ligacao ou print de tela do aplicativo que comprove a solicitacao do servico pelo consumidor;\n'
+    + 'b) estornar integralmente o valor de R$ 340,00 cobrado indevidamente na fatura de fevereiro de 2026, caso nao comprove a contratacao;\n'
+    + 'c) manifestar-se sobre a presente notificacao, no prazo de 10 (dez) dias CONSECUTIVOS, contados do recebimento desta notificacao.\n\n'
+    + 'FIM DO EXEMPLO. Repare que a parte 3 (analise) e claramente o trecho mais longo e aprofundado, com mais de um fundamento juridico explicado por extenso. Siga este mesmo padrao de profundidade e extensao para o caso real abaixo, mas use os fundamentos juridicos que realmente se aplicam aos fatos narrados.\n\n'
     + instrucaoEmpresas
-    + ' REGRA ABSOLUTA DE CONCISAO: maximo 4 paragrafos curtos — nao transcreva fatos, nao repita argumentos, va direto ao ponto: '
-    + '(1) RELATORIO em 2-3 linhas: identifique as partes (processo, consumidor, empresa) e o CERNE do conflito — o que o consumidor quer e por que a empresa nega. Nada mais. '
-    + '(2) ANALISE em 2-3 linhas: a defesa e satisfatoria ou nao, com no maximo 1 artigo do CDC. '
-    + '(3) DECISAO em 1-2 linhas: a providencia determinada. Quando notificar a empresa para manifestacao: prazo de 10 (dez) dias CONSECUTIVOS — NUNCA dias uteis. '
-    + (temAud ? '(4) AUDIENCIA: ' + aud + ' ' : '')
-    + 'NAO incluir encerramento, NAO incluir assinatura, NAO incluir local e data — o papel timbrado ja tem esse espaco. '
-    + 'PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
-    + ' | RECLAMACAO (cerne): ' + recTruncMin
-    + ' | ' + defesasTexto
-    + ' | ANALISE: ' + analiseTrunc
-    + ' | INTERACOES: ' + interacoesTexto
-    + ' | PROVIDENCIA: ' + (provAll.join('; ')||'notificar empresa')
-    + (temAud ? ' | AUDIENCIA: ' + aud : '')
-    + ' | OBS: ' + (gv('ad-obs')||'nenhuma');
+    + (temAud ? '\n\nApos a parte 4, acrescente em paragrafo separado: ' + aud : '')
+    + '\n\nDADOS DO CASO REAL A SER ANALISADO:\n'
+    + 'PROCESSO: ' + gv('ad-proc') + '\n'
+    + 'CONSUMIDOR: ' + gv('ad-cons') + '\n'
+    + 'EMPRESA(S): ' + nomeEmpresas + '\n'
+    + 'RECLAMACAO DO CONSUMIDOR (texto completo): ' + recTruncMin + '\n'
+    + defesasTexto + '\n'
+    + linhaAnalisePrevia
+    + 'INTERACOES TELEFONICAS REGISTRADAS: ' + interacoesTexto + '\n'
+    + 'PROVIDENCIA QUE O ATENDENTE SELECIONOU NO SISTEMA: ' + (provAll.join('; ')||'notificar empresa')
+    + (temAud ? '\nAUDIENCIA: ' + aud : '')
+    + '\nOBSERVACOES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma');
 
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3500,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');

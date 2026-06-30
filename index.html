@@ -3219,9 +3219,18 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
             </div>
             <input type="hidden" id="ad-abusivo-tipo">
           </div>
+          <div class="field" style="margin-top:8px"><label>Anexar parecer / laudo / documento de análise (PDF, DOCX, imagem)</label>
+            <div class="upload-zone" id="uz-ad-parecer" onclick="document.getElementById('fi-ad-parecer').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad-parecer')" style="padding:.75rem">
+              <input type="file" id="fi-ad-parecer" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'ad-parecer')">
+              <div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div>
+              <div class="uz-title" style="font-size:12px">Clique ou arraste o parecer aqui</div>
+              <div class="uz-sub">PDF, DOCX, JPG, PNG · até 10 MB · IA extrai o texto automaticamente</div>
+            </div>
+            <div class="file-list" id="fl-ad-parecer"></div>
+          </div>
           <div class="field" style="margin-top:8px"><label>Parecer da análise de abusividade <span class="req">*</span></label>
             <div class="ia-wrap">
-              <textarea id="ad-parecer-abusividade" rows="5" placeholder="Descreva o parecer técnico sobre a abusividade identificada: qual cláusula, por que é abusiva, fundamento legal aplicável..."></textarea>
+              <textarea id="ad-parecer-abusividade" rows="5" placeholder="Descreva o parecer técnico sobre a abusividade identificada: qual cláusula, por que é abusiva, fundamento legal aplicável... (ou anexe o documento acima para preenchimento automático)"></textarea>
               <button class="ia-btn" onclick="iaParecerAbusividade()" id="ib-parecer-abuso"><i class="ti ti-sparkles"></i>Sugerir com IA</button>
             </div>
             <div class="ia-result" id="ir-parecer-abuso"><div class="ia-result-label"><i class="ti ti-sparkles"></i>Sugestão</div><div class="ia-result-text" id="irt-parecer-abuso"></div>
@@ -4866,8 +4875,10 @@ function progVP() {
   const campos = ['vp-data', 'vp-atend', 'vp-cn', 'vp-cpf', 'vp-fn', 'vp-prod', 'vp-valor', 'vp-datacompra', 'vp-desc'];
   const n = campos.filter(id => gv(id)).length;
   const pct = Math.round(n / campos.length * 100);
-  document.getElementById('pb-vp').style.width = pct + '%';
-  document.getElementById('pbt-vp').textContent = pct + '% preenchido';
+  const pbEl = document.getElementById('pb-vp');
+  const pbtEl = document.getElementById('pbt-vp');
+  if (pbEl) pbEl.style.width = pct + '%';
+  if (pbtEl) pbtEl.textContent = pct + '% preenchido';
 }
 
 // IA: fechar sugestao / usar sugestao
@@ -4936,7 +4947,7 @@ function doFiles(files, tid) {
       'ad': 'ad-defesa', 'ad-rec': 'ad-pedidos',
       'vp': 'vp-desc', 'vs': 'vs-desc', 've': 've-desc',
       'fv': 'fv-desc', 'ne': 'ne-desc', 'cb': 'cb-desc',
-      'en': 'en-desc', 'ag': 'ag-desc', 'ga': 'ga-desc', 'ecf': 'ecf-desc',
+      'en': 'en-desc', 'ag': 'ag-desc', 'ga': 'ga-desc', 'ecf': 'ecf-desc', 'ad-parecer': 'ad-parecer-abusividade',
       'cd': 'cd-desc', 'sa': 'sa-desc', 'of': 'of-desc',
       'ed': 'ed-desc', 'mt': 'mt-desc'
     };

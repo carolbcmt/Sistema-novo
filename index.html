@@ -5111,6 +5111,126 @@ function getEmpresasAD() {
   return result;
 }
 
+async function analisarDefesa() {
+  const btn=document.getElementById('btn-analisar'), box=document.getElementById('ir-analise'), txt=document.getElementById('irt-analise');
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
+  box.style.display='none';
+
+  const reclamacao = gv('ad-pedidos');
+  const empresas = getEmpresasAD();
+  const defesa = empresas.length > 0 ? empresas.map(function(e){return (empresas.length>1?'['+e.nome+']: ':'')+e.defesa;}).join(' | ') : gv('ad-defesa');
+
+  if (!reclamacao.trim() && !defesa.trim()) {
+    txt.textContent='Preencha pelo menos o texto da reclamacao ou da defesa antes de analisar.';
+    box.style.display='block';
+    btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
+    return;
+  }
+
+  const recTrunc = reclamacao.substring(0, 2000);
+  const defTrunc = defesa.substring(0, 2000);
+  const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp');
+
+  const prompt = 'Voce e atendente do PROCON de Varzea Grande-MT. Com base na reclamacao e nas defesas abaixo, escreva um texto corrido e fluido de 3 a 5 frases analisando cada empresa reclamada: resuma o que cada empresa alegou, diga se cada defesa e satisfatoria ou nao com fundamento no CDC, e indique a providencia recomendada para cada uma. Sem titulos, sem numeracao, sem topicos, sem asteriscos. PROCESSO: ' + gv('ad-proc') + ' CONSUMIDOR: ' + gv('ad-cons') + ' EMPRESAS: ' + nomeEmpresas + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada') + ' --- DEFESAS: ' + (defTrunc || 'nao informada');
+
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel analisar.');
+    txt.textContent=texto;
+    box.style.display='block';
+    const campoEdicao = document.getElementById('ad-analise-texto');
+    if(campoEdicao && !campoEdicao.value.trim()) campoEdicao.value = texto;
+  } catch(e){
+    console.error('Erro analise:', e);
+    txt.textContent='Erro: '+e.message;
+    box.style.display='block';
+  }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
+}
+
+async function gerarMinuta() {
+  const box=document.getElementById('result-ad'), load=document.getElementById('rl-ad'),
+    txt=document.getElementById('rt-ad'), ra=document.getElementById('ra-ad'), btn=document.getElementById('btn-minuta');
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.style.display='block'; txt.textContent=''; if(ra) ra.style.display='none';
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+
+  const empresas = getEmpresasAD();
+  const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp') || 'empresa nao informada';
+  const instrucaoEmpresas = empresas.length > 1
+    ? 'Ha ' + empresas.length + ' empresas reclamadas. Analise e decida sobre cada uma individualmente, dedicando uma frase curta para cada empresa.'
+    : '';
+
+  let defesasTexto = '';
+  if (empresas.length > 1) {
+    defesasTexto = empresas.map(function(e){return 'DEFESA DE ' + e.nome.toUpperCase() + ' (' + (e.datadef||'data nao informada') + '): ' + (e.defesa.substring(0,800)||'sem defesa');}).join(' ||| ');
+  } else {
+    const defPrincipal = empresas[0]?.defesa || gv('ad-defesa');
+    const dataPrincipal = empresas[0]?.datadef || gv('ad-datadef') || 'data nao informada';
+    defesasTexto = 'DEFESA (' + dataPrincipal + '): ' + defPrincipal.substring(0,800);
+  }
+
+  const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
+  const audData = gv('ad-auddata');
+  const audHora = gv('ad-audhora');
+  const audModal = gv('ad-modal') || document.getElementById('ad-modal')?.value || '';
+  const temAud = provAll.some(function(p){return p.includes('audiencia');}) || audData;
+  const aud = temAud
+    ? 'Fica designada audiencia de conciliacao para o dia ' + (audData || 'a definir')
+      + ' as ' + (audHora || 'a definir')
+      + ', na modalidade ' + (audModal || 'presencial')
+      + '. As partes deverao comparecer devidamente representadas.'
+    : '';
+
+  const analise = gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || 'analise nao realizada';
+
+  // Coletar interacoes de telefone registradas nos formularios
+  const interacoesTel = [];
+  ['vp','vs','ne','cb','ve','fv','en','ag','ga','cd','sa','ed','mt','of','ec-clt','ec-inss','ec-serv','ec-rmc'].forEach(function(p){
+    const res = document.getElementById('tel-res-'+p)?.value;
+    const acordo = document.getElementById('tel-acordo-'+p)?.value;
+    const empresa = document.getElementById('tel-empresa-'+p)?.value;
+    const dataTel = document.getElementById('tel-data-'+p)?.value;
+    if (res || acordo) interacoesTel.push((empresa?empresa+': ':'')+res+(acordo?' — '+acordo:'')+(dataTel?' ('+dataTel+')':''));
+  });
+  const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : (gv('ad-obs') || 'nenhuma interacao registrada');
+
+  const recTruncMin = gv('ad-pedidos').substring(0,400);
+  const analiseTrunc = analise.substring(0,400);
+
+  const prompt = 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore MINUTA DE DESPACHO ADMINISTRATIVO curta e objetiva, em texto corrido, sem titulos, sem numeracao, sem asteriscos. '
+    + instrucaoEmpresas
+    + ' REGRA ABSOLUTA DE CONCISAO: maximo 4 paragrafos curtos — nao transcreva fatos, nao repita argumentos, va direto ao ponto: '
+    + '(1) RELATORIO em 2-3 linhas: identifique as partes (processo, consumidor, empresa) e o CERNE do conflito — o que o consumidor quer e por que a empresa nega. Nada mais. '
+    + '(2) ANALISE em 2-3 linhas: a defesa e satisfatoria ou nao, com no maximo 1 artigo do CDC. '
+    + '(3) DECISAO em 1-2 linhas: a providencia determinada. Quando notificar a empresa para manifestacao: prazo de 10 (dez) dias CONSECUTIVOS — NUNCA dias uteis. '
+    + (temAud ? '(4) AUDIENCIA: ' + aud + ' ' : '')
+    + 'NAO incluir encerramento, NAO incluir assinatura, NAO incluir local e data — o papel timbrado ja tem esse espaco. '
+    + 'PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
+    + ' | RECLAMACAO (cerne): ' + recTruncMin
+    + ' | ' + defesasTexto
+    + ' | ANALISE: ' + analiseTrunc
+    + ' | INTERACOES: ' + interacoesTexto
+    + ' | PROVIDENCIA: ' + (provAll.join('; ')||'notificar empresa')
+    + (temAud ? ' | AUDIENCIA: ' + aud : '')
+    + ' | OBS: ' + (gv('ad-obs')||'nenhuma');
+
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');
+    load.style.display='none'; txt.classList.add('show'); if(ra) ra.style.display='flex';
+  } catch(e){
+    load.style.display='none';
+    txt.textContent='Erro: '+e.message;
+    txt.classList.add('show');
+  }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta com IA';
+}
+
 // ---- BASE JURÍDICA ----
 const BJ_STORAGE_KEY = 'bj-registros';
 const BJ_ADMINS = ['carolina', 'coordenador'];

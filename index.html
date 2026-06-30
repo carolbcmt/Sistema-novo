@@ -5111,6 +5111,242 @@ function getEmpresasAD() {
   return result;
 }
 
+// Mascaras de CPF e CNPJ
+function maskCPF(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 11);
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  el.value = v;
+}
+
+function maskCNPJ(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 14);
+  v = v.replace(/(\d{2})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1/$2');
+  v = v.replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+  el.value = v;
+}
+
+// ---- MÓDULO RESOLUÇÃO POR TELEFONE ----
+function toggleTelBox(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+function toggleDemanda(btn, pref) {
+  btn.classList.toggle('on');
+  const selecionadas = Array.from(document.querySelectorAll('#dg-' + pref + ' .demanda-btn.on')).map(function(b){return b.textContent.trim();});
+  const hidden = document.getElementById('tel-demandas-' + pref);
+  if (hidden) hidden.value = selecionadas.join('; ');
+}
+
+async function gerarTextoTel(pref) {
+  const btn = document.getElementById('btn-tel-' + pref);
+  const box = document.getElementById('rtel-' + pref);
+  const txt = document.getElementById('rtxt-' + pref);
+  const demandas = document.getElementById('tel-demandas-' + pref)?.value || '';
+  const empresa = document.getElementById('tel-empresa-' + pref)?.value || '';
+  const prot = document.getElementById('tel-prot-' + pref)?.value || '';
+  const data = document.getElementById('tel-data-' + pref)?.value || '';
+  const res = document.getElementById('tel-res-' + pref)?.value || '';
+  const acordo = document.getElementById('tel-acordo-' + pref)?.value || '';
+
+  const cn = gv(pref + '-cn') || gv('vp-cn') || '';
+  const fn = gv(pref + '-fn') || '';
+
+  if (!btn) return;
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Gerando...';
+  if (box) box.classList.remove('show');
+
+  const prompt = 'Elabore um REGISTRO DE ATENDIMENTO TELEFONICO para o PROCON de Varzea Grande-MT.'
+    + ' DADOS: Consumidor: ' + cn + ' | Empresa contatada: ' + (empresa || fn)
+    + ' | Atendente/protocolo da empresa: ' + prot + ' | Data/horario: ' + data
+    + ' | Demandas tratadas: ' + demandas + ' | Resultado: ' + res + ' | Termos/observacoes: ' + acordo
+    + '. Gere DOIS blocos de texto em prosa corrida, sem asteriscos, sem marcadores, sem markdown:'
+    + ' BLOCO 1 - REGISTRO INTERNO (3-4 linhas): registro objetivo do atendimento telefonico — quem ligou, para qual empresa, quando, protocolo obtido, quais demandas foram tratadas e qual foi o resultado.'
+    + ' BLOCO 2 - AVISO AO CONSUMIDOR (2-3 linhas): texto para informar o consumidor sobre o resultado. Se houve acordo, informar os termos e que devera retornar ao PROCON caso o acordo nao seja cumprido no prazo. Se nao houve acordo, informar que a reclamacao sera mantida e os proximos passos. Se aguardando, informar o prazo e que devera retornar para informar o resultado.'
+    + ' Sem topicos, sem listas, sem asteriscos. Linguagem administrativa formal e clara.';
+
+  try {
+    const r = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user', content:prompt}]}) });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const raw = d.content && d.content[0] ? d.content[0].text.trim() : 'Erro ao gerar.';
+    if (txt) txt.textContent = limparTexto(raw);
+    if (box) box.classList.add('show');
+  } catch(e) {
+    if (txt) txt.textContent = 'Erro ao conectar a IA: ' + e.message;
+    if (box) box.classList.add('show');
+  }
+  btn.disabled = false; btn.innerHTML = '<i class="ti ti-file-text"></i> Gerar texto de registro e aviso ao consumidor';
+}
+
+function copiarTel(pref) {
+  const txt = document.getElementById('rtxt-' + pref)?.textContent || '';
+  navigator.clipboard.writeText(txt).then(function(){
+    if (typeof event !== 'undefined' && event.currentTarget) {
+      const el = event.currentTarget;
+      const original = el.innerHTML;
+      el.innerHTML = '<i class="ti ti-check"></i> Copiado!';
+      setTimeout(function(){ el.innerHTML = original; }, 2000);
+    }
+  });
+}
+
+function imprimirTel(pref) {
+  const txt = document.getElementById('rtxt-' + pref)?.textContent || '';
+  const w = window.open('', '_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Registro Telefonico - PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><h3 style="text-align:center;margin-bottom:1rem">PROCON/VG - Registro de Atendimento Telefonico</h3><pre>' + txt.replace(/</g,'&lt;') + '</pre></body></html>');
+  w.document.close(); w.focus(); setTimeout(function(){ w.print(); }, 500);
+}
+
+async function gerarDocAdm(pref) {
+  const box=document.getElementById('result-'+pref), load=document.getElementById('rl-'+pref),
+    txt=document.getElementById('rt-'+pref), ra=document.getElementById('ra-'+pref), btn=document.getElementById('btn-gerar-'+pref);
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+  let prompt='';
+  if(pref==='dc'){
+    prompt = 'Elabore uma DECLARACAO DE COMPARECIMENTO para o PROCON de Varzea Grande-MT.'
+      + ' DADOS: Processo no ' + gv('dc-proc') + ' | Data: ' + gv('dc-data') + ' | Horario: ' + gv('dc-hora')
+      + ' | Consumidor: ' + gv('dc-cn') + ', CPF: ' + gv('dc-cpf') + ' | Empresa reclamada: ' + gv('dc-fn')
+      + ' | Finalidade: ' + gv('dc-motivo') + ' | Atendente: ' + gv('dc-atend')
+      + ' | Observacoes: ' + (gv('dc-obs')||'nenhuma')
+      + '. REGRAS OBRIGATORIAS: texto fluido e corrido, sem topicos, sem listas, sem asteriscos, sem marcadores; use o verbo "compareceu" (terceira pessoa); um ou dois paragrafos curtos, linguagem administrativa formal; ao final, local, data, espaco para assinatura do servidor e do consumidor; nao use markdown, nao use negrito, nao use bullets.'
+      + ' Modelo de tom: "Declaro que o(a) Sr(a). [nome], CPF no [cpf], compareceu a esta Coordenadoria de Defesa do Consumidor - PROCON/VG, na data de [data], as [hora], no ambito do processo administrativo no [proc], movido em face de [empresa], para [finalidade]."';
+  } else {
+    const tipo=gv('rq-tipo')||'Requerimento';
+    prompt = 'Elabore um "' + tipo + '" para o PROCON de Varzea Grande-MT.'
+      + ' Processo: ' + gv('rq-proc') + ' | Data: ' + gv('rq-data') + ' | Atendente: ' + gv('rq-atend')
+      + ' | Requerente: ' + gv('rq-cn') + ', CPF: ' + gv('rq-cpf') + ', tel: ' + gv('rq-tel')
+      + ' | Empresa: ' + gv('rq-fn') + ' | Pedido: ' + gv('rq-desc')
+      + (gv('rq-acordo') ? ' | Termos do acordo: ' + gv('rq-acordo') : '')
+      + '. REGRAS OBRIGATORIAS: texto em prosa corrida, sem topicos, sem asteriscos, sem marcadores, sem bullets; paragrafo de identificacao + paragrafo do pedido + paragrafo de fechamento; espaco para assinaturas ao final; nao use markdown, nao use negrito.';
+  }
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
+    txt.textContent=limparTexto(raw);
+    load.classList.remove('show'); txt.classList.add('show'); if(ra){ra.style.display='flex';}
+  } catch(e){load.classList.remove('show');txt.textContent='Erro: '+e.message;txt.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar ' + (pref==='dc'?'Declaracao':'Requerimento');
+}
+
+// ---- CERTIDÃO ----
+async function gerarCertidao() {
+  const btn=document.getElementById('btn-gerar-ct');
+  const box=document.getElementById('result-ct'),load=document.getElementById('rl-ct'),
+    txt=document.getElementById('rt-ct'),ra=document.getElementById('ra-ct');
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+
+  const prompt = 'Elabore uma CERTIDAO DE COMPARECIMENTO para o PROCON de Varzea Grande-MT apos apresentacao de defesa administrativa.'
+    + ' DADOS: Processo no ' + gv('ct-proc') + ' | Data: ' + gv('ct-data') + ' | Horario: ' + gv('ct-hora')
+    + ' | Consumidor: ' + gv('ct-cn') + ', CPF: ' + gv('ct-cpf')
+    + ' | Empresa reclamada: ' + gv('ct-fn') + ' | Objeto/finalidade: ' + gv('ct-obj')
+    + ' | Servidor: ' + gv('ct-atend') + ', ' + gv('ct-cargo')
+    + '. REGRAS OBRIGATORIAS: texto enxuto e fluido, em um unico paragrafo, sem topicos, sem listas, sem asteriscos, sem marcadores; comecar com "CERTIFICO que..."; narrar o comparecimento e a apresentacao da defesa em uma ou duas frases curtas; encerrar com "Nada mais havendo, lavrei a presente certidao."; depois, local, data, linha de assinatura do servidor; nao use markdown, nao use negrito, nao use bullets.'
+    + ' Modelo exato de tom: "CERTIFICO que o(a) Sr(a). [nome], CPF no [cpf], compareceu a esta Coordenadoria de Defesa do Consumidor - PROCON/VG, em [data], as [hora], e apresentou defesa administrativa no ambito do processo no [proc], instaurado em face de [empresa], relativo a [objeto]. Nada mais havendo, lavrei a presente certidao."';
+
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
+    txt.textContent=limparTexto(raw);
+    load.classList.remove('show'); txt.classList.add('show'); if(ra)ra.style.display='flex';
+  } catch(e){load.classList.remove('show');txt.textContent='Erro: '+e.message;txt.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-stamp" style="font-size:18px"></i> Gerar Certidao';
+}
+
+// ---- USINA FOTOVOLTAICA ----
+async function gerarFotovoltaica() {
+  const btn=document.getElementById('btn-gerar-fv');
+  const box=document.getElementById('result-fv'),load=document.getElementById('rl-fv'),
+    txt=document.getElementById('rt-fv'),at=document.getElementById('at-fv'),ra=document.getElementById('ra-fv');
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.classList.add('show'); txt.classList.remove('show'); if(at)at.classList.remove('show'); if(ra)ra.classList.remove('show');
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+
+  const temFin = gv('fv-temfin')==='Sim';
+  const temEn = gv('fv-temen').includes('Sim');
+  const pretAll=[...(pretMulti['fv']||[]),gv('fv-pret-outro')].filter(Boolean);
+  const docs=arqs['fv']&&arqs['fv'].length?arqs['fv'].map(function(f){return f.name;}).join(', '):'nenhum';
+
+  const prompt = 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Elabore RECLAMACAO FORMAL concisa para USINA FOTOVOLTAICA.'
+    + ' ATENDIMENTO: No ' + (gv('fv-num')||'(a definir)') + ', Data: ' + gv('fv-data') + ', Canal: ' + gv('fv-canal') + ', Atendente: ' + gv('fv-atend')
+    + ' | CONSUMIDOR: ' + gv('fv-cn') + ', CPF: ' + gv('fv-cpf') + ', tel: ' + gv('fv-tel') + ', endereco da instalacao: ' + gv('fv-end')
+    + ' | EMPRESA INSTALADORA: ' + gv('fv-fn') + ', CNPJ: ' + gv('fv-fcnpj')
+    + ' | FABRICANTE: ' + gv('fv-fab') + ', CNPJ: ' + gv('fv-fabcnpj')
+    + (temFin ? ' | FINANCIADORA: ' + gv('fv-finfn') + ', CNPJ: ' + gv('fv-fincnpj') + ', valor: R$ ' + gv('fv-finval') + ', parcelas: ' + gv('fv-finparc') + ', contrato: ' + gv('fv-fincontrato') : ' | Sem financiamento.')
+    + (temEn ? ' | ENERGISA: protocolo: ' + gv('fv-enprot') + ', situacao: ' + gv('fv-en-sit') : ' | Energisa nao envolvida.')
+    + ' | SISTEMA: ' + gv('fv-potencia') + ' | Valor total: R$ ' + gv('fv-valor') + ' | Contrato: ' + gv('fv-datacontr') + ' | Prazo: ' + gv('fv-prazo') + ' | No contrato: ' + gv('fv-contrato')
+    + ' | Geracao prometida: ' + gv('fv-geracao') + ' kWh/mes | Geracao real: ' + gv('fv-geracaoreal') + ' kWh/mes'
+    + ' | PROBLEMA: ' + gv('fv-tipo')
+    + ' | DESCRICAO: ' + gv('fv-desc').substring(0,1000)
+    + ' | PRETENSAO: ' + (pretAll.join('; ')||'a definir')
+    + ' | DOCS: ' + docs + ' | OBS: ' + (gv('fv-obs')||'sem observacoes')
+    + '. Estrutura: 1) TITULO curto "RECLAMACAO FORMAL - PROCON/VG - Usina Fotovoltaica - Data - No" 2) DOS FATOS - prosa corrida, concisa, apenas o cerne do conflito: contratacao, sistema prometido, problema constatado.'
+    + (temEn ? ' Incluir brevemente a situacao da homologacao junto a Energisa (prazo de 30 dias - Res. ANEEL 687/2015 e Res. 1.000/2021).' : '')
+    + (temFin ? ' Incluir brevemente o contrato de financiamento vinculado a instalacao.' : '')
+    + ' 3) DO DIREITO - art. 18 CDC (vicio em produto), art. 20 CDC (vicio no servico de instalacao), art. 30 CDC (vinculacao da oferta).'
+    + (temFin ? ' Incluir a natureza acessoria do contrato de financiamento - rescisao do contrato principal implica rescisao do financiamento sem onus ao consumidor.' : '')
+    + ' 4) DOS PEDIDOS - lista numerada.'
+    + (temFin ? ' Incluir obrigatoriamente: rescisao do financiamento sem onus e abstencao de negativacao.' : '')
+    + ' Prazo para resposta da empresa: 10 (dez) dias CONSECUTIVOS. NAO incluir encerramento, NAO incluir assinatura, NAO incluir local e data — o papel timbrado ja tem esse espaco. Maximo 400 palavras.';
+
+  try {
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const texto=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');
+    load.classList.remove('show'); txt.textContent=texto; txt.classList.add('show');
+    const reg=/art(?:igo)?s?\.?\s*(\d+(?:\s*[,;e]\s*\d+)*)/gi; const enc=new Set(); let m;
+    while((m=reg.exec(texto))!==null) m[1].split(/[,;e\s]+/).filter(Boolean).forEach(function(n){if(n&&!isNaN(n))enc.add('Art. '+n+' CDC');});
+    if(enc.size&&at){at.innerHTML='';enc.forEach(function(a){const t=document.createElement('span');t.className='art-tag';t.textContent=a;at.appendChild(t);});at.classList.add('show');}
+    if(ra)ra.classList.add('show');
+  } catch(e){load.classList.remove('show');txt.textContent='Erro: '+e.message;txt.classList.add('show');if(ra)ra.classList.add('show');}
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamacao Formal — Usina Fotovoltaica (Arts. 18/20 CDC)';
+}
+
+// Wrappers fixos para o formulario VP (Vicio no Produto) que usa nomes proprios
+function copiarRec() {
+  const txt = document.getElementById('rt-vp').textContent;
+  navigator.clipboard.writeText(txt).then(function(){
+    event.currentTarget.innerHTML = '<i class="ti ti-check"></i>Copiado!';
+    setTimeout(function(){ event.currentTarget.innerHTML = '<i class="ti ti-copy"></i>Copiar texto'; }, 2000);
+  });
+}
+function imprimirRec() {
+  const txt = document.getElementById('rt-vp').textContent;
+  const w = window.open('', '_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><pre>' + txt.replace(/</g,'&lt;') + '</pre></body></html>');
+  w.document.close(); w.focus(); setTimeout(function(){ w.print(); }, 500);
+}
+function limparRec() {
+  document.getElementById('rt-vp').textContent = '';
+  document.getElementById('rt-vp').classList.remove('show');
+  document.getElementById('result-vp').classList.remove('show');
+}
+
+// Funcao auxiliar: limpar asteriscos e marcadores do texto gerado pela IA
+function limparTexto(txt) {
+  if (!txt) return '';
+  return txt
+    .replace(/\*\*(.*?)\*\*/g, '$1')   // **negrito**
+    .replace(/\*(.*?)\*/g, '$1')        // *italico*
+    .replace(/^#{1,6}\s*/gm, '')        // # titulos markdown
+    .replace(/^[-•]\s*/gm, '')          // marcadores de lista
+    .replace(/^\d+\.\s*(?=[A-ZÀ-Ú])/gm, '') // numeracao tipo "1. "
+    .trim();
+}
+
 async function analisarDefesa() {
   const btn=document.getElementById('btn-analisar'), box=document.getElementById('ir-analise'), txt=document.getElementById('irt-analise');
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Analisando...';
@@ -5229,6 +5465,37 @@ async function gerarMinuta() {
     txt.classList.add('show');
   }
   btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta com IA';
+}
+
+async function chatCaso() {
+  const pergunta = gv('ad-pergunta'); if (!pergunta) return;
+  const btn = document.getElementById('ib-chat'), box = document.getElementById('ir-chat'), txt = document.getElementById('irt-chat');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Consultando...'; box.classList.remove('show');
+
+  const empresas = getEmpresasAD();
+  const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp') || 'nao informada';
+  const defesaResumo = empresas.length > 1
+    ? empresas.map(function(e){return e.nome + ': ' + e.defesa.substring(0,400);}).join(' | ')
+    : (empresas[0]?.defesa || gv('ad-defesa') || '').substring(0,800);
+
+  const prompt = 'Contexto do processo PROCON/VG: Processo: ' + gv('ad-proc') + ' | Consumidor: ' + gv('ad-cons') + ' | Empresas: ' + nomeEmpresas
+    + ' | Reclamacao: ' + gv('ad-pedidos').substring(0,800)
+    + ' | Defesa: ' + defesaResumo
+    + ' | Analise previa: ' + (gv('ad-analise-texto') || 'nao realizada')
+    + ' | Pergunta do atendente: ' + pergunta
+    + '. Responda de forma objetiva e tecnica, em linguagem acessivel ao atendente do PROCON. Sem asteriscos, sem markdown.';
+
+  try {
+    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user', content:prompt}]})});
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    txt.textContent = limparTexto(d.content && d.content[0] ? d.content[0].text.trim() : 'Nao foi possivel responder.');
+    box.classList.add('show');
+  } catch(e) {
+    txt.textContent = 'Erro: ' + e.message;
+    box.classList.add('show');
+  }
+  btn.disabled = false; btn.innerHTML = '<i class="ti ti-send"></i>Perguntar';
 }
 
 // ---- BASE JURÍDICA ----

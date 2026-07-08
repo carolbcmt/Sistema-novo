@@ -3154,6 +3154,9 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">2</div><span class="sec-title">Defesas Apresentadas</span><span class="sec-badge"><i class="ti ti-sparkles" style="font-size:12px"></i>IA lê documentos</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
         <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Para cada empresa reclamada, informe a defesa apresentada. A IA analisará e gerará despacho individualizado para cada uma.</span></div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+          <button onclick="addEmpresaAD()" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-plus"></i> Adicionar empresa reclamada e sua defesa</button>
+        </div>
         <div id="ad-defesas-lista">
           <div class="ad-defesa-item" id="ad-def-bloco-0" style="background:#f7f8fa;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px">
             <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:6px"><i class="ti ti-building"></i> <span id="ad-def-titulo-0">Empresa 1</span></div>
@@ -4944,11 +4947,26 @@ function doFiles(files, tid) {
     if (/\.(jpe?g|png|webp|gif)$/i.test(f.name)) autoFill(f, tid, idx);
     // Leitura automatica para todos os uploads de documentos (PDF, DOCX, imagem)
     const mapaLeitura = {
-      'ad': 'ad-defesa', 'ad-rec': 'ad-pedidos',
+      // Análise de defesa
+      'ad': 'ad-defesa', 'ad-rec': 'ad-pedidos', 'ad-parecer': 'ad-parecer-abusividade',
+      // Vícios
       'vp': 'vp-desc', 'vs': 'vs-desc', 've': 've-desc',
+      // Fotovoltaica e específicos
       'fv': 'fv-desc', 'ne': 'ne-desc', 'cb': 'cb-desc',
-      'en': 'en-desc', 'ag': 'ag-desc', 'ga': 'ga-desc', 'ecf': 'ecf-desc', 'ad-parecer': 'ad-parecer-abusividade',
-      'cd': 'cd-desc', 'sa': 'sa-desc', 'of': 'of-desc',
+      // Energisa e água
+      'en': 'en-desc', 'en-fase': 'en-fase-desc', 'ag': 'ag-desc',
+      // Consignados e empréstimos
+      'ec-clt': 'ec-clt-desc', 'ec-inss': 'ec-inss-desc',
+      'ec-rmc': 'ec-rmc-desc', 'ec-serv': 'ec-serv-desc',
+      'ecf': 'ecf-desc', 'ep': 'ep-desc',
+      // Fraude bancária
+      'fb-bo': 'fb-bo-texto', 'fb-extrato': 'fb-extrato-texto', 'fb-outros': 'fb-outros-texto',
+      // Aviação
+      'av': 'av-desc',
+      // Documentos administrativos
+      'rq': 'rq-desc',
+      // Outros
+      'ga': 'ga-desc', 'cd': 'cd-desc', 'sa': 'sa-desc', 'of': 'of-desc',
       'ed': 'ed-desc', 'mt': 'mt-desc'
     };
     if (mapaLeitura[tid]) {
@@ -5693,7 +5711,7 @@ async function gerarMinuta() {
     const dataTel = document.getElementById('tel-data-'+p)?.value;
     if (res || acordo) interacoesTel.push((empresa?empresa+': ':'')+res+(acordo?' — '+acordo:'')+(dataTel?' ('+dataTel+')':''));
   });
-  const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : (gv('ad-obs') || 'nenhuma interacao registrada');
+  const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : 'nenhuma interacao telefonica registrada';
 
   const recTruncMin = gv('ad-pedidos').substring(0,1500);
   const analiseTrunc = analise ? analise.substring(0,1500) : '';
@@ -5711,7 +5729,7 @@ async function gerarMinuta() {
     + 'b) [segunda obrigacao especifica]\n'
     + 'c) [terceira obrigacao especifica, se houver]\n'
     + 'A ultima alinea deve terminar fixando o prazo: "no prazo de 10 (dez) dias CONSECUTIVOS, contados do recebimento desta notificacao."\n\n'
-    + 'REGRAS GERAIS: nao escreva titulos como "PARTE 1" ou "RELATORIO" no texto final — apenas separe as 4 partes por linha em branco. As partes 1, 2 e 3 sao prosa corrida sem alineas; SO a parte 4 tem alineas. Nao use asteriscos nem markdown. Nao escreva encerramento, assinatura, local ou data ao final — o papel timbrado ja tem esse espaco. Use sempre os dados reais (numeros, datas, nomes) fornecidos abaixo; nunca invente dado que nao foi informado.\n\n'
+    + 'REGRAS GERAIS: nao escreva titulos como "PARTE 1" ou "RELATORIO" no texto final — apenas separe as 4 partes por linha em branco. As partes 1, 2 e 3 sao prosa corrida sem alineas; SO a parte 4 tem alineas. Nao use asteriscos nem markdown. Nao escreva encerramento, assinatura, local ou data ao final — o papel timbrado ja tem esse espaco. Use sempre os dados reais (numeros, datas, nomes) fornecidos abaixo; nunca invente dado que nao foi informado. SE houver "OBSERVACOES DO ATENDENTE" preenchidas nos dados abaixo (diferente de "nenhuma"), voce DEVE obrigatoriamente levar essas observacoes em consideracao na minuta — elas podem conter alertas de prazo, informacoes relevantes do caso ou instrucoes especificas do atendente que devem influenciar a analise (parte 3) e/ou as obrigacoes determinadas (parte 4).\n\n'
     + 'EXEMPLO DE COMO O RESULTADO FINAL DEVE FICAR (siga este padrao de extensao e formato, mas com o conteudo do caso real informado abaixo):\n\n'
     + 'Trata-se de reclamacao formulada por Joao da Silva em face da Vivo S.A., relativa a fatura de fevereiro de 2026, no valor de R$ 340,00, na qual o consumidor alega cobranca de pacote de dados internacionais que nunca contratou nem utilizou, tendo realizado contato previo com a central de atendimento da empresa sob o protocolo no 998877, sem solucao.\n\n'
     + 'A empresa apresentou defesa limitando-se a informar que o servico foi habilitado por solicitacao registrada em seu sistema interno, sem contudo anexar gravacao da ligacao, print de tela do aplicativo ou qualquer outro elemento que comprove a manifestacao de vontade do consumidor para a contratacao do servico impugnado.\n\n'

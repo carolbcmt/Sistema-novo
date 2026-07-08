@@ -4790,13 +4790,18 @@ async function gerarGenerica(pref, tipoRec, artigo) {
 
   const prompt=`IMPORTANTE: responda em portugues do Brasil formal, com acentuacao e ortografia corretas (use crase, til, acento agudo e circunflexo normalmente — por exemplo "razão", "não", "está", "função", "informações" — apesar de esta instrucao estar escrita sem acentos por motivos tecnicos, sua resposta deve ter acentuacao normal e correta).
 
-Voce e atendente tecnico do PROCON de Varzea Grande - MT. Elabore RECLAMACAO FORMAL completa com fundamentos juridicos para: "${tipoRec}" (${artigo}).
+Voce e atendente tecnico do PROCON de Varzea Grande - MT. Elabore RECLAMACAO FORMAL completa para: "${tipoRec}" (${artigo}).
 DADOS:\n${campos.join('\n')}\nPRETENSAO: ${pretAll.join('; ')||'a definir'}\nDOCS: ${docs}\nOBS: ${gv(pref+'-obs')||'sem observacoes'}
 ---
-Estrutura: 1) TITULO curto "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No" 2) DOS FATOS - prosa corrida, CONCISA, apenas o cerne do conflito em 3-5 linhas. Nunca transcrever tudo. Para vicio: sempre "vicio" nunca "defeito". 3) DO DIREITO - artigos aplicaveis, texto corrido, sem citar ementa.${instrucaoEspecifica} 4) DOS PEDIDOS - lista numerada. Quando houver prazo para empresa responder: usar SEMPRE 10 (dez) dias CONSECUTIVOS — NUNCA dias uteis. NAO incluir encerramento, NAO incluir assinatura, NAO incluir local e data — o papel timbrado ja tem esse espaco. 5) `;
+Estrutura OBRIGATORIA em 4 secoes, nesta ordem:
+1) TITULO curto — "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No"
+2) DOS FATOS — prosa corrida, CONCISA, 3 a 5 linhas. Apenas o cerne do conflito. Para vicio: sempre "vicio", nunca "defeito".
+3) DO DIREITO — MAXIMO 4 linhas. Citar SOMENTE os 1 a 3 artigos mais diretamente aplicaveis, em prosa corrida. Sem transcricao de texto de lei. Sem comentarios desnecessarios. Ir direto ao ponto.${instrucaoEspecifica}
+4) DOS PEDIDOS — lista numerada com TODOS os pedidos do consumidor (baseado no campo PRETENSAO acima). Esta secao e OBRIGATORIA e nao pode ser omitida. Prazo para resposta da empresa: SEMPRE 10 (dez) dias CONSECUTIVOS. NAO incluir encerramento, assinatura, local ou data.
+`;
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1800,messages:[{role:'user',content:prompt}]})});
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     const texto=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');
     load.classList.remove('show'); txt.textContent=texto; txt.classList.add('show');
@@ -5109,7 +5114,7 @@ Estrutura obrigatoria:
 
 3. DO DIREITO - cite apenas os 2-4 artigos do CDC mais aplicaveis. Texto corrido, sem reproduzir longos trechos da lei. Se bem essencial: fundamente dispensa do prazo de 30 dias (art. 18 par.3o). Se prazo esgotado: fundamente art. 18 par.1o. Se financiado e negocio desfeito: art. 52 CDC.
 
-4. DOS PEDIDOS - lista numerada com pedidos do consumidor ao fornecedor. Se bem essencial ou prazo esgotado: primeiro pedido = troca imediata. Se financiado: incluir cancelamento do financiamento sem onus.
+4. DOS PEDIDOS — lista numerada OBRIGATORIA com todos os pedidos do consumidor ao fornecedor. Esta secao NAO pode ser omitida. Se bem essencial ou prazo esgotado: primeiro pedido = troca imediata. Se financiado: incluir cancelamento do financiamento sem onus. Prazo para resposta: 10 (dez) dias CONSECUTIVOS.
 
 
 
@@ -5168,12 +5173,12 @@ Elabore reclamacao com esta estrutura:
 1. TITULO "RECLAMACAO FORMAL - PROCON/VG - Vicio em Veiculo - Data - No"
 2. DOS FATOS - prosa corrida, sem listas. Narre: compra (novo/usado), vicio constatado, laudo veicular (se nao emitido: incluir como pedido), documentacao, se houve troca de veiculo. Use SEMPRE "vicio", NUNCA "defeito".
 3. DO DIREITO - art. 18 CDC (vicio em produto duravel), art. 26 par.3o (prazo para vicio oculto), art. 18 par.1o (prazo 30 dias), art. 50 CDC (garantia contratual). ${financ?'Incluir: o contrato de financiamento tem natureza ACESSORIA a compra e venda - rescindido o contrato principal, rescinde-se o acessorio (jurisprudencia TJMT consolidada). Mencionar violacao a boa-fe objetiva, deveres de informacao, transparencia e colaboracao (art. 4o, III CDC).':''} ${!gv('ve-laudo').includes('emitiu')&&!gv('ve-laudo').includes('Sim')?"Incluir: a nao emissao do laudo veicular constitui falha na prestacao do servico e violacao ao dever de informacao (art. 6o, III CDC).":''}
-4. DOS PEDIDOS - lista numerada com todos os pedidos. ${financ?'Incluir obrigatoriamente: rescisao do contrato de financiamento sem onus ao consumidor e abstencao de negativacao.':''}
+4. DOS PEDIDOS — lista numerada OBRIGATORIA com todos os pedidos. Esta secao NAO pode ser omitida. ${financ?'Incluir obrigatoriamente: rescisao do contrato de financiamento sem onus ao consumidor e abstencao de negativacao.':''} Prazo para resposta: 10 (dez) dias CONSECUTIVOS.
 
 
 FORMATACAO: texto corrido, sem asteriscos, sem markdown. NAO incluir encerramento, assinatura ou local/data. Maximo 400 palavras.`;
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1800,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     const texto=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');
     load.classList.remove('show'); txt.textContent=texto; txt.classList.add('show');
@@ -5720,42 +5725,30 @@ async function gerarMinuta() {
     : '';
 
   const prompt = 'IMPORTANTE: responda em portugues do Brasil formal, com acentuacao e ortografia corretas (use crase, til, acento agudo e circunflexo normalmente — por exemplo "razão", "não", "está", "função", "informações" — apesar de esta instrucao estar escrita sem acentos por motivos tecnicos, sua resposta deve ter acentuacao normal e correta).\n\n'
-    + 'TAREFA: Redigir uma minuta de despacho administrativo do PROCON de Varzea Grande-MT com EXATAMENTE 4 partes, nesta ordem. Copie o formato abaixo literalmente, substituindo apenas o conteudo.\n\n'
-    + 'PARTE 1 = um paragrafo curto (3-5 linhas) contando o relatorio da reclamacao inicial: quem reclama, contra quem, e qual e o problema, com datas e numeros especificos.\n\n'
-    + 'PARTE 2 = um paragrafo curto (3-5 linhas), SEPARADO da parte 1, contando apenas o que a empresa disse na defesa dela.\n\n'
-    + 'PARTE 3 = a parte MAIS LONGA. No MINIMO 2 paragrafos. Aqui voce analisa a fundo: compara o que o consumidor disse com o que a empresa respondeu, fala especificamente o que a empresa NAO PROVOU (documentos faltando, justificativa tecnica ausente, etc), e cita os artigos do CDC aplicaveis (art. 6 III, art. 6 VIII, art. 14, art. 18, art. 20, art. 31 — conforme o caso) explicando o porque de cada um se aplicar. Esta parte sozinha deve ser maior que as partes 1 e 2 somadas. SE houver um PARECER DE ABUSIVIDADE CONTRATUAL informado nos dados abaixo, voce DEVE obrigatoriamente incorporar esse parecer dentro da parte 3, integrando-o a analise (nao apenas copiar literalmente — reescreva incorporando ao raciocinio), citando o CDC art. 51 (nulidade de clausulas abusivas) e concluindo se a clausula deve ser declarada nula ou revisada.\n\n'
-    + 'PARTE 4 = OBRIGATORIAMENTE em formato de lista com alineas. Comece com a frase fixa "Diante do exposto, fica a empresa notificada para cumprir as seguintes obrigacoes:" e depois liste de 2 a 5 itens, CADA UM em sua propria linha, EXATAMENTE assim:\n'
-    + 'a) [primeira obrigacao especifica]\n'
-    + 'b) [segunda obrigacao especifica]\n'
-    + 'c) [terceira obrigacao especifica, se houver]\n'
-    + 'A ultima alinea deve terminar fixando o prazo: "no prazo de 10 (dez) dias CONSECUTIVOS, contados do recebimento desta notificacao."\n\n'
-    + 'REGRAS GERAIS: nao escreva titulos como "PARTE 1" ou "RELATORIO" no texto final — apenas separe as 4 partes por linha em branco. As partes 1, 2 e 3 sao prosa corrida sem alineas; SO a parte 4 tem alineas. Nao use asteriscos nem markdown. Nao escreva encerramento, assinatura, local ou data ao final — o papel timbrado ja tem esse espaco. Use sempre os dados reais (numeros, datas, nomes) fornecidos abaixo; nunca invente dado que nao foi informado. SE houver "OBSERVACOES DO ATENDENTE" preenchidas nos dados abaixo (diferente de "nenhuma"), voce DEVE obrigatoriamente levar essas observacoes em consideracao na minuta — elas podem conter alertas de prazo, informacoes relevantes do caso ou instrucoes especificas do atendente que devem influenciar a analise (parte 3) e/ou as obrigacoes determinadas (parte 4).\n\n'
-    + 'EXEMPLO DE COMO O RESULTADO FINAL DEVE FICAR (siga este padrao de extensao e formato, mas com o conteudo do caso real informado abaixo):\n\n'
-    + 'Trata-se de reclamacao formulada por Joao da Silva em face da Vivo S.A., relativa a fatura de fevereiro de 2026, no valor de R$ 340,00, na qual o consumidor alega cobranca de pacote de dados internacionais que nunca contratou nem utilizou, tendo realizado contato previo com a central de atendimento da empresa sob o protocolo no 998877, sem solucao.\n\n'
-    + 'A empresa apresentou defesa limitando-se a informar que o servico foi habilitado por solicitacao registrada em seu sistema interno, sem contudo anexar gravacao da ligacao, print de tela do aplicativo ou qualquer outro elemento que comprove a manifestacao de vontade do consumidor para a contratacao do servico impugnado.\n\n'
-    + 'A defesa apresentada e manifestamente insuficiente. O onus de comprovar a regularidade da contratacao e do fornecedor, e nao do consumidor, nos termos do art. 6, inciso VIII, do Codigo de Defesa do Consumidor, que autoriza a inversao do onus da prova em favor da parte hipossuficiente sempre que verossimil a alegacao. No caso, a empresa se limitou a alegar a existencia de registro interno, prova unilateral que nao se presta a demonstrar, por si so, a higidez da contratacao, sobretudo porque o consumidor nega expressamente ter solicitado o servico. Ademais, o art. 14 do Codigo de Defesa do Consumidor estabelece a responsabilidade objetiva do fornecedor de servicos pelos danos causados ao consumidor por defeitos na prestacao, somente afastada mediante prova de culpa exclusiva do consumidor ou de terceiro — prova que tambem nao foi produzida nos autos. Por fim, a cobranca de servico nao expressamente autorizado contraria o dever de informacao clara e adequada previsto no art. 6, inciso III, do mesmo diploma legal, que pressupoe o consentimento informado do consumidor para a contratacao de qualquer servico adicional.\n\n'
-    + 'Diante do exposto, fica a empresa notificada para cumprir as seguintes obrigacoes:\n'
-    + 'a) apresentar gravacao da ligacao ou print de tela do aplicativo que comprove a solicitacao do servico pelo consumidor;\n'
-    + 'b) estornar integralmente o valor de R$ 340,00 cobrado indevidamente na fatura de fevereiro de 2026, caso nao comprove a contratacao;\n'
-    + 'c) manifestar-se sobre a presente notificacao, no prazo de 10 (dez) dias CONSECUTIVOS, contados do recebimento desta notificacao.\n\n'
-    + 'FIM DO EXEMPLO. Repare que a parte 3 (analise) e claramente o trecho mais longo e aprofundado, com mais de um fundamento juridico explicado por extenso. Siga este mesmo padrao de profundidade e extensao para o caso real abaixo, mas use os fundamentos juridicos que realmente se aplicam aos fatos narrados.\n\n'
+    + 'Redija uma minuta de despacho administrativo do PROCON de Varzea Grande-MT. O texto deve soar como escrito por um atendente tecnico experiente — linguagem administrativa formal, fluida e segura, sem explicar o obvio, sem copiar texto de artigos de lei, sem conectivos artificiais. Quem le deve sentir que o autor domina o assunto e vai direto ao ponto.\n\n'
+    + 'O despacho tem 4 blocos separados por linha em branco, sem titulos visiveis:\n\n'
+    + 'BLOCO 1 — relatorio da inicial: em um paragrafo, identificar as partes pelo nome e numero do processo, e narrar o nucleo da reclamacao com todos os dados especificos do caso disponíveis nos dados abaixo (datas, numeros de contrato/UC/protocolo, valores, o que o consumidor pede). Completo e preciso, sem omitir dado relevante.\n\n'
+    + 'BLOCO 2 — relatorio da defesa: em um paragrafo, descrever objetivamente o que a empresa alegou ou apresentou em sua defesa, ou registrar a ausencia de defesa quando for o caso. Completo.\n\n'
+    + 'BLOCO 3 — analise juridica: avaliar a defesa com firmeza e precisao tecnica, em 2 paragrafos. Primeiro paragrafo: confrontar os argumentos da inicial com os da defesa, apontando especificamente o que a empresa comprovou e o que deixou de comprovar (documentos faltantes, ausencia de justificativa tecnica, provas unilaterais insuficientes, etc). Segundo paragrafo: fundamentacao juridica — citar os artigos do CDC aplicaveis de forma natural e integrada ao raciocinio, sem reproduzir o texto da lei e sem explicar o que o artigo diz; o artigo deve aparecer como referencia ao final da frase que ja contem o argumento, por exemplo: "...o que caracteriza falha no dever de informacao (CDC, art. 6o, III) e viola o onus probatorio que recai sobre o fornecedor (CDC, art. 6o, VIII)." Use quantos artigos forem relevantes ao caso, mas sempre dentro do texto corrido. SE houver parecer de abusividade contratual nos dados, integra-lo naturalmente neste bloco. O conjunto dos 2 paragrafos deve ser suficiente para fundamentar a decisao — nem superficial nem academico.\n\n'
+    + 'BLOCO 4 — obrigacoes: comecar com "Diante do exposto, notifique-se a empresa para que, no prazo de 10 (dez) dias consecutivos, cumpra as seguintes obrigacoes:" e listar em alineas a) b) c) TODOS os pedidos do consumidor informados abaixo, traduzidos em obrigacoes especificas e operacionais. Nao omitir nenhum pedido. Cada alinea: uma obrigacao concreta, sem generalizacoes.\n\n'
+    + (temAud ? 'Apos as alineas, incluir em paragrafo separado: ' + aud + '\n\n' : '')
+    + 'Nao incluir encerramento, assinatura, local ou data. Nao usar asteriscos, negrito, markdown ou marcadores. Usar sempre os dados reais do caso; nunca inventar dados nao informados. SE houver observacoes do atendente preenchidas (campo diferente de "nenhuma"), considera-las na analise e/ou nas obrigacoes.\n\n'
     + instrucaoEmpresas
-    + (temAud ? '\n\nApos a parte 4, acrescente em paragrafo separado: ' + aud : '')
-    + '\n\nDADOS DO CASO REAL A SER ANALISADO:\n'
+    + '\n\nDADOS DO CASO:\n'
     + 'PROCESSO: ' + gv('ad-proc') + '\n'
     + 'CONSUMIDOR: ' + gv('ad-cons') + '\n'
     + 'EMPRESA(S): ' + nomeEmpresas + '\n'
-    + 'RECLAMACAO DO CONSUMIDOR (texto completo): ' + recTruncMin + '\n'
+    + 'RECLAMACAO DO CONSUMIDOR: ' + recTruncMin + '\n'
     + defesasTexto + '\n'
     + linhaAnalisePrevia
-    + (parecerAbusividade ? 'PARECER DE ABUSIVIDADE CONTRATUAL (incorporar obrigatoriamente na parte 3 da analise): tipo de abusividade: ' + (tipoAbusivo||'nao especificado') + '. Parecer do atendente: ' + parecerAbusividade + '\n' : '')
-    + 'INTERACOES TELEFONICAS REGISTRADAS: ' + interacoesTexto + '\n'
-    + 'PROVIDENCIA QUE O ATENDENTE SELECIONOU NO SISTEMA: ' + (provAll.join('; ')||'notificar empresa')
-    + (temAud ? '\nAUDIENCIA: ' + aud : '')
-    + '\nOBSERVACOES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma');
+    + (parecerAbusividade ? 'PARECER DE ABUSIVIDADE CONTRATUAL (incorporar obrigatoriamente na parte 3): tipo: ' + (tipoAbusivo||'nao especificado') + '. Parecer: ' + parecerAbusividade + '\n' : '')
+    + 'PEDIDOS DO CONSUMIDOR (usar nas alineas da parte 4): ' + (provAll.join('; ')||'notificar empresa para manifestacao') + '\n'
+    + (temAud ? 'AUDIENCIA: ' + aud + '\n' : '')
+    + 'INTERACOES TELEFONICAS: ' + interacoesTexto + '\n'
+    + 'OBSERVACOES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma');
 
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3500,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');

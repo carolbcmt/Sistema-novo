@@ -1,3 +1,30 @@
-// PROCON/VG - API Handler - DO NOT TRANSLATE
-const k="x-api-key",m="method",h="headers",b="body",v="anthropic-version",c="Content-Type",a="application/json",p="POST",d="2023-06-01";
-export default async function handler(req,res){const r=await fetch("https://api.anthropic.com/v1/messages",{[m]:p,[h]:{[c]:a,[k]:process.env.ANTHROPIC_API_KEY,[v]:d},[b]:JSON.stringify(req.body)});const j=await r.json();res.status(200).json(j);}
+export default async function handler(req, res) {
+  try {
+    const body = req.body;
+    const bodyStr = JSON.stringify(body);
+    const hasPDF = bodyStr.includes('"document"') || bodyStr.includes('application/pdf');
+    
+    const headers = {
+      "Content-Type": "application/json",
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01"
+    };
+    
+    if (hasPDF) {
+      headers["anthropic-beta"] = "pdfs-2024-09-25";
+    }
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers,
+      body: bodyStr
+    });
+
+    const data = await response.json();
+    if (data.error) console.error("Anthropic API error:", JSON.stringify(data.error));
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error("Handler error:", err.message);
+    res.status(500).json({ error: { message: err.message } });
+  }
+}

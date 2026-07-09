@@ -5640,9 +5640,9 @@ async function analisarDefesa() {
   const defesa = empresas.length > 0 ? empresas.map(function(e){return (empresas.length>1?'['+e.nome+']: ':'')+e.defesa;}).join(' | ') : gv('ad-defesa');
 
   if (!reclamacao.trim() && !defesa.trim()) {
-    txt.textContent='Preencha pelo menos o texto da reclamacao ou da defesa antes de analisar.';
+    txt.textContent='Preencha pelo menos o texto da reclamação ou da defesa antes de analisar.';
     box.style.display='block';
-    btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
+    btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar análise comparativa com IA';
     return;
   }
 
@@ -5650,30 +5650,35 @@ async function analisarDefesa() {
   const defTrunc = defesa.substring(0, 3000);
   const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp');
 
-  const prompt = 'IMPORTANTE: responda em portugues do Brasil formal, com acentuacao e ortografia corretas (use crase, til, acento agudo e circunflexo normalmente — por exemplo "razão", "não", "está", "função" — apesar de esta instrucao estar escrita sem acentos por motivos tecnicos, sua resposta deve ter acentuacao normal e correta). '
-    + 'Voce e atendente tecnico do PROCON de Varzea Grande-MT. Escreva uma analise tecnica e fundamentada da defesa apresentada, em texto corrido e fluido (sem titulos, sem numeracao, sem topicos, sem asteriscos), mas TRAZENDO OS DADOS CONCRETOS DO CASO — nao seja generico.'
-    + ' A analise deve: (1) identificar o processo e as partes pelo nome/numero reais informados; (2) resumir o nucleo da reclamacao citando datas, numeros de UC/contrato/protocolo e valores quando informados; (3) resumir o nucleo da defesa apresentada pela empresa, citando especificamente o que ela alegou ou deixou de comprovar; (4) avaliar se a defesa e satisfatoria, indicando precisamente qual prova ou justificativa esta faltando (ex: historico de leituras, memoria de calculo, comprovante, nota fiscal) e com qual fundamento do CDC isso se relaciona (ex: art. 6, VIII — onus da prova; art. 14 — responsabilidade objetiva; art. 31 — informacao adequada); (5) indicar a providencia recomendada de forma especifica (ex: notificar a empresa para apresentar X documento em 10 dias consecutivos, ou arquivar, ou agendar audiencia).'
-    + ' Escreva entre 2 e 4 paragrafos curtos, completos e especificos ao caso — nem telegrafico nem prolixo. Traga os dados reais (numeros, datas, nomes) sempre que estiverem disponiveis nos textos abaixo; nao invente dados que nao foram informados.'
-    + ' PROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESAS: ' + nomeEmpresas
-    + ' --- RECLAMACAO: ' + (recTrunc || 'nao informada')
-    + ' --- DEFESAS: ' + (defTrunc || 'nao informada');
+  const prompt = 'Você é atendente técnico do PROCON de Várzea Grande-MT. Analise a inicial e a defesa do processo administrativo abaixo e produza uma ANÁLISE TÉCNICA CRUZADA em texto corrido, fluido e objetivo, compatível com a esfera administrativa.'
+    + '\n\nA análise deve cobrir, em parágrafos corridos:'
+    + '\n— Pontos convergentes: fatos reconhecidos por ambas as partes;'
+    + '\n— Pontos divergentes: onde há contradição entre as versões;'
+    + '\n— Omissões da defesa: fatos alegados pelo consumidor que a empresa não enfrentou, documentos que deveriam ter sido apresentados e não foram, provas unilaterais insuficientes;'
+    + '\n— Ônus probatório: se a empresa cumpriu o ônus que lhe compete (CDC, art. 6º, VIII) — NÃO declarar expressamente que "a defesa é insuficiente"; a constatação deve decorrer naturalmente da descrição das lacunas;'
+    + '\n— Recomendação objetiva: notificar para complementar com documentos específicos, agendar audiência, arquivar como fundamentada atendida, não fundamentada ou concluída.'
+    + '\n\nRegras: texto corrido e fluido, sem tópicos, sem asteriscos, sem títulos. Linguagem técnica mas acessível. Trazer os dados reais (nomes, números, datas, valores). Prazos sempre em dias consecutivos. Dano moral está fora da competência administrativa — orientar para a Defensoria Pública. Não incluir encerramento nem assinatura.'
+    + '\n\nPROCESSO: ' + gv('ad-proc') + ' | CONSUMIDOR: ' + gv('ad-cons') + ' | EMPRESA(S): ' + nomeEmpresas
+    + '\n\nRECLAMAÇÃO:\n' + (recTrunc || 'não informada')
+    + '\n\nDEFESA(S):\n' + (defTrunc || 'não informada');
 
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1600,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1800,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
-    const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel analisar.');
+    const texto = limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível analisar.');
     txt.textContent=texto;
     box.style.display='block';
     const campoEdicao = document.getElementById('ad-analise-texto');
     if(campoEdicao && !campoEdicao.value.trim()) campoEdicao.value = texto;
   } catch(e){
-    console.error('Erro analise:', e);
+    console.error('Erro análise:', e);
     txt.textContent='Erro: '+e.message;
     box.style.display='block';
   }
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar analise comparativa com IA';
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-sparkles" style="font-size:18px"></i> Gerar análise comparativa com IA';
 }
+
 
 async function gerarMinuta() {
   const box=document.getElementById('result-ad'), load=document.getElementById('rl-ad'),
@@ -5683,85 +5688,85 @@ async function gerarMinuta() {
   btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
 
   const empresas = getEmpresasAD();
-  const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp') || 'empresa nao informada';
+  const nomeEmpresas = empresas.map(function(e){return e.nome;}).join(', ') || gv('ad-emp') || 'empresa não informada';
   const instrucaoEmpresas = empresas.length > 1
-    ? 'Ha ' + empresas.length + ' empresas reclamadas. Analise e decida sobre cada uma individualmente, dedicando uma frase curta para cada empresa.'
+    ? 'Há ' + empresas.length + ' empresas reclamadas. As determinações do despacho devem ser subdivididas por empresa.'
     : '';
 
   let defesasTexto = '';
   if (empresas.length > 1) {
-    defesasTexto = empresas.map(function(e){return 'DEFESA DE ' + e.nome.toUpperCase() + ' (' + (e.datadef||'data nao informada') + '): ' + (e.defesa.substring(0,1500)||'sem defesa');}).join(' ||| ');
+    defesasTexto = empresas.map(function(e){return 'DEFESA DE ' + e.nome.toUpperCase() + ' (' + (e.datadef||'data não informada') + '): ' + (e.defesa.substring(0,1500)||'sem defesa');}).join('\n\n');
   } else {
-    const defPrincipal = empresas[0]?.defesa || gv('ad-defesa');
-    const dataPrincipal = empresas[0]?.datadef || gv('ad-datadef') || 'data nao informada';
-    defesasTexto = 'DEFESA (' + dataPrincipal + '): ' + defPrincipal.substring(0,1500);
+    const defPrincipal = (empresas[0] && empresas[0].defesa) ? empresas[0].defesa : gv('ad-defesa');
+    const dataPrincipal = (empresas[0] && empresas[0].datadef) ? empresas[0].datadef : (gv('ad-datadef') || 'data não informada');
+    defesasTexto = 'DEFESA (' + dataPrincipal + '):\n' + defPrincipal.substring(0,1500);
   }
 
   const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
   const audData = gv('ad-auddata');
   const audHora = gv('ad-audhora');
-  const audModal = gv('ad-modal') || document.getElementById('ad-modal')?.value || '';
+  const audModal = gv('ad-modal') || document.getElementById('ad-modal')&&document.getElementById('ad-modal').value || '';
   const temAud = provAll.some(function(p){return p.includes('audiencia');}) || audData;
   const aud = temAud
-    ? 'Fica designada audiencia de conciliacao para o dia ' + (audData || 'a definir')
-      + ' as ' + (audHora || 'a definir')
-      + ', na modalidade ' + (audModal || 'presencial')
-      + '. As partes deverao comparecer devidamente representadas.'
+    ? 'Fica designada audiência de conciliação para o dia ' + (audData||'a definir') + ' às ' + (audHora||'a definir') + ', na modalidade ' + (audModal||'presencial') + '. As partes deverão comparecer devidamente representadas.'
     : '';
 
-  const ignorarAnalisePrevia = document.getElementById('ad-ignorar-analise-previa')?.checked;
-  const analise = ignorarAnalisePrevia ? '' : (gv('ad-analise-texto') || document.getElementById('irt-analise')?.textContent || '');
-
-  // Capturar parecer de abusividade contratual, se houver
-  const temAbusividade = document.getElementById('ad-abusivo')?.value === 'Sim';
-  const tipoAbusivo = document.getElementById('ad-abusivo-tipo')?.value || '';
-  const parecerAbusividade = temAbusividade ? gv('ad-parecer-abusividade').substring(0,1200) : '';
-
-  // Coletar interacoes de telefone registradas nos formularios
-  const interacoesTel = [];
-  ['vp','vs','ne','cb','ve','fv','en','ag','ga','cd','sa','ed','mt','of','ec-clt','ec-inss','ec-serv','ec-rmc'].forEach(function(p){
-    const res = document.getElementById('tel-res-'+p)?.value;
-    const acordo = document.getElementById('tel-acordo-'+p)?.value;
-    const empresa = document.getElementById('tel-empresa-'+p)?.value;
-    const dataTel = document.getElementById('tel-data-'+p)?.value;
-    if (res || acordo) interacoesTel.push((empresa?empresa+': ':'')+res+(acordo?' — '+acordo:'')+(dataTel?' ('+dataTel+')':''));
-  });
-  const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : 'nenhuma interacao telefonica registrada';
-
-  const recTruncMin = gv('ad-pedidos').substring(0,1500);
+  const ignorarAnalisePrevia = document.getElementById('ad-ignorar-analise-previa')&&document.getElementById('ad-ignorar-analise-previa').checked;
+  const analise = ignorarAnalisePrevia ? '' : (gv('ad-analise-texto') || (document.getElementById('irt-analise')&&document.getElementById('irt-analise').textContent) || '');
   const analiseTrunc = analise ? analise.substring(0,1500) : '';
   const linhaAnalisePrevia = analiseTrunc
-    ? 'RASCUNHO INFORMAL FEITO ANTES PELO ATENDENTE, APENAS PARA SUA REFERENCIA (pode ser curto ou incompleto — IGNORE a extensao dele; voce DEVE produzir uma analise muito mais completa e profunda que este rascunho, usando-o so como pista do que ja foi percebido, nunca como modelo de tamanho ou limite de profundidade): ' + analiseTrunc + '\n'
+    ? 'ANÁLISE PRÉVIA DO ATENDENTE (rascunho — use como referência, mas aprofunde):\n' + analiseTrunc + '\n'
     : '';
 
-  const prompt = 'IMPORTANTE: responda em portugues do Brasil formal, com acentuacao e ortografia corretas (use crase, til, acento agudo e circunflexo normalmente — por exemplo "razão", "não", "está", "função", "informações" — apesar de esta instrucao estar escrita sem acentos por motivos tecnicos, sua resposta deve ter acentuacao normal e correta).\n\n'
-    + 'Redija uma minuta de despacho administrativo do PROCON de Varzea Grande-MT. O texto deve soar como escrito por um atendente tecnico experiente — linguagem administrativa formal, fluida e segura, sem explicar o obvio, sem copiar texto de artigos de lei, sem conectivos artificiais. Quem le deve sentir que o autor domina o assunto e vai direto ao ponto.\n\n'
-    + 'O despacho tem 4 blocos separados por linha em branco, sem titulos visiveis:\n\n'
-    + 'BLOCO 1 — relatorio da inicial: em um paragrafo, identificar as partes pelo nome e numero do processo, e narrar o nucleo da reclamacao com todos os dados especificos do caso disponíveis nos dados abaixo (datas, numeros de contrato/UC/protocolo, valores, o que o consumidor pede). Completo e preciso, sem omitir dado relevante.\n\n'
-    + 'BLOCO 2 — relatorio da defesa: em um paragrafo, descrever objetivamente o que a empresa alegou ou apresentou em sua defesa, ou registrar a ausencia de defesa quando for o caso. Completo.\n\n'
-    + 'BLOCO 3 — analise juridica: avaliar a defesa com firmeza e precisao tecnica, em 2 paragrafos. Primeiro paragrafo: confrontar os argumentos da inicial com os da defesa, apontando especificamente o que a empresa comprovou e o que deixou de comprovar (documentos faltantes, ausencia de justificativa tecnica, provas unilaterais insuficientes, etc). Segundo paragrafo: fundamentacao juridica — citar os artigos do CDC aplicaveis de forma natural e integrada ao raciocinio, sem reproduzir o texto da lei e sem explicar o que o artigo diz; o artigo deve aparecer como referencia ao final da frase que ja contem o argumento, por exemplo: "...o que caracteriza falha no dever de informacao (CDC, art. 6o, III) e viola o onus probatorio que recai sobre o fornecedor (CDC, art. 6o, VIII)." Use quantos artigos forem relevantes ao caso, mas sempre dentro do texto corrido. SE houver parecer de abusividade contratual nos dados, integra-lo naturalmente neste bloco. O conjunto dos 2 paragrafos deve ser suficiente para fundamentar a decisao — nem superficial nem academico.\n\n'
-    + 'BLOCO 4 — obrigacoes: comecar com "Diante do exposto, notifique-se a empresa para que, no prazo de 10 (dez) dias consecutivos, cumpra as seguintes obrigacoes:" e listar em alineas a) b) c) TODOS os pedidos do consumidor informados abaixo, traduzidos em obrigacoes especificas e operacionais. Nao omitir nenhum pedido. Cada alinea: uma obrigacao concreta, sem generalizacoes.\n\n'
-    + (temAud ? 'Apos as alineas, incluir em paragrafo separado: ' + aud + '\n\n' : '')
-    + 'Nao incluir encerramento, assinatura, local ou data. Nao usar asteriscos, negrito, markdown ou marcadores. Usar sempre os dados reais do caso; nunca inventar dados nao informados. SE houver observacoes do atendente preenchidas (campo diferente de "nenhuma"), considera-las na analise e/ou nas obrigacoes.\n\n'
-    + instrucaoEmpresas
-    + '\n\nDADOS DO CASO:\n'
-    + 'PROCESSO: ' + gv('ad-proc') + '\n'
-    + 'CONSUMIDOR: ' + gv('ad-cons') + '\n'
-    + 'EMPRESA(S): ' + nomeEmpresas + '\n'
-    + 'RECLAMACAO DO CONSUMIDOR: ' + recTruncMin + '\n'
-    + defesasTexto + '\n'
-    + linhaAnalisePrevia
-    + (parecerAbusividade ? 'PARECER DE ABUSIVIDADE CONTRATUAL (incorporar obrigatoriamente na parte 3): tipo: ' + (tipoAbusivo||'nao especificado') + '. Parecer: ' + parecerAbusividade + '\n' : '')
-    + 'PEDIDOS DO CONSUMIDOR (usar nas alineas da parte 4): ' + (provAll.join('; ')||'notificar empresa para manifestacao') + '\n'
-    + (temAud ? 'AUDIENCIA: ' + aud + '\n' : '')
-    + 'INTERACOES TELEFONICAS: ' + interacoesTexto + '\n'
-    + 'OBSERVACOES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma');
+  const temAbusividade = document.getElementById('ad-abusivo')&&document.getElementById('ad-abusivo').value === 'Sim';
+  const tipoAbusivo = document.getElementById('ad-abusivo-tipo')&&document.getElementById('ad-abusivo-tipo').value || '';
+  const parecerAbusividade = temAbusividade ? gv('ad-parecer-abusividade').substring(0,1200) : '';
+
+  const interacoesTel = [];
+  ['vp','vs','ne','cb','ve','fv','en','ag','ga','cd','sa','ed','mt','of','ec-clt','ec-inss','ec-serv','ec-rmc'].forEach(function(p){
+    const res = document.getElementById('tel-res-'+p)&&document.getElementById('tel-res-'+p).value;
+    const acordo = document.getElementById('tel-acordo-'+p)&&document.getElementById('tel-acordo-'+p).value;
+    if (res || acordo) interacoesTel.push(res+(acordo?' — '+acordo:''));
+  });
+  const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : 'nenhuma interação registrada';
+
+  const prompt = 'Você é atendente técnico do PROCON de Várzea Grande-MT. Redija um DESPACHO SANEADOR administrativo seguindo EXATAMENTE a estrutura abaixo, em linguagem técnica, fluida e institucional — firmeza sem prolixidade.'
+    + '\n\n' + instrucaoEmpresas
+    + '\n\nESTRUTURA OBRIGATÓRIA DO DESPACHO:\n'
+    + '\nProcesso n.º ' + gv('ad-proc')
+    + '\nConsumidor: ' + gv('ad-cons')
+    + '\nReclamada(s): ' + nomeEmpresas
+    + '\n\nDESPACHO\n'
+    + '\n[PARÁGRAFO 1 — NARRATIVA DOS FATOS: relato objetivo do que o consumidor narrou na inicial, com dados específicos do caso — datas, valores, números de contrato/UC/protocolo, o que foi comprado/contratado e qual o problema. Completo, sem omitir dado relevante.]'
+    + '\n\n[PARÁGRAFO 2 — SÍNTESE DA DEFESA: o que a empresa alegou em resposta, ou registrar a revelia se não houve defesa.]'
+    + '\n\n[PARÁGRAFO 3 — ANÁLISE TÉCNICA: cruzamento entre inicial e defesa — descrever objetivamente o que não foi comprovado, quais documentos não foram apresentados, quais pontos não foram enfrentados pela reclamada. NÃO declarar expressamente que "a defesa é insuficiente" — a constatação deve decorrer naturalmente da descrição das lacunas. Citar os fundamentos legais (CDC) de forma integrada ao raciocínio, sem reproduzir o texto da lei.' + (parecerAbusividade ? ' Incorporar o parecer de abusividade contratual informado abaixo.' : '') + (temAud ? '' : '') + ']'
+    + '\n\nAnte o exposto, NOTIFIQUE-SE a(s) empresa(s) para que, no prazo de 10 (dez) dias consecutivos, contados do recebimento da presente notificação:'
+    + '\na) [determinação 1 — específica e exequível]'
+    + '\nb) [determinação 2]'
+    + '\nc) [determinação 3, se houver]'
+    + (temAud ? '\n\n' + aud : '')
+    + '\n\nA ausência de manifestação no prazo implicará julgamento no estado dos autos, com presunção de veracidade dos fatos alegados pelo consumidor, nos termos do art. 6º, VIII, do CDC.'
+    + '\n\nPublique-se. Intime-se. Após, retornem os autos conclusos para análise.'
+    + '\n\nVárzea Grande-MT, [data].'
+    + '\n\n---'
+    + '\n\nDados para preenchimento dos colchetes acima:'
+    + '\nPROCESSO: ' + gv('ad-proc')
+    + '\nCONSUMIDOR: ' + gv('ad-cons')
+    + '\nEMPRESA(S): ' + nomeEmpresas
+    + '\n\nRECLAMAÇÃO DO CONSUMIDOR:\n' + gv('ad-pedidos').substring(0,1500)
+    + '\n\n' + defesasTexto
+    + '\n\n' + linhaAnalisePrevia
+    + (parecerAbusividade ? '\nPARECER DE ABUSIVIDADE CONTRATUAL (incorporar no parágrafo 3): ' + (tipoAbusivo||'') + '. ' + parecerAbusividade + '\n' : '')
+    + '\nPEDIDOS DO CONSUMIDOR (usar nas alíneas): ' + (provAll.join('; ')||'notificar empresa')
+    + '\nINTERAÇÕES: ' + interacoesTexto
+    + '\nOBSERVAÇÕES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma')
+    + '\n\nRegras finais: acentuação e ortografia completas em português. Prazos sempre em dias consecutivos. Não incluir seção de encerramento além do que está na estrutura acima. Dano moral fora da competência administrativa — orientar para Defensoria Pública se mencionado.';
 
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
-    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Nao foi possivel gerar.');
+    txt.textContent=limparTexto(d.content&&d.content[0]?d.content[0].text.trim():'Não foi possível gerar.');
     load.style.display='none'; txt.classList.add('show'); if(ra) ra.style.display='flex';
   } catch(e){
     load.style.display='none';
@@ -5770,6 +5775,7 @@ async function gerarMinuta() {
   }
   btn.disabled=false; btn.innerHTML='<i class="ti ti-file-text" style="font-size:18px"></i> Gerar minuta com IA';
 }
+
 
 async function chatCaso() {
   const pergunta = gv('ad-pergunta'); if (!pergunta) return;

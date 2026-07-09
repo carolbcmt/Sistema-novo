@@ -4791,13 +4791,23 @@ async function gerarGenerica(pref, tipoRec, artigo) {
   const prompt=`IMPORTANTE: responda em portugues do Brasil formal, com acentuacao e ortografia corretas (use crase, til, acento agudo e circunflexo normalmente — por exemplo "razão", "não", "está", "função", "informações" — apesar de esta instrucao estar escrita sem acentos por motivos tecnicos, sua resposta deve ter acentuacao normal e correta).
 
 Voce e atendente tecnico do PROCON de Varzea Grande - MT. Elabore RECLAMACAO FORMAL completa para: "${tipoRec}" (${artigo}).
-DADOS:\n${campos.join('\n')}\nPRETENSAO: ${pretAll.join('; ')||'a definir'}\nDOCS: ${docs}\nOBS: ${gv(pref+'-obs')||'sem observacoes'}
+DADOS DO CASO (use TODOS para compor os fatos):
+QUEM: ${campos.filter(c=>c.includes('Consumidor')||c.includes('Nome')).join(' | ')||'nao informado'}
+QUANDO: ${campos.filter(c=>c.includes('Data')||c.includes('data')).join(' | ')||'nao informado'}
+ONDE: ${campos.filter(c=>c.includes('Canal')||c.includes('Local')||c.includes('canal')||c.includes('local')||c.includes('loja')||c.includes('Loja')).join(' | ')||'nao informado'}
+FORNECEDOR: ${campos.filter(c=>c.includes('Fornecedor')||c.includes('Empresa')||c.includes('Razao')||c.includes('CNPJ')).join(' | ')||'nao informado'}
+O QUE/VALOR: ${campos.filter(c=>c.includes('Produto')||c.includes('Servico')||c.includes('Valor')||c.includes('valor')||c.includes('Preco')).join(' | ')||'nao informado'}
+PROBLEMA: ${campos.filter(c=>c.includes('Situacao')||c.includes('Descricao')||c.includes('Natureza')||c.includes('vicio')||c.includes('Vicio')).join(' | ')||'nao informado'}
+TODOS OS DADOS: ${campos.join(' | ')}
+PRETENSAO: ${pretAll.join('; ')||'a definir'}
+DOCS ANEXADOS: ${docs}
+OBS: ${gv(pref+'-obs')||'sem observacoes'}
 ---
 Estrutura OBRIGATORIA em 4 secoes, nesta ordem:
 1) TITULO curto — "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No"
-2) DOS FATOS — prosa corrida, CONCISA, 3 a 5 linhas. Apenas o cerne do conflito. Para vicio: sempre "vicio", nunca "defeito".
-3) DO DIREITO — MAXIMO 4 linhas. Citar SOMENTE os 1 a 3 artigos mais diretamente aplicaveis, em prosa corrida. Sem transcricao de texto de lei. Sem comentarios desnecessarios. Ir direto ao ponto.${instrucaoEspecifica}
-4) DOS PEDIDOS — lista numerada com TODOS os pedidos do consumidor (baseado no campo PRETENSAO acima). Esta secao e OBRIGATORIA e nao pode ser omitida. Prazo para resposta da empresa: SEMPRE 10 (dez) dias CONSECUTIVOS. NAO incluir encerramento, assinatura, local ou data.
+2) DOS FATOS — prosa corrida, com todos os dados relevantes do caso (quem, quando, onde, o que foi comprado/contratado, qual o valor, qual o problema, o que ja foi tentado para resolver). Para vicio: sempre "vicio", nunca "defeito". Encerrar obrigatoriamente com a frase: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
+3) DO DIREITO — artigos do CDC aplicaveis ao caso, citados de forma natural e integrada ao texto corrido, sem reproduzir o texto da lei, sem explicar o que o artigo diz, sem listas. Os artigos devem aparecer como referencia ao final da frase que ja contem o argumento juridico. Citar apenas os diretamente aplicaveis.${instrucaoEspecifica}
+4) DOS PEDIDOS — lista numerada com TODOS os pedidos do consumidor (campo PRETENSAO acima). OBRIGATORIA, nao pode ser omitida. Prazo para resposta: SEMPRE 10 (dez) dias CONSECUTIVOS. NAO incluir encerramento, assinatura, local ou data.
 `;
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -5110,7 +5120,7 @@ Estrutura obrigatoria:
 
 1. TITULO - "RECLAMACAO FORMAL - PROCON/VG - Processo no [No] - Data: [data]"
 
-2. DOS FATOS - paragrafos corridos em prosa, sem listas ou marcadores. Narrativa cronologica: compra, surgimento do vicio, encaminhamento a assistencia (se houver). Use SEMPRE "vicio", NUNCA "defeito". Identifique consumidor e fornecedor pelos nomes.
+2. DOS FATOS - paragrafos corridos em prosa, sem listas ou marcadores. Narrativa cronologica: compra (quando, onde, qual valor), surgimento do vicio, encaminhamento a assistencia (se houver). Use SEMPRE "vicio", NUNCA "defeito". Identifique consumidor e fornecedor pelos nomes. Encerrar com: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
 
 3. DO DIREITO - cite apenas os 2-4 artigos do CDC mais aplicaveis. Texto corrido, sem reproduzir longos trechos da lei. Se bem essencial: fundamente dispensa do prazo de 30 dias (art. 18 par.3o). Se prazo esgotado: fundamente art. 18 par.1o. Se financiado e negocio desfeito: art. 52 CDC.
 
@@ -6166,7 +6176,7 @@ async function gerarFraude() {
     + ' | OUTROS DOCS: ' + (gv('fb-outros-texto') || 'nenhum')
     + ' | PEDIDOS: ' + (pedidos.join('; ') || 'ressarcimento dos valores')
     + ' | OBSERVACOES: ' + (gv('fb-obs') || 'nenhuma')
-    + ' | A reclamacao deve mencionar: (1) os fatos narrados pelo consumidor; (2) a modalidade da fraude e como ocorreu; (3) a obrigacao do banco de identificar transacoes atipicas nos termos do art. 39-B da Res. BCB 01/2020 e da Res. BCB 4.658/2018; (4) a responsabilidade objetiva do banco com base na Sumula 479 do STJ e no art. 14 do CDC; (5) os pedidos de providencias administrativas. NAO mencionar dano moral. NAO incluir encerramento nem assinatura. Linguagem administrativa formal, texto corrido, maximo 300 palavras.';
+    + ' | A reclamacao deve mencionar: (1) os fatos narrados pelo consumidor; (2) a modalidade da fraude e como ocorreu; (3) a obrigacao do banco de identificar transacoes atipicas nos termos do art. 39-B da Res. BCB 01/2020 e da Res. BCB 4.658/2018; (4) a responsabilidade objetiva do banco com base na Sumula 479 do STJ e no art. 14 do CDC; (5) os pedidos de providencias administrativas. NAO mencionar dano moral. Ao final dos fatos, incluir: Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa. NAO incluir encerramento nem assinatura. Linguagem administrativa formal, texto corrido, maximo 300 palavras.';
 
   try {
     const r = await fetch('/api/chat', {

@@ -4914,7 +4914,7 @@ async function chamarIA(prompt, btnId, resultId, txtId) {
   box.classList.remove('show');
   try {
     const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 800, messages: [{ role: 'user', content: prompt }] }) });
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 800, messages: [{ role: 'user', content: prompt }] }) });
     const d = await r.json();
     txt.textContent = d.content && d.content[0] ? d.content[0].text.trim() : 'Nao foi possivel gerar.';
     box.classList.add('show');
@@ -5009,7 +5009,7 @@ async function lerDocumentoParaCampo(file, campoId, statusId) {
     ];
 
     const r = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:4000, messages:[{role:'user', content: msgContent}] }) });
+      body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:4000, messages:[{role:'user', content: msgContent}] }) });
     const d = await r.json();
     console.log('API response lerDoc:', JSON.stringify(d).substring(0,200));
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
@@ -5040,7 +5040,7 @@ async function autoFill(file, tid, idx) {
     const prompt = `Analise esta imagem (nota fiscal, cupom, etiqueta, contrato, foto de produto - para o PROCON). Extraia e responda APENAS com JSON valido sem markdown:
 {"fornecedor":null,"cnpj":null,"fabricante":null,"fab_cnpj":null,"produto":null,"marca":null,"modelo":null,"serie":null,"valor":null,"data_compra":null,"forma_pagamento":null,"entrada":null,"parcelas":null,"financiadora":null}`;
     const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content: [
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, messages: [{ role: 'user', content: [
         { type: 'image', source: { type: 'base64', media_type: mt, data: b64 } },
         { type: 'text', text: prompt }
       ]}] }) });
@@ -5416,7 +5416,7 @@ async function gerarTextoTel(pref) {
     + ' Sem topicos, sem listas, sem asteriscos. Linguagem administrativa formal e clara.';
 
   try {
-    const r = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user', content:prompt}]}) });
+    const r = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:1000, messages:[{role:'user', content:prompt}]}) });
     const d = await r.json();
     if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const raw = d.content && d.content[0] ? d.content[0].text.trim() : 'Erro ao gerar.';
@@ -5474,7 +5474,7 @@ async function gerarDocAdm(pref) {
       + '. REGRAS OBRIGATORIAS: texto em prosa corrida, sem topicos, sem asteriscos, sem marcadores, sem bullets; paragrafo de identificacao + paragrafo do pedido + paragrafo de fechamento; espaco para assinaturas ao final; nao use markdown, nao use negrito.';
   }
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
@@ -5502,7 +5502,7 @@ async function gerarCertidao() {
     + ' Modelo exato de tom: "CERTIFICO que o(a) Sr(a). [nome], CPF no [cpf], compareceu a esta Coordenadoria de Defesa do Consumidor - PROCON/VG, em [data], as [hora], e apresentou defesa administrativa no ambito do processo no [proc], instaurado em face de [empresa], relativo a [objeto]. Nada mais havendo, lavrei a presente certidao."';
 
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:600,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
@@ -5796,7 +5796,7 @@ async function chatCaso() {
     + '. Responda de forma objetiva e tecnica, em linguagem acessivel ao atendente do PROCON. Sem asteriscos, sem markdown.';
 
   try {
-    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user', content:prompt}]})});
+    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:1000, messages:[{role:'user', content:prompt}]})});
     const d = await r.json();
     if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     txt.textContent = limparTexto(d.content && d.content[0] ? d.content[0].text.trim() : 'Nao foi possivel responder.');

@@ -4805,7 +4805,7 @@ OBS: ${gv(pref+'-obs')||'sem observacoes'}
 ---
 Estrutura OBRIGATORIA em 4 secoes, nesta ordem:
 1) TITULO curto — "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No"
-2) DOS FATOS — prosa corrida, com todos os dados relevantes do caso (quem, quando, onde, o que foi comprado/contratado, qual o valor, qual o problema, o que ja foi tentado para resolver). Para vicio: sempre "vicio", nunca "defeito". Encerrar obrigatoriamente com a frase: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
+2) DOS FATOS — paragrafos curtos (maximo 6 a 7 linhas cada), objetivos e diretos. Narrar apenas os fatos essenciais: quem, quando, onde, o que foi comprado/contratado, valor, o problema e o que ja foi tentado. Quando houver documentos anexados, nao resumi-los nem transcrevê-los — referencia-los de forma precisa e integrada ao fato narrado, conectando o documento como prova do que esta sendo afirmado (ex: "Conforme extrato anexo, o desconto de R$ 234,00 incide sobre o beneficio desde abril/2025..."). Sem divagacoes, sem repeticoes, sem detalhes irrelevantes. Para vicio: sempre "vicio", nunca "defeito". Encerrar obrigatoriamente com: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
 3) DO DIREITO — artigos do CDC aplicaveis ao caso, citados de forma natural e integrada ao texto corrido, sem reproduzir o texto da lei, sem explicar o que o artigo diz, sem listas. Os artigos devem aparecer como referencia ao final da frase que ja contem o argumento juridico. Citar apenas os diretamente aplicaveis.${instrucaoEspecifica}
 4) DOS PEDIDOS — lista numerada com TODOS os pedidos do consumidor (campo PRETENSAO acima). OBRIGATORIA, nao pode ser omitida. Prazo para resposta: SEMPRE 10 (dez) dias CONSECUTIVOS. NAO incluir encerramento, assinatura, local ou data.
 `;
@@ -4914,7 +4914,7 @@ async function chamarIA(prompt, btnId, resultId, txtId) {
   box.classList.remove('show');
   try {
     const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 800, messages: [{ role: 'user', content: prompt }] }) });
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 800, messages: [{ role: 'user', content: prompt }] }) });
     const d = await r.json();
     txt.textContent = d.content && d.content[0] ? d.content[0].text.trim() : 'Nao foi possivel gerar.';
     box.classList.add('show');
@@ -5009,7 +5009,7 @@ async function lerDocumentoParaCampo(file, campoId, statusId) {
     ];
 
     const r = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:4000, messages:[{role:'user', content: msgContent}] }) });
+      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:4000, messages:[{role:'user', content: msgContent}] }) });
     const d = await r.json();
     console.log('API response lerDoc:', JSON.stringify(d).substring(0,200));
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
@@ -5040,7 +5040,7 @@ async function autoFill(file, tid, idx) {
     const prompt = `Analise esta imagem (nota fiscal, cupom, etiqueta, contrato, foto de produto - para o PROCON). Extraia e responda APENAS com JSON valido sem markdown:
 {"fornecedor":null,"cnpj":null,"fabricante":null,"fab_cnpj":null,"produto":null,"marca":null,"modelo":null,"serie":null,"valor":null,"data_compra":null,"forma_pagamento":null,"entrada":null,"parcelas":null,"financiadora":null}`;
     const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, messages: [{ role: 'user', content: [
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content: [
         { type: 'image', source: { type: 'base64', media_type: mt, data: b64 } },
         { type: 'text', text: prompt }
       ]}] }) });
@@ -5120,8 +5120,7 @@ Estrutura obrigatoria:
 
 1. TITULO - "RECLAMACAO FORMAL - PROCON/VG - Processo no [No] - Data: [data]"
 
-2. DOS FATOS - paragrafos corridos em prosa, sem listas ou marcadores. Narrativa cronologica: compra (quando, onde, qual valor), surgimento do vicio, encaminhamento a assistencia (se houver). Use SEMPRE "vicio", NUNCA "defeito". Identifique consumidor e fornecedor pelos nomes. Encerrar com: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
-
+2. DOS FATOS - paragrafos curtos (maximo 6 a 7 linhas cada), objetivos. Narrativa cronologica: compra (quando, onde, qual valor), surgimento do vicio, encaminhamento a assistencia (se houver). Quando houver documentos anexados, referencia-los com precisao integrada ao fato (ex: "Conforme nota fiscal anexa...", "Consoante laudo tecnico juntado..."). Sem repeticoes nem detalhes irrelevantes. Use SEMPRE "vicio", NUNCA "defeito". Encerrar com: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
 3. DO DIREITO - cite apenas os 2-4 artigos do CDC mais aplicaveis. Texto corrido, sem reproduzir longos trechos da lei. Se bem essencial: fundamente dispensa do prazo de 30 dias (art. 18 par.3o). Se prazo esgotado: fundamente art. 18 par.1o. Se financiado e negocio desfeito: art. 52 CDC.
 
 4. DOS PEDIDOS — lista numerada OBRIGATORIA com todos os pedidos do consumidor ao fornecedor. Esta secao NAO pode ser omitida. Se bem essencial ou prazo esgotado: primeiro pedido = troca imediata. Se financiado: incluir cancelamento do financiamento sem onus. Prazo para resposta: 10 (dez) dias CONSECUTIVOS.
@@ -5416,7 +5415,7 @@ async function gerarTextoTel(pref) {
     + ' Sem topicos, sem listas, sem asteriscos. Linguagem administrativa formal e clara.';
 
   try {
-    const r = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:1000, messages:[{role:'user', content:prompt}]}) });
+    const r = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user', content:prompt}]}) });
     const d = await r.json();
     if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const raw = d.content && d.content[0] ? d.content[0].text.trim() : 'Erro ao gerar.';
@@ -5474,7 +5473,7 @@ async function gerarDocAdm(pref) {
       + '. REGRAS OBRIGATORIAS: texto em prosa corrida, sem topicos, sem asteriscos, sem marcadores, sem bullets; paragrafo de identificacao + paragrafo do pedido + paragrafo de fechamento; espaco para assinaturas ao final; nao use markdown, nao use negrito.';
   }
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
@@ -5502,7 +5501,7 @@ async function gerarCertidao() {
     + ' Modelo exato de tom: "CERTIFICO que o(a) Sr(a). [nome], CPF no [cpf], compareceu a esta Coordenadoria de Defesa do Consumidor - PROCON/VG, em [data], as [hora], e apresentou defesa administrativa no ambito do processo no [proc], instaurado em face de [empresa], relativo a [objeto]. Nada mais havendo, lavrei a presente certidao."';
 
   try {
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:600,messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
     if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     const raw=d.content&&d.content[0]?d.content[0].text.trim():'Erro ao gerar.';
@@ -5737,9 +5736,9 @@ async function gerarMinuta() {
     + '\nConsumidor: ' + gv('ad-cons')
     + '\nReclamada(s): ' + nomeEmpresas
     + '\n\nDESPACHO\n'
-    + '\n[PARÁGRAFO 1 — NARRATIVA DOS FATOS: relato objetivo do que o consumidor narrou na inicial, com dados específicos do caso — datas, valores, números de contrato/UC/protocolo, o que foi comprado/contratado e qual o problema. Completo, sem omitir dado relevante.]'
-    + '\n\n[PARÁGRAFO 2 — SÍNTESE DA DEFESA: o que a empresa alegou em resposta, ou registrar a revelia se não houve defesa.]'
-    + '\n\n[PARÁGRAFO 3 — ANÁLISE TÉCNICA: cruzamento entre inicial e defesa — descrever objetivamente o que não foi comprovado, quais documentos não foram apresentados, quais pontos não foram enfrentados pela reclamada. NÃO declarar expressamente que "a defesa é insuficiente" — a constatação deve decorrer naturalmente da descrição das lacunas. Citar os fundamentos legais (CDC) de forma integrada ao raciocínio, sem reproduzir o texto da lei.' + (parecerAbusividade ? ' Incorporar o parecer de abusividade contratual informado abaixo.' : '') + (temAud ? '' : '') + ']'
+    + '\n[PARÁGRAFO 1 — RELATÓRIO DA INICIAL: usar estilo haiku — frases curtas, diretas, sem conectivos desnecessários. Apenas os fatos essenciais: quem reclama, contra quem, o quê, quando, valor, qual o problema. Sem floreios, sem texto de preenchimento. Exemplo de tom: "Trata-se de reclamação de João Silva em face do Banco X. Empréstimo consignado no valor de R$ 3.400,00, contratado em 15/03/2025. Consumidor não reconhece a contratação. Descontos de R$ 234,00 incidem sobre o benefício de aposentadoria desde abril de 2025."]'
+    +    + '\\n\\n[PARÁGRAFO 2 — RELATÓRIO DA DEFESA: estilo meio-termo — objetivo e direto, mas com registro completo dos elementos relevantes. Seguir esta ordem: (a) SE a empresa arguiu preliminar (prescrição, ilegitimidade de parte, intempestividade ou outra): registrar primeiro — Em sede preliminar, a empresa arguiu [tipo], sustentando [resumo em uma frase]. NÃO analisar o mérito da preliminar — apenas documentar o que foi arguido. (b) Síntese objetiva do mérito da defesa — frases curtas e diretas. (c) O que não foi apresentado — documentos faltantes, provas ausentes. SE não houver preliminar: ir direto para (b) e (c), sem mencionar preliminar.]'
+    + '\n\n[PARÁGRAFO 3 — ANÁLISE TÉCNICA: aqui retorna o estilo técnico-jurídico normal — texto corrido, fundamentado, fluido. Cruzamento entre inicial e defesa, descrevendo objetivamente o que não foi comprovado e os fundamentos legais integrados ao raciocínio (CDC). NÃO declarar expressamente que "a defesa é insuficiente". A constatação deve decorrer naturalmente da descrição das lacunas.' + (parecerAbusividade ? ' Incorporar o parecer de abusividade contratual.' : '') + ']'
     + '\n\nAnte o exposto, NOTIFIQUE-SE a(s) empresa(s) para que, no prazo de 10 (dez) dias consecutivos, contados do recebimento da presente notificação:'
     + '\na) [determinação 1 — específica e exequível]'
     + '\nb) [determinação 2]'
@@ -5796,7 +5795,7 @@ async function chatCaso() {
     + '. Responda de forma objetiva e tecnica, em linguagem acessivel ao atendente do PROCON. Sem asteriscos, sem markdown.';
 
   try {
-    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({model:'claude-haiku-4-5-20251001', max_tokens:1000, messages:[{role:'user', content:prompt}]})});
+    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, messages:[{role:'user', content:prompt}]})});
     const d = await r.json();
     if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
     txt.textContent = limparTexto(d.content && d.content[0] ? d.content[0].text.trim() : 'Nao foi possivel responder.');

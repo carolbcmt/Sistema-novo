@@ -288,11 +288,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 /* Checklist providências */
 #checklist-pp label:hover{border-color:var(--accent)!important;background:rgba(198,40,40,0.02)!important}
 #checklist-pp input[type="checkbox"]:checked+div strong{color:var(--accent)}
-</style><style id="mask-validation-css">
+/* Validação visual de campos */
 .input-valid{border-color:#2ecc71!important;box-shadow:0 0 0 2px rgba(46,204,113,.15)!important}
 .input-invalid{border-color:#e74c3c!important;box-shadow:0 0 0 2px rgba(231,76,60,.15)!important}
-</style>
-</head>
+</style></head>
 <body>
 
 <script>
@@ -510,7 +509,6 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       <span>Consignado Não Reconhecido</span>
       <span class="nav-badge">Fraude</span>
     </div>
-
 
     <div class="nav-divider"></div>
     <div class="sidebar-section"><div class="sidebar-section-label">Novas Categorias</div></div>
@@ -5051,169 +5049,252 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
   </div>
 
 
-    <!-- ═══ NOVAS CATEGORIAS — SCREENS ═══ -->
-
-    <!-- SCREEN: Plano de Saúde -->
-    <div id="screen-ps" style="display:none">
-      <div style="background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)">
-        <h3 style="margin:0 0 16px;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-heartbeat" style="font-size:22px;color:var(--accent,#C62828)"></i> Reclamação — Plano de Saúde <span style="font-size:12px;font-weight:400;color:var(--text2,#64748b)">(Arts. 6, 14, 35, 51 CDC + Lei 9.656/98)</span></h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div style="display:flex;flex-direction:column;gap:4px"><label for="ps-num" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Atendimento</label><input type="text" id="ps-num" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-data" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data</label><input type="text" id="ps-data" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-canal" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Canal</label><select id="ps-canal" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="Telefone">Telefone</option><option value="E-mail">E-mail</option><option value="Whatsapp">Whatsapp</option><option value="Oficio">Oficio</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-atend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Atendente</label><input type="text" id="ps-atend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONSUMIDOR</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-cn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome Consumidor</label><input type="text" id="ps-cn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-cpf" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CPF</label><input type="text" id="ps-cpf" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="000.000.000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-tel" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Telefone</label><input type="text" id="ps-tel" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="(00) 00000-0000"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-end" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço</label><input type="text" id="ps-end" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">OPERADORA / PLANO</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-fn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Operadora (Razão Social)</label><input type="text" id="ps-fn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-fcnpj" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CNPJ Operadora</label><input type="text" id="ps-fcnpj" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="00.000.000/0000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-plano" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome do Plano</label><input type="text" id="ps-plano" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-contrato" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Contrato/Cartão</label><input type="text" id="ps-contrato" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-tipo" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Tipo de Plano</label><select id="ps-tipo" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Individual">Individual</option><option value="Familiar">Familiar</option><option value="Coletivo por adesão">Coletivo por adesão</option><option value="Coletivo empresarial">Coletivo empresarial</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-datacontrato" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data Contratação</label><input type="text" id="ps-datacontrato" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-valor" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Mensalidade (R$)</label><input type="text" id="ps-valor" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="R$ 0,00"></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">PROBLEMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ps-natureza" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Natureza do Problema</label><select id="ps-natureza" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Negativa de cobertura">Negativa de cobertura</option><option value="Reajuste abusivo">Reajuste abusivo</option><option value="Carencia indevida">Carencia indevida</option><option value="Descredenciamento de rede">Descredenciamento de rede</option><option value="Cancelamento unilateral">Cancelamento unilateral</option><option value="Demora/negativa de autorizacao">Demora/negativa de autorizacao</option><option value="Cobranca indevida">Cobranca indevida</option><option value="Outro">Outro</option></select></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="ps-desc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Descrição Detalhada</label><textarea id="ps-desc" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="ps-obs" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Observações</label><textarea id="ps-obs" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">PRETENSÕES</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ps" value="Cobertura do procedimento"> Cobertura do procedimento</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ps" value="Revisão do reajuste"> Revisão do reajuste</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ps" value="Restituição de valores"> Restituição de valores</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ps" value="Manutenção da rede credenciada"> Manutenção da rede credenciada</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ps" value="Cancelamento sem multa"> Cancelamento sem multa</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ps" value="Indenização por danos"> Indenização por danos</label></div><div style="margin-top:8px"><label for="ps-pret-outro" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Outra pretensão</label><input type="text" id="ps-pret-outro" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;margin-top:4px" placeholder="Especifique..."></div></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">DOCUMENTOS</label><div style="margin-top:6px"><input type="file" id="arq-ps" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="font-size:13px"><div id="arq-list-ps" style="margin-top:4px;font-size:12px;color:#64748b"></div></div></div>
+  <div id="screen-ps" style="display:none">
+    <div class="card">
+      <div class="card-header"><h2><i class="ti ti-heartbeat"></i>Plano de Saúde</h2><p>Reclamação Formal — Lei 9.656/1998</p></div>
+      <div class="card-body">
+        <div class="field"><label>Nome do Consumidor</label><input type="text" id="ps-consumidor" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="ps-cpf" placeholder="000.000.000-00"></div>
+        <div class="field"><label>Operadora / Empresa</label><input type="text" id="ps-operadora" placeholder="Nome da operadora"></div>
+        <div class="field"><label>CNPJ</label><input type="text" id="ps-cnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="field"><label>Tipo de Plano</label><input type="text" id="ps-plano" placeholder="Individual, familiar, empresarial..."></div>
+        <div class="field"><label>Nº do Contrato/Carteirinha</label><input type="text" id="ps-numero-contrato" placeholder=""></div>
+        <div class="field"><label>Data do Fato</label><input type="text" id="ps-data-fato" placeholder="DD/MM/AAAA"></div>
+        <div class="field"><label>Valor da Mensalidade</label><input type="text" id="ps-valor" placeholder="R$ 0,00"></div>
+        <div class="field"><label>Descrição do Problema</label><textarea id="ps-descricao" rows="3" placeholder="Descreva o problema com o plano de saúde..."></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="ps-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
+        <div class="field"><label>Pretensões do Consumidor</label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Cobertura do procedimento negado"> Cobertura do procedimento negado</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Redução do reajuste abusivo"> Redução do reajuste abusivo</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Restituição de valores cobrados indevidamente"> Restituição de valores cobrados indevidamente</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Manutenção do plano sem alteração unilateral"> Manutenção do plano sem alteração unilateral</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Portabilidade de carências"> Portabilidade de carências</label>
+            <input type="text" id="ps-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
+          </div>
         </div>
-        <div style="margin-top:20px;text-align:center">
-          <button id="btn-gerar-ps" onclick="gerarGenerica('ps','Plano de Saude','Arts. 6, 14, 35, 51 CDC + Lei 9.656/98')" class="btn-primary" style="background:var(--accent,#C62828);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s">
-            <i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação — Plano de Saúde (Arts. 6, 14, 35, 51 CDC + Lei 9.656/98)
-          </button>
-        </div>
-      </div>
-      <div id="result-ps" class="result-box" style="margin-top:16px">
-        <div id="rl-ps" class="result-loading"><span class="spin" style="border-color:rgba(198,40,40,.3);border-top-color:#C62828"></span> Gerando reclamação...</div>
-        <pre id="rt-ps" class="result-text" style="display:none;white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.6;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px"></pre>
-        <div id="at-ps" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div id="ra-ps" class="result-actions" style="display:none;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="copiarGenerico('ps')" style="background:var(--accent,#C62828);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-copy"></i> Copiar</button>
-          <button onclick="imprimirGenerico('ps')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-printer"></i> Imprimir</button>
-          <button onclick="limparGenerico('ps')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-trash"></i> Limpar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SCREEN: Telecomunicações -->
-    <div id="screen-tc" style="display:none">
-      <div style="background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)">
-        <h3 style="margin:0 0 16px;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-antenna-bars-5" style="font-size:22px;color:var(--accent,#C62828)"></i> Reclamação — Telecomunicações <span style="font-size:12px;font-weight:400;color:var(--text2,#64748b)">(Arts. 6, 14, 20, 22, 39 CDC)</span></h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div style="display:flex;flex-direction:column;gap:4px"><label for="tc-num" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Atendimento</label><input type="text" id="tc-num" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-data" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data</label><input type="text" id="tc-data" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-canal" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Canal</label><select id="tc-canal" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="Telefone">Telefone</option><option value="E-mail">E-mail</option><option value="Whatsapp">Whatsapp</option><option value="Oficio">Oficio</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-atend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Atendente</label><input type="text" id="tc-atend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONSUMIDOR</div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-cn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome Consumidor</label><input type="text" id="tc-cn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-cpf" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CPF</label><input type="text" id="tc-cpf" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="000.000.000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-tel" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Telefone</label><input type="text" id="tc-tel" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="(00) 00000-0000"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-end" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço</label><input type="text" id="tc-end" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">OPERADORA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-fn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Operadora (Razão Social)</label><input type="text" id="tc-fn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-fcnpj" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CNPJ</label><input type="text" id="tc-fcnpj" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="00.000.000/0000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-servico" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Serviço</label><select id="tc-servico" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Internet banda larga">Internet banda larga</option><option value="Telefonia móvel">Telefonia móvel</option><option value="Telefonia fixa">Telefonia fixa</option><option value="TV por assinatura">TV por assinatura</option><option value="Combo/pacote">Combo/pacote</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-linha" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Linha/Contrato</label><input type="text" id="tc-linha" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-plano" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Plano Contratado</label><input type="text" id="tc-plano" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-valor" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Valor Mensal (R$)</label><input type="text" id="tc-valor" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="R$ 0,00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-protocolo" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Protocolo(s) de Reclamação</label><input type="text" id="tc-protocolo" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">PROBLEMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="tc-natureza" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Natureza do Problema</label><select id="tc-natureza" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Cobranca indevida">Cobranca indevida</option><option value="Velocidade inferior">Velocidade inferior</option><option value="Cancelamento negado">Cancelamento negado</option><option value="Portabilidade">Portabilidade</option><option value="Instalacao/reparo">Instalacao/reparo</option><option value="Fidelizacao abusiva">Fidelizacao abusiva</option><option value="Alteracao de plano sem autorizacao">Alteracao de plano sem autorizacao</option><option value="Outro">Outro</option></select></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="tc-desc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Descrição Detalhada</label><textarea id="tc-desc" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="tc-obs" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Observações</label><textarea id="tc-obs" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">PRETENSÕES</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-tc" value="Cancelamento sem multa"> Cancelamento sem multa</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-tc" value="Restituição de valores cobrados indevidamente"> Restituição de valores cobrados indevidamente</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-tc" value="Correção da velocidade contratada"> Correção da velocidade contratada</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-tc" value="Portabilidade numérica"> Portabilidade numérica</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-tc" value="Reparo do serviço"> Reparo do serviço</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-tc" value="Indenização por danos"> Indenização por danos</label></div><div style="margin-top:8px"><label for="tc-pret-outro" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Outra pretensão</label><input type="text" id="tc-pret-outro" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;margin-top:4px" placeholder="Especifique..."></div></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">DOCUMENTOS</label><div style="margin-top:6px"><input type="file" id="arq-tc" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="font-size:13px"><div id="arq-list-tc" style="margin-top:4px;font-size:12px;color:#64748b"></div></div></div>
-        </div>
-        <div style="margin-top:20px;text-align:center">
-          <button id="btn-gerar-tc" onclick="gerarGenerica('tc','Telecomunicacoes','Arts. 6, 14, 20, 22, 39 CDC')" class="btn-primary" style="background:var(--accent,#C62828);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s">
-            <i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação — Telecomunicações (Arts. 6, 14, 20, 22, 39 CDC)
-          </button>
-        </div>
-      </div>
-      <div id="result-tc" class="result-box" style="margin-top:16px">
-        <div id="rl-tc" class="result-loading"><span class="spin" style="border-color:rgba(198,40,40,.3);border-top-color:#C62828"></span> Gerando reclamação...</div>
-        <pre id="rt-tc" class="result-text" style="display:none;white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.6;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px"></pre>
-        <div id="at-tc" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div id="ra-tc" class="result-actions" style="display:none;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="copiarGenerico('tc')" style="background:var(--accent,#C62828);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-copy"></i> Copiar</button>
-          <button onclick="imprimirGenerico('tc')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-printer"></i> Imprimir</button>
-          <button onclick="limparGenerico('tc')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-trash"></i> Limpar</button>
+        <div class="field"><label>Documentos Anexos</label>
+          <input type="file" id="arq-ps" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small id="arq-list-ps" style="color:var(--text2);margin-top:4px;display:block"></small>
         </div>
       </div>
     </div>
 
-    <!-- SCREEN: Serviços Bancários -->
-    <div id="screen-sb" style="display:none">
-      <div style="background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)">
-        <h3 style="margin:0 0 16px;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-building-bank" style="font-size:22px;color:var(--accent,#C62828)"></i> Reclamação — Serviços Bancários <span style="font-size:12px;font-weight:400;color:var(--text2,#64748b)">(Arts. 6, 14, 39, 42, 51 CDC + Súmula 297 STJ)</span></h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div style="display:flex;flex-direction:column;gap:4px"><label for="sb-num" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Atendimento</label><input type="text" id="sb-num" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-data" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data</label><input type="text" id="sb-data" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-canal" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Canal</label><select id="sb-canal" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="Telefone">Telefone</option><option value="E-mail">E-mail</option><option value="Whatsapp">Whatsapp</option><option value="Oficio">Oficio</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-atend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Atendente</label><input type="text" id="sb-atend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONSUMIDOR</div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-cn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome Consumidor</label><input type="text" id="sb-cn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-cpf" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CPF</label><input type="text" id="sb-cpf" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="000.000.000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-tel" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Telefone</label><input type="text" id="sb-tel" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="(00) 00000-0000"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-end" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço</label><input type="text" id="sb-end" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">INSTITUIÇÃO FINANCEIRA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-fn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Banco/Instituição (Razão Social)</label><input type="text" id="sb-fn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-fcnpj" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CNPJ</label><input type="text" id="sb-fcnpj" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="00.000.000/0000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-agencia" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Agência</label><input type="text" id="sb-agencia" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-conta" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Conta</label><input type="text" id="sb-conta" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-servico" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Tipo de Serviço</label><select id="sb-servico" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Conta corrente">Conta corrente</option><option value="Cartao de credito">Cartao de credito</option><option value="Emprestimo pessoal">Emprestimo pessoal</option><option value="Financiamento">Financiamento</option><option value="Consignado">Consignado</option><option value="Seguro">Seguro</option><option value="Consorcio">Consorcio</option><option value="Investimento">Investimento</option><option value="Outro">Outro</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-valor" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Valor Envolvido (R$)</label><input type="text" id="sb-valor" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="R$ 0,00"></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">PROBLEMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="sb-natureza" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Natureza do Problema</label><select id="sb-natureza" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Cobranca/tarifa indevida">Cobranca/tarifa indevida</option><option value="Juros abusivos">Juros abusivos</option><option value="Negativacao indevida (SPC/Serasa)">Negativacao indevida (SPC/Serasa)</option><option value="Emprestimo nao autorizado">Emprestimo nao autorizado</option><option value="Cartao nao solicitado">Cartao nao solicitado</option><option value="Desconto em folha indevido">Desconto em folha indevido</option><option value="Dificuldade de cancelamento">Dificuldade de cancelamento</option><option value="Falha em transacao">Falha em transacao</option><option value="Outro">Outro</option></select></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="sb-desc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Descrição Detalhada</label><textarea id="sb-desc" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="sb-obs" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Observações</label><textarea id="sb-obs" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">PRETENSÕES</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-sb" value="Cessação da cobrança indevida"> Cessação da cobrança indevida</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-sb" value="Restituição em dobro (art. 42 CDC)"> Restituição em dobro (art. 42 CDC)</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-sb" value="Exclusão de negativação"> Exclusão de negativação</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-sb" value="Cancelamento do contrato"> Cancelamento do contrato</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-sb" value="Revisão de juros"> Revisão de juros</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-sb" value="Indenização por danos morais"> Indenização por danos morais</label></div><div style="margin-top:8px"><label for="sb-pret-outro" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Outra pretensão</label><input type="text" id="sb-pret-outro" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;margin-top:4px" placeholder="Especifique..."></div></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">DOCUMENTOS</label><div style="margin-top:6px"><input type="file" id="arq-sb" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="font-size:13px"><div id="arq-list-sb" style="margin-top:4px;font-size:12px;color:#64748b"></div></div></div>
-        </div>
-        <div style="margin-top:20px;text-align:center">
-          <button id="btn-gerar-sb" onclick="gerarGenerica('sb','Servicos Bancarios','Arts. 6, 14, 39, 42, 51 CDC + Súmula 297 STJ')" class="btn-primary" style="background:var(--accent,#C62828);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s">
-            <i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação — Serviços Bancários (Arts. 6, 14, 39, 42, 51 CDC + Súmula 297 STJ)
-          </button>
-        </div>
+    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('ps','Plano de Saúde','Lei 9.656/1998')" id="btn-gerar-ps"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Plano de Saúde (Lei 9.656/1998)</button>
+
+    <div class="result-box" id="result-ps"><div class="result-head"><h2><i class="ti ti-heartbeat"></i>Reclamação Formal</h2><p>Plano de Saúde — PROCON/VG</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-ps"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
+        <div class="result-text" id="rt-ps"></div><div class="art-tags" id="at-ps"></div>
+        <div class="result-actions" id="ra-ps"><button class="primary" onclick="copiarGenerico('ps')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ps')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ps')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
       </div>
-      <div id="result-sb" class="result-box" style="margin-top:16px">
-        <div id="rl-sb" class="result-loading"><span class="spin" style="border-color:rgba(198,40,40,.3);border-top-color:#C62828"></span> Gerando reclamação...</div>
-        <pre id="rt-sb" class="result-text" style="display:none;white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.6;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px"></pre>
-        <div id="at-sb" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div id="ra-sb" class="result-actions" style="display:none;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="copiarGenerico('sb')" style="background:var(--accent,#C62828);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-copy"></i> Copiar</button>
-          <button onclick="imprimirGenerico('sb')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-printer"></i> Imprimir</button>
-          <button onclick="limparGenerico('sb')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-trash"></i> Limpar</button>
+    </div>
+  </div>
+
+  <div id="screen-tc" style="display:none">
+    <div class="card">
+      <div class="card-header"><h2><i class="ti ti-antenna-bars-5"></i>Telecomunicações</h2><p>Reclamação Formal — CDC + Res. ANATEL</p></div>
+      <div class="card-body">
+        <div class="field"><label>Nome do Consumidor</label><input type="text" id="tc-consumidor" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="tc-cpf" placeholder="000.000.000-00"></div>
+        <div class="field"><label>Operadora / Empresa</label><input type="text" id="tc-empresa" placeholder="Nome da operadora"></div>
+        <div class="field"><label>CNPJ</label><input type="text" id="tc-cnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="field"><label>Tipo de Serviço</label><input type="text" id="tc-servico" placeholder="Celular, internet, TV por assinatura..."></div>
+        <div class="field"><label>Nº da Linha/Contrato</label><input type="text" id="tc-numero-linha" placeholder=""></div>
+        <div class="field"><label>Data do Fato</label><input type="text" id="tc-data-fato" placeholder="DD/MM/AAAA"></div>
+        <div class="field"><label>Valor Cobrado</label><input type="text" id="tc-valor" placeholder="R$ 0,00"></div>
+        <div class="field"><label>Descrição do Problema</label><textarea id="tc-descricao" rows="3" placeholder="Descreva o problema..."></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="tc-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
+        <div class="field"><label>Pretensões do Consumidor</label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-tc" value="Cancelamento do serviço sem multa"> Cancelamento do serviço sem multa</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-tc" value="Restituição de valores cobrados indevidamente"> Restituição de valores cobrados indevidamente</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-tc" value="Reparo do serviço com qualidade adequada"> Reparo do serviço com qualidade adequada</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-tc" value="Cancelamento de serviço não solicitado"> Cancelamento de serviço não solicitado</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-tc" value="Portabilidade numérica"> Portabilidade numérica</label>
+            <input type="text" id="tc-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
+          </div>
+        </div>
+        <div class="field"><label>Documentos Anexos</label>
+          <input type="file" id="arq-tc" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small id="arq-list-tc" style="color:var(--text2);margin-top:4px;display:block"></small>
         </div>
       </div>
     </div>
 
-    <!-- SCREEN: E-commerce -->
-    <div id="screen-ecom" style="display:none">
-      <div style="background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)">
-        <h3 style="margin:0 0 16px;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-shopping-cart" style="font-size:22px;color:var(--accent,#C62828)"></i> Reclamação — E-commerce <span style="font-size:12px;font-weight:400;color:var(--text2,#64748b)">(Arts. 6, 18, 49 CDC + Decreto 7.962/2013)</span></h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-num" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Atendimento</label><input type="text" id="ecom-num" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-data" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data</label><input type="text" id="ecom-data" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-canal" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Canal</label><select id="ecom-canal" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="Telefone">Telefone</option><option value="E-mail">E-mail</option><option value="Whatsapp">Whatsapp</option><option value="Oficio">Oficio</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-atend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Atendente</label><input type="text" id="ecom-atend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONSUMIDOR</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-cn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome Consumidor</label><input type="text" id="ecom-cn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-cpf" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CPF</label><input type="text" id="ecom-cpf" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="000.000.000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-tel" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Telefone</label><input type="text" id="ecom-tel" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="(00) 00000-0000"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-end" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço</label><input type="text" id="ecom-end" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">LOJA / PLATAFORMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-fn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Loja/Site (Razão Social)</label><input type="text" id="ecom-fn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-fcnpj" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CNPJ</label><input type="text" id="ecom-fcnpj" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="00.000.000/0000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-url" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">URL / Site</label><input type="text" id="ecom-url" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="https://"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-pedido" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº do Pedido</label><input type="text" id="ecom-pedido" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-datacompra" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data da Compra</label><input type="text" id="ecom-datacompra" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-prod" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Produto/Serviço</label><input type="text" id="ecom-prod" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-valor" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Valor (R$)</label><input type="text" id="ecom-valor" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="R$ 0,00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-pgto" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Forma de Pagamento</label><select id="ecom-pgto" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Cartao de credito">Cartao de credito</option><option value="Cartao de debito">Cartao de debito</option><option value="Boleto">Boleto</option><option value="PIX">PIX</option><option value="Transferencia">Transferencia</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-entrega" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Prazo de Entrega Prometido</label><input type="text" id="ecom-entrega" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">PROBLEMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ecom-natureza" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Natureza do Problema</label><select id="ecom-natureza" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Produto nao entregue">Produto nao entregue</option><option value="Atraso na entrega">Atraso na entrega</option><option value="Produto diferente do anunciado">Produto diferente do anunciado</option><option value="Produto com vicio">Produto com vicio</option><option value="Arrependimento (7 dias)">Arrependimento (7 dias)</option><option value="Cobranca indevida">Cobranca indevida</option><option value="Propaganda enganosa">Propaganda enganosa</option><option value="Dificuldade de cancelamento/estorno">Dificuldade de cancelamento/estorno</option><option value="Outro">Outro</option></select></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="ecom-desc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Descrição Detalhada</label><textarea id="ecom-desc" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="ecom-obs" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Observações</label><textarea id="ecom-obs" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">PRETENSÕES</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ecom" value="Entrega do produto"> Entrega do produto</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ecom" value="Troca do produto"> Troca do produto</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ecom" value="Restituição integral do valor"> Restituição integral do valor</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ecom" value="Estorno no cartão"> Estorno no cartão</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ecom" value="Abatimento proporcional do preço"> Abatimento proporcional do preço</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ecom" value="Indenização por danos"> Indenização por danos</label></div><div style="margin-top:8px"><label for="ecom-pret-outro" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Outra pretensão</label><input type="text" id="ecom-pret-outro" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;margin-top:4px" placeholder="Especifique..."></div></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">DOCUMENTOS</label><div style="margin-top:6px"><input type="file" id="arq-ecom" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="font-size:13px"><div id="arq-list-ecom" style="margin-top:4px;font-size:12px;color:#64748b"></div></div></div>
-        </div>
-        <div style="margin-top:20px;text-align:center">
-          <button id="btn-gerar-ecom" onclick="gerarGenerica('ecom','E-commerce','Arts. 6, 18, 49 CDC + Decreto 7.962/2013')" class="btn-primary" style="background:var(--accent,#C62828);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s">
-            <i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação — E-commerce (Arts. 6, 18, 49 CDC + Decreto 7.962/2013)
-          </button>
-        </div>
+    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('tc','Telecomunicações','CDC + Res. ANATEL')" id="btn-gerar-tc"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Telecomunicações (CDC + Res. ANATEL)</button>
+
+    <div class="result-box" id="result-tc"><div class="result-head"><h2><i class="ti ti-antenna-bars-5"></i>Reclamação Formal</h2><p>Telecomunicações — PROCON/VG</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-tc"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
+        <div class="result-text" id="rt-tc"></div><div class="art-tags" id="at-tc"></div>
+        <div class="result-actions" id="ra-tc"><button class="primary" onclick="copiarGenerico('tc')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('tc')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('tc')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
       </div>
-      <div id="result-ecom" class="result-box" style="margin-top:16px">
-        <div id="rl-ecom" class="result-loading"><span class="spin" style="border-color:rgba(198,40,40,.3);border-top-color:#C62828"></span> Gerando reclamação...</div>
-        <pre id="rt-ecom" class="result-text" style="display:none;white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.6;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px"></pre>
-        <div id="at-ecom" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div id="ra-ecom" class="result-actions" style="display:none;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="copiarGenerico('ecom')" style="background:var(--accent,#C62828);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-copy"></i> Copiar</button>
-          <button onclick="imprimirGenerico('ecom')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-printer"></i> Imprimir</button>
-          <button onclick="limparGenerico('ecom')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-trash"></i> Limpar</button>
+    </div>
+  </div>
+
+  <div id="screen-sb" style="display:none">
+    <div class="card">
+      <div class="card-header"><h2><i class="ti ti-building-bank"></i>Serviços Bancários</h2><p>Reclamação Formal — CDC + Res. BACEN</p></div>
+      <div class="card-body">
+        <div class="field"><label>Nome do Consumidor</label><input type="text" id="sb-consumidor" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="sb-cpf" placeholder="000.000.000-00"></div>
+        <div class="field"><label>Instituição Financeira</label><input type="text" id="sb-banco" placeholder="Nome do banco"></div>
+        <div class="field"><label>CNPJ</label><input type="text" id="sb-cnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="field"><label>Agência / Conta</label><input type="text" id="sb-agencia-conta" placeholder=""></div>
+        <div class="field"><label>Tipo de Serviço</label><input type="text" id="sb-tipo-servico" placeholder="Conta corrente, cartão, empréstimo..."></div>
+        <div class="field"><label>Data do Fato</label><input type="text" id="sb-data-fato" placeholder="DD/MM/AAAA"></div>
+        <div class="field"><label>Valor Envolvido</label><input type="text" id="sb-valor" placeholder="R$ 0,00"></div>
+        <div class="field"><label>Descrição do Problema</label><textarea id="sb-descricao" rows="3" placeholder="Descreva o problema..."></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="sb-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
+        <div class="field"><label>Pretensões do Consumidor</label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-sb" value="Estorno de tarifas indevidas"> Estorno de tarifas indevidas</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-sb" value="Cancelamento de serviço não solicitado"> Cancelamento de serviço não solicitado</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-sb" value="Restituição em dobro (art. 42, parágrafo único, CDC)"> Restituição em dobro (art. 42, parágrafo único, CDC)</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-sb" value="Exclusão de negativação indevida"> Exclusão de negativação indevida</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-sb" value="Revisão de cláusulas contratuais abusivas"> Revisão de cláusulas contratuais abusivas</label>
+            <input type="text" id="sb-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
+          </div>
+        </div>
+        <div class="field"><label>Documentos Anexos</label>
+          <input type="file" id="arq-sb" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small id="arq-list-sb" style="color:var(--text2);margin-top:4px;display:block"></small>
         </div>
       </div>
     </div>
 
-    <!-- SCREEN: Serviços Educacionais -->
-    <div id="screen-edu" style="display:none">
-      <div style="background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)">
-        <h3 style="margin:0 0 16px;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-school" style="font-size:22px;color:var(--accent,#C62828)"></i> Reclamação — Serviços Educacionais <span style="font-size:12px;font-weight:400;color:var(--text2,#64748b)">(Arts. 6, 14, 20, 35 CDC)</span></h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div style="display:flex;flex-direction:column;gap:4px"><label for="edu-num" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Atendimento</label><input type="text" id="edu-num" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-data" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data</label><input type="text" id="edu-data" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-canal" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Canal</label><select id="edu-canal" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="Telefone">Telefone</option><option value="E-mail">E-mail</option><option value="Whatsapp">Whatsapp</option><option value="Oficio">Oficio</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-atend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Atendente</label><input type="text" id="edu-atend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONSUMIDOR</div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-cn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome Consumidor</label><input type="text" id="edu-cn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-cpf" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CPF</label><input type="text" id="edu-cpf" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="000.000.000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-tel" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Telefone</label><input type="text" id="edu-tel" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="(00) 00000-0000"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-end" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço</label><input type="text" id="edu-end" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">INSTITUIÇÃO DE ENSINO</div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-fn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Instituição (Razão Social)</label><input type="text" id="edu-fn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-fcnpj" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CNPJ</label><input type="text" id="edu-fcnpj" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="00.000.000/0000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-fend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço da Instituição</label><input type="text" id="edu-fend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-curso" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Curso/Programa</label><input type="text" id="edu-curso" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-matricula" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Matrícula</label><input type="text" id="edu-matricula" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-modalidade" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Modalidade</label><select id="edu-modalidade" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="EAD">EAD</option><option value="Hibrido">Hibrido</option><option value="Curso livre">Curso livre</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-valor" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Mensalidade (R$)</label><input type="text" id="edu-valor" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="R$ 0,00"></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">PROBLEMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="edu-natureza" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Natureza do Problema</label><select id="edu-natureza" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Cobranca indevida">Cobranca indevida</option><option value="Reajuste abusivo">Reajuste abusivo</option><option value="Qualidade do ensino">Qualidade do ensino</option><option value="Cancelamento/trancamento">Cancelamento/trancamento</option><option value="Retencao de documentos">Retencao de documentos</option><option value="Propaganda enganosa">Propaganda enganosa</option><option value="Descumprimento de oferta">Descumprimento de oferta</option><option value="Outro">Outro</option></select></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="edu-desc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Descrição Detalhada</label><textarea id="edu-desc" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="edu-obs" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Observações</label><textarea id="edu-obs" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">PRETENSÕES</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-edu" value="Cancelamento sem multa"> Cancelamento sem multa</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-edu" value="Restituição de valores"> Restituição de valores</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-edu" value="Liberação de documentos"> Liberação de documentos</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-edu" value="Cumprimento da oferta"> Cumprimento da oferta</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-edu" value="Revisão de reajuste"> Revisão de reajuste</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-edu" value="Indenização por danos"> Indenização por danos</label></div><div style="margin-top:8px"><label for="edu-pret-outro" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Outra pretensão</label><input type="text" id="edu-pret-outro" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;margin-top:4px" placeholder="Especifique..."></div></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">DOCUMENTOS</label><div style="margin-top:6px"><input type="file" id="arq-edu" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="font-size:13px"><div id="arq-list-edu" style="margin-top:4px;font-size:12px;color:#64748b"></div></div></div>
-        </div>
-        <div style="margin-top:20px;text-align:center">
-          <button id="btn-gerar-edu" onclick="gerarGenerica('edu','Servicos Educacionais','Arts. 6, 14, 20, 35 CDC')" class="btn-primary" style="background:var(--accent,#C62828);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s">
-            <i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação — Serviços Educacionais (Arts. 6, 14, 20, 35 CDC)
-          </button>
-        </div>
+    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('sb','Serviços Bancários','CDC + Res. BACEN')" id="btn-gerar-sb"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Serviços Bancários (CDC + Res. BACEN)</button>
+
+    <div class="result-box" id="result-sb"><div class="result-head"><h2><i class="ti ti-building-bank"></i>Reclamação Formal</h2><p>Serviços Bancários — PROCON/VG</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-sb"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
+        <div class="result-text" id="rt-sb"></div><div class="art-tags" id="at-sb"></div>
+        <div class="result-actions" id="ra-sb"><button class="primary" onclick="copiarGenerico('sb')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('sb')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('sb')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
       </div>
-      <div id="result-edu" class="result-box" style="margin-top:16px">
-        <div id="rl-edu" class="result-loading"><span class="spin" style="border-color:rgba(198,40,40,.3);border-top-color:#C62828"></span> Gerando reclamação...</div>
-        <pre id="rt-edu" class="result-text" style="display:none;white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.6;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px"></pre>
-        <div id="at-edu" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div id="ra-edu" class="result-actions" style="display:none;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="copiarGenerico('edu')" style="background:var(--accent,#C62828);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-copy"></i> Copiar</button>
-          <button onclick="imprimirGenerico('edu')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-printer"></i> Imprimir</button>
-          <button onclick="limparGenerico('edu')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-trash"></i> Limpar</button>
+    </div>
+  </div>
+
+  <div id="screen-ecom" style="display:none">
+    <div class="card">
+      <div class="card-header"><h2><i class="ti ti-shopping-cart"></i>E-commerce</h2><p>Reclamação Formal — CDC + Decreto 7.962/2013</p></div>
+      <div class="card-body">
+        <div class="field"><label>Nome do Consumidor</label><input type="text" id="ecom-consumidor" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="ecom-cpf" placeholder="000.000.000-00"></div>
+        <div class="field"><label>Loja / Plataforma</label><input type="text" id="ecom-loja" placeholder="Nome da loja virtual"></div>
+        <div class="field"><label>CNPJ</label><input type="text" id="ecom-cnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="field"><label>Produto / Serviço</label><input type="text" id="ecom-produto" placeholder="Descrição do produto"></div>
+        <div class="field"><label>Nº do Pedido</label><input type="text" id="ecom-numero-pedido" placeholder=""></div>
+        <div class="field"><label>Data da Compra</label><input type="text" id="ecom-data-compra" placeholder="DD/MM/AAAA"></div>
+        <div class="field"><label>Valor Pago</label><input type="text" id="ecom-valor" placeholder="R$ 0,00"></div>
+        <div class="field"><label>Forma de Pagamento</label><input type="text" id="ecom-forma-pagamento" placeholder="Cartão, PIX, boleto..."></div>
+        <div class="field"><label>Descrição do Problema</label><textarea id="ecom-descricao" rows="3" placeholder="Descreva o problema..."></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="ecom-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
+        <div class="field"><label>Pretensões do Consumidor</label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ecom" value="Entrega do produto adquirido"> Entrega do produto adquirido</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ecom" value="Restituição integral do valor pago"> Restituição integral do valor pago</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ecom" value="Direito de arrependimento (art. 49, CDC)"> Direito de arrependimento (art. 49, CDC)</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ecom" value="Substituição do produto por outro em perfeitas condições"> Substituição do produto por outro em perfeitas condições</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ecom" value="Abatimento proporcional do preço"> Abatimento proporcional do preço</label>
+            <input type="text" id="ecom-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
+          </div>
+        </div>
+        <div class="field"><label>Documentos Anexos</label>
+          <input type="file" id="arq-ecom" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small id="arq-list-ecom" style="color:var(--text2);margin-top:4px;display:block"></small>
         </div>
       </div>
     </div>
 
-    <!-- SCREEN: Água e Energia -->
-    <div id="screen-ae" style="display:none">
-      <div style="background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)">
-        <h3 style="margin:0 0 16px;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><i class="ti ti-bolt" style="font-size:22px;color:var(--accent,#C62828)"></i> Reclamação — Água e Energia <span style="font-size:12px;font-weight:400;color:var(--text2,#64748b)">(Arts. 6, 22, 42 CDC + Lei 8.987/95)</span></h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div style="display:flex;flex-direction:column;gap:4px"><label for="ae-num" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nº Atendimento</label><input type="text" id="ae-num" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-data" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Data</label><input type="text" id="ae-data" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="DD/MM/AAAA"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-canal" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Canal</label><select id="ae-canal" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Presencial">Presencial</option><option value="Telefone">Telefone</option><option value="E-mail">E-mail</option><option value="Whatsapp">Whatsapp</option><option value="Oficio">Oficio</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-atend" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Atendente</label><input type="text" id="ae-atend" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONSUMIDOR</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-cn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Nome Consumidor</label><input type="text" id="ae-cn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-cpf" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CPF</label><input type="text" id="ae-cpf" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="000.000.000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-tel" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Telefone</label><input type="text" id="ae-tel" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="(00) 00000-0000"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-end" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Endereço</label><input type="text" id="ae-end" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">CONCESSIONÁRIA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-fn" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Concessionária (Razão Social)</label><input type="text" id="ae-fn" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-fcnpj" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">CNPJ</label><input type="text" id="ae-fcnpj" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="00.000.000/0000-00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-servico" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Serviço</label><select id="ae-servico" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Energia eletrica">Energia eletrica</option><option value="Agua e esgoto">Agua e esgoto</option></select></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-uc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Unidade Consumidora / Hidrômetro</label><input type="text" id="ae-uc" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-valor" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Valor da Fatura (R$)</label><input type="text" id="ae-valor" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder="R$ 0,00"></div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-protocolo" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Protocolo(s) de Reclamação</label><input type="text" id="ae-protocolo" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px" placeholder=""></div><div style="grid-column:1/-1;margin:12px 0 4px;font-weight:700;font-size:13px;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border,#e2e8f0);padding-bottom:4px">PROBLEMA</div><div style="display:flex;flex-direction:column;gap:4px"><label for="ae-natureza" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Natureza do Problema</label><select id="ae-natureza" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;background:#fff"><option value="">Selecione...</option><option value="Cobranca indevida/fatura elevada">Cobranca indevida/fatura elevada</option><option value="Corte/suspensao indevida">Corte/suspensao indevida</option><option value="Falha no fornecimento">Falha no fornecimento</option><option value="Medicao incorreta">Medicao incorreta</option><option value="Danos por oscilacao/queda">Danos por oscilacao/queda</option><option value="Ligacao clandestina imputada">Ligacao clandestina imputada</option><option value="Outro">Outro</option></select></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="ae-desc" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Descrição Detalhada</label><textarea id="ae-desc" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div><div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px"><label for="ae-obs" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Observações</label><textarea id="ae-obs" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit" placeholder=""></textarea></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">PRETENSÕES</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ae" value="Revisão/cancelamento da fatura"> Revisão/cancelamento da fatura</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ae" value="Religação imediata"> Religação imediata</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ae" value="Restituição de valores"> Restituição de valores</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ae" value="Troca de medidor"> Troca de medidor</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ae" value="Indenização por danos em equipamentos"> Indenização por danos em equipamentos</label><label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" class="pret-cb-ae" value="Indenização por danos morais"> Indenização por danos morais</label></div><div style="margin-top:8px"><label for="ae-pret-outro" style="font-size:13px;font-weight:500;color:var(--text2,#64748b)">Outra pretensão</label><input type="text" id="ae-pret-outro" style="width:100%;padding:8px 10px;border:1px solid var(--border,#d1d5db);border-radius:6px;font-size:14px;margin-top:4px" placeholder="Especifique..."></div></div>
-<div style="grid-column:1/-1;margin-top:8px"><label style="font-size:13px;font-weight:700;color:var(--accent,#C62828);text-transform:uppercase;letter-spacing:.5px">DOCUMENTOS</label><div style="margin-top:6px"><input type="file" id="arq-ae" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="font-size:13px"><div id="arq-list-ae" style="margin-top:4px;font-size:12px;color:#64748b"></div></div></div>
-        </div>
-        <div style="margin-top:20px;text-align:center">
-          <button id="btn-gerar-ae" onclick="gerarGenerica('ae','Agua e Energia','Arts. 6, 22, 42 CDC + Lei 8.987/95')" class="btn-primary" style="background:var(--accent,#C62828);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s">
-            <i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamação — Água e Energia (Arts. 6, 22, 42 CDC + Lei 8.987/95)
-          </button>
-        </div>
+    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('ecom','E-commerce','CDC + Decreto 7.962/2013')" id="btn-gerar-ecom"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — E-commerce (CDC + Decreto 7.962/2013)</button>
+
+    <div class="result-box" id="result-ecom"><div class="result-head"><h2><i class="ti ti-shopping-cart"></i>Reclamação Formal</h2><p>E-commerce — PROCON/VG</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-ecom"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
+        <div class="result-text" id="rt-ecom"></div><div class="art-tags" id="at-ecom"></div>
+        <div class="result-actions" id="ra-ecom"><button class="primary" onclick="copiarGenerico('ecom')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ecom')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ecom')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
       </div>
-      <div id="result-ae" class="result-box" style="margin-top:16px">
-        <div id="rl-ae" class="result-loading"><span class="spin" style="border-color:rgba(198,40,40,.3);border-top-color:#C62828"></span> Gerando reclamação...</div>
-        <pre id="rt-ae" class="result-text" style="display:none;white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.6;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px"></pre>
-        <div id="at-ae" style="display:none;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
-        <div id="ra-ae" class="result-actions" style="display:none;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="copiarGenerico('ae')" style="background:var(--accent,#C62828);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-copy"></i> Copiar</button>
-          <button onclick="imprimirGenerico('ae')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-printer"></i> Imprimir</button>
-          <button onclick="limparGenerico('ae')" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-trash"></i> Limpar</button>
+    </div>
+  </div>
+
+  <div id="screen-edu" style="display:none">
+    <div class="card">
+      <div class="card-header"><h2><i class="ti ti-school"></i>Serviços Educacionais</h2><p>Reclamação Formal — CDC + Lei 9.870/1999</p></div>
+      <div class="card-body">
+        <div class="field"><label>Nome do Consumidor</label><input type="text" id="edu-consumidor" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="edu-cpf" placeholder="000.000.000-00"></div>
+        <div class="field"><label>Instituição de Ensino</label><input type="text" id="edu-instituicao" placeholder="Nome da instituição"></div>
+        <div class="field"><label>CNPJ</label><input type="text" id="edu-cnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="field"><label>Curso / Série</label><input type="text" id="edu-curso" placeholder=""></div>
+        <div class="field"><label>Nº Matrícula</label><input type="text" id="edu-matricula" placeholder=""></div>
+        <div class="field"><label>Data do Fato</label><input type="text" id="edu-data-fato" placeholder="DD/MM/AAAA"></div>
+        <div class="field"><label>Valor da Mensalidade</label><input type="text" id="edu-valor" placeholder="R$ 0,00"></div>
+        <div class="field"><label>Descrição do Problema</label><textarea id="edu-descricao" rows="3" placeholder="Descreva o problema..."></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="edu-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
+        <div class="field"><label>Pretensões do Consumidor</label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-edu" value="Cancelamento da matrícula com restituição proporcional"> Cancelamento da matrícula com restituição proporcional</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-edu" value="Redução de mensalidade por serviço não prestado"> Redução de mensalidade por serviço não prestado</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-edu" value="Expedição de documentos acadêmicos retidos"> Expedição de documentos acadêmicos retidos</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-edu" value="Cumprimento da grade curricular contratada"> Cumprimento da grade curricular contratada</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-edu" value="Revisão de reajuste abusivo"> Revisão de reajuste abusivo</label>
+            <input type="text" id="edu-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
+          </div>
+        </div>
+        <div class="field"><label>Documentos Anexos</label>
+          <input type="file" id="arq-edu" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small id="arq-list-edu" style="color:var(--text2);margin-top:4px;display:block"></small>
         </div>
       </div>
     </div>
+
+    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('edu','Serviços Educacionais','CDC + Lei 9.870/1999')" id="btn-gerar-edu"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Serviços Educacionais (CDC + Lei 9.870/1999)</button>
+
+    <div class="result-box" id="result-edu"><div class="result-head"><h2><i class="ti ti-school"></i>Reclamação Formal</h2><p>Serviços Educacionais — PROCON/VG</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-edu"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
+        <div class="result-text" id="rt-edu"></div><div class="art-tags" id="at-edu"></div>
+        <div class="result-actions" id="ra-edu"><button class="primary" onclick="copiarGenerico('edu')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('edu')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('edu')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-ae" style="display:none">
+    <div class="card">
+      <div class="card-header"><h2><i class="ti ti-bolt"></i>Água e Energia</h2><p>Reclamação Formal — CDC + Lei 8.987/1995</p></div>
+      <div class="card-body">
+        <div class="field"><label>Nome do Consumidor</label><input type="text" id="ae-consumidor" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF</label><input type="text" id="ae-cpf" placeholder="000.000.000-00"></div>
+        <div class="field"><label>Concessionária</label><input type="text" id="ae-concessionaria" placeholder="Nome da concessionária"></div>
+        <div class="field"><label>CNPJ</label><input type="text" id="ae-cnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="field"><label>Unidade Consumidora</label><input type="text" id="ae-unidade-consumidora" placeholder="Nº da UC"></div>
+        <div class="field"><label>Tipo de Serviço</label><input type="text" id="ae-tipo-servico" placeholder="Energia elétrica, água, esgoto..."></div>
+        <div class="field"><label>Data do Fato</label><input type="text" id="ae-data-fato" placeholder="DD/MM/AAAA"></div>
+        <div class="field"><label>Valor da Fatura</label><input type="text" id="ae-valor" placeholder="R$ 0,00"></div>
+        <div class="field"><label>Descrição do Problema</label><textarea id="ae-descricao" rows="3" placeholder="Descreva o problema..."></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="ae-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
+        <div class="field"><label>Pretensões do Consumidor</label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ae" value="Revisão da fatura com cobrança indevida"> Revisão da fatura com cobrança indevida</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ae" value="Religação imediata do serviço"> Religação imediata do serviço</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ae" value="Ressarcimento por danos causados por oscilação"> Ressarcimento por danos causados por oscilação</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ae" value="Instalação ou reparo de medidor"> Instalação ou reparo de medidor</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ae" value="Parcelamento de débito sem juros abusivos"> Parcelamento de débito sem juros abusivos</label>
+            <input type="text" id="ae-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
+          </div>
+        </div>
+        <div class="field"><label>Documentos Anexos</label>
+          <input type="file" id="arq-ae" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small id="arq-list-ae" style="color:var(--text2);margin-top:4px;display:block"></small>
+        </div>
+      </div>
+    </div>
+
+    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('ae','Água e Energia','CDC + Lei 8.987/1995')" id="btn-gerar-ae"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Água e Energia (CDC + Lei 8.987/1995)</button>
+
+    <div class="result-box" id="result-ae"><div class="result-head"><h2><i class="ti ti-bolt"></i>Reclamação Formal</h2><p>Água e Energia — PROCON/VG</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-ae"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
+        <div class="result-text" id="rt-ae"></div><div class="art-tags" id="at-ae"></div>
+        <div class="result-actions" id="ra-ae"><button class="primary" onclick="copiarGenerico('ae')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ae')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ae')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+      </div>
+    </div>
+  </div>
 
   </main>
 </div>
@@ -5241,13 +5322,13 @@ const FORM_INFO = {
   'ec-serv': { titulo: 'Consignado Servidor Publico', artigo: 'CDC Arts. 6o III e 39' },
   'ec-rmc': { titulo: 'Cartao RMC/RDC Consignado', artigo: 'CDC Arts. 6o III, 39 e 52' },
   pp: { titulo: 'Providencias Processuais', artigo: 'Art. 18 CDC + Dec. 2.181/1997' },
+  ps: { titulo: 'Plano de Saude', artigo: 'Lei 9.656/1998' },
+  tc: { titulo: 'Telecomunicacoes', artigo: 'CDC + Res. ANATEL' },
+  sb: { titulo: 'Servicos Bancarios', artigo: 'CDC + Res. BACEN' },
+  ecom: { titulo: 'E-commerce', artigo: 'CDC + Decreto 7.962/2013' },
+  edu: { titulo: 'Servicos Educacionais', artigo: 'CDC + Lei 9.870/1999' },
+  ae: { titulo: 'Agua e Energia', artigo: 'CDC + Lei 8.987/1995' },
   dt: { titulo: 'Decisao Terminativa', artigo: 'CDC Arts. 56 e ss.' },
-  ps: { titulo: 'Plano de Saude', artigo: 'Arts. 6, 14, 35, 51 CDC + Lei 9.656/98' },
-  tc: { titulo: 'Telecomunicacoes', artigo: 'Arts. 6, 14, 20, 22, 39 CDC' },
-  sb: { titulo: 'Servicos Bancarios', artigo: 'Arts. 6, 14, 39, 42, 51 CDC + Sumula 297 STJ' },
-  ecom: { titulo: 'E-commerce', artigo: 'Arts. 6, 18, 49 CDC + Decreto 7.962/2013' },
-  edu: { titulo: 'Servicos Educacionais', artigo: 'Arts. 6, 14, 20, 35 CDC' },
-  ae: { titulo: 'Agua e Energia', artigo: 'Arts. 6, 22, 42 CDC + Lei 8.987/95' },
 };
 const pretMulti = {};
 function toggleMulti(btn, pref, texto) {
@@ -5335,7 +5416,7 @@ OBS: ${gv(pref+'-obs')||'sem observacoes'}
 Estrutura OBRIGATORIA em 4 secoes, nesta ordem:
 1) TITULO curto — "RECLAMACAO FORMAL - PROCON/VG - ${tipoRec} - Data - No"
 2) DOS FATOS — NAO repetir os dados de identificacao das partes (ja constam no cabecalho). Iniciar diretamente pelas tratativas realizadas pelo consumidor e pelos fatos relevantes. Paragrafos curtos (maximo 6 a 7 linhas cada), objetivos e diretos. Narrar: o que foi contratado/adquirido e quando, o problema identificado, as tratativas ja realizadas (contato com fornecedor, reclamacoes previas, tentativas de resolucao) e o insucesso dessas tentativas. Quando houver documentos anexados, nao resumi-los nem transcrevê-los — referencia-los de forma precisa e integrada ao fato narrado, conectando o documento como prova do que esta sendo afirmado (ex: "Conforme extrato anexo, o desconto de R$ 234,00 incide sobre o beneficio desde abril/2025..."). Cada paragrafo deve comecar de forma diferente — variar as construcoes iniciais, evitando repetir "O consumidor...", "O reclamante..." ou estruturas similares em paragrafos consecutivos. Usar transicoes naturais (ex: "Diante disso...", "Nesse contexto...", "Ocorre que...", "Em razao de..."). Texto fluido e coeso, sem divagacoes, sem repeticoes, sem detalhes irrelevantes. Para vicio: sempre "vicio", nunca "defeito". Encerrar obrigatoriamente com: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
-3) DO DIREITO — artigos do CDC aplicaveis ao caso, citados de forma natural e integrada ao texto corrido, sem reproduzir o texto da lei, sem explicar o que o artigo diz, sem listas. Os artigos devem aparecer como referencia ao final da frase que ja contem o argumento juridico (ex: "...configura pratica abusiva vedada pelo ordenamento consumerista (art. 39, V, CDC)"). Citar apenas os diretamente aplicaveis. O texto deve fluir naturalmente, conectando os fundamentos juridicos com transicoes coesas, sem iniciar paragrafos de forma repetitiva.${instrucaoEspecifica}
+3) DO DIREITO — artigos do CDC aplicaveis ao caso, citados de forma natural e integrada ao texto corrido, sem reproduzir o texto da lei, sem explicar o que o artigo diz, sem listas. Os artigos devem aparecer como referencia ao final da frase que ja contem o argumento juridico. Citar apenas os diretamente aplicaveis.${instrucaoEspecifica}
 4) DOS PEDIDOS — lista numerada com TODOS os pedidos do consumidor (campo PRETENSAO acima). Cada item deve iniciar com VERBO NO INFINITIVO (ex: "Restituir o valor...", "Cancelar o contrato...", "Cessar a cobranca..."). NUNCA iniciar item com a palavra "que" (ex: NAO usar "que a empresa cancele"). OBRIGATORIA, nao pode ser omitida. Prazo para resposta: SEMPRE 10 (dez) dias CONSECUTIVOS. NAO incluir encerramento, assinatura, local ou data.
 `;
   try {
@@ -5352,69 +5433,7 @@ Estrutura OBRIGATORIA em 4 secoes, nesta ordem:
   btn.disabled=false; btn.innerHTML=`<i class="ti ti-file-certificate" style="font-size:18px"></i> Gerar Reclamacao - ${tipoRec} (${artigo})`;
 }
 function copiarGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; navigator.clipboard.writeText(txt).then(()=>{event.currentTarget.innerHTML='<i class="ti ti-check"></i>Copiado!';setTimeout(()=>{event.currentTarget.innerHTML='<i class="ti ti-copy"></i>Copiar';},2000);}); }
-function imprimirGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style><style id="mask-validation-css">
-.input-valid{border-color:#2ecc71!important;box-shadow:0 0 0 2px rgba(46,204,113,.15)!important}
-.input-invalid{border-color:#e74c3c!important;box-shadow:0 0 0 2px rgba(231,76,60,.15)!important}
-</style>
-</head>body><pre>${txt.replace(/</g,'&lt;')}</pre>
-<script id="novas-categorias-support">
-// Registrar pretensões e arquivos para novas categorias
-['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
-  if(typeof pretMulti!=="undefined") pretMulti[p]=[];
-  if(typeof arqs!=="undefined") arqs[p]=[];
-});
-// Listener para checkboxes de pretensão
-document.addEventListener('change', function(e) {
-  if (e.target.type === 'checkbox' && e.target.className.startsWith('pret-cb-')) {
-    var pref = e.target.className.replace('pret-cb-', '');
-    if (typeof pretMulti !== 'undefined') {
-      pretMulti[pref] = [];
-      document.querySelectorAll('.pret-cb-' + pref + ':checked').forEach(function(cb) {
-        pretMulti[pref].push(cb.value);
-      });
-    }
-  }
-  // Upload de arquivos
-  var fid = e.target.id;
-  if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
-    var p2 = fid.replace('arq-','');
-    if (['ps','tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
-      arqs[p2] = Array.from(e.target.files);
-      var list = document.getElementById('arq-list-' + p2);
-      if (list) list.textContent = arqs[p2].map(function(f){return f.name}).join(', ');
-    }
-  }
-});
-</script>
-
-<script id="mask-validation-script">
-(function(){
-function mCPF(v){v=v.replace(/\D/g,'').substring(0,11);v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');return v}
-function mCNPJ(v){v=v.replace(/\D/g,'').substring(0,14);v=v.replace(/^(\d{2})(\d)/,'$1.$2');v=v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');v=v.replace(/\.(\d{3})(\d)/,'.$1/$2');v=v.replace(/(\d{4})(\d)/,'$1-$2');return v}
-function mTel(v){v=v.replace(/\D/g,'').substring(0,11);if(v.length<=10){v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{4})(\d)/,'$1-$2')}else{v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{5})(\d)/,'$1-$2')}return v}
-function mData(v){v=v.replace(/\D/g,'').substring(0,8);v=v.replace(/(\d{2})(\d)/,'$1/$2');v=v.replace(/(\d{2})(\d)/,'$1/$2');return v}
-function mMoeda(v){v=v.replace(/\D/g,'');if(!v)return'';v=(parseInt(v,10)/100).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1.');return'R$ '+v}
-function vCPF(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1{10}$/.test(c))return false;var s=0,r;for(var i=1;i<=9;i++)s+=parseInt(c[i-1])*(11-i);r=(s*10)%11;if(r>=10)r=0;if(r!==parseInt(c[9]))return false;s=0;for(i=1;i<=10;i++)s+=parseInt(c[i-1])*(12-i);r=(s*10)%11;if(r>=10)r=0;return r===parseInt(c[10])}
-function vCNPJ(c){c=c.replace(/\D/g,'');if(c.length!==14||/^(\d)\1{13}$/.test(c))return false;var t=c.length-2,n=c.substring(0,t),d=c.substring(t),s=0,p=t-7;for(var i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}var r=s%11<2?0:11-s%11;if(r!=d.charAt(0))return false;t++;n=c.substring(0,t);s=0;p=t-7;for(i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}r=s%11<2?0:11-s%11;return r==d.charAt(1)}
-function vData(d){var m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return false;var dia=+m[1],mes=+m[2],ano=+m[3];if(mes<1||mes>12||dia<1||dia>31||ano<1900||ano>2100)return false;var dt=new Date(ano,mes-1,dia);return dt.getDate()===dia&&dt.getMonth()===mes-1}
-function sv(el,ok,empty){el.classList.remove('input-valid','input-invalid');if(!empty)el.classList.add(ok?'input-valid':'input-invalid')}
-function aplicar(){
-document.querySelectorAll('input[type="text"],input:not([type])').forEach(function(el){
-if(el.dataset.masked)return;var id=(el.id||'').toLowerCase();
-if(id.includes('cpf')&&!id.includes('cnpj')){el.maxLength=14;if(!el.placeholder)el.placeholder='000.000.000-00';el.addEventListener('input',function(){this.value=mCPF(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===11&&vCPF(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0000-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('tel')&&!id.includes('hotel')){el.maxLength=15;if(!el.placeholder)el.placeholder='(00) 00000-0000';el.addEventListener('input',function(){this.value=mTel(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length>=10,d.length===0)});el.dataset.masked='1'}
-else if((id.includes('data')||id.includes('date')||id.endsWith('assd'))&&!id.includes('database')){el.maxLength=10;if(!el.placeholder)el.placeholder='DD/MM/AAAA';el.addEventListener('input',function(){this.value=mData(this.value);sv(this,this.value.length===10&&vData(this.value),this.value.length===0)});el.dataset.masked='1'}
-else if(id.includes('valor')||id.includes('entrada')||id.includes('preco')){if(!el.placeholder)el.placeholder='R$ 0,00';el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
-})}
-aplicar();
-var obs=new MutationObserver(function(){setTimeout(aplicar,150)});
-obs.observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
-document.querySelectorAll('[data-tab],[onclick*="tab"],[onclick*="aba"],.tab-btn,.nav-link,.nav-item').forEach(function(t){t.addEventListener('click',function(){setTimeout(aplicar,200)})});
-console.log('Mascaras e validacoes ativadas');
-})();
-</script>
-</body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),500); }
+function imprimirGenerico(pref){ const txt=document.getElementById('rt-'+pref).textContent; const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head>body><pre>${txt.replace(/</g,'&lt;')}</pre></body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),500); }
 function limparGenerico(pref){ document.getElementById('rt-'+pref).textContent=''; document.getElementById('rt-'+pref).classList.remove('show'); document.getElementById('result-'+pref).classList.remove('show'); }
 
 // Estado global
@@ -5712,7 +5731,7 @@ Estrutura obrigatoria:
 1. TITULO - "RECLAMACAO FORMAL - PROCON/VG - Processo no [No] - Data: [data]"
 
 2. DOS FATOS - NAO repetir os dados de identificacao das partes (ja constam no cabecalho). Iniciar diretamente pelas tratativas e fatos relevantes. Paragrafos curtos (maximo 6 a 7 linhas cada), objetivos. Narrar: o que foi adquirido e quando, o surgimento do vicio, as tratativas ja realizadas pelo consumidor (contato com fornecedor, ida a assistencia tecnica, tentativas de resolucao), e o insucesso dessas tentativas. Quando houver documentos anexados, referencia-los com precisao integrada ao fato (ex: "Conforme nota fiscal anexa...", "Consoante laudo tecnico juntado..."). Cada paragrafo deve comecar de forma diferente — variar as construcoes iniciais, sem repetir "O consumidor...", "O reclamante..." ou estruturas similares no inicio de paragrafos consecutivos. Usar transicoes naturais entre os paragrafos (ex: "Diante disso...", "Nesse contexto...", "Ocorre que...", "Em razao de..."). Texto fluido e coeso, sem repeticoes nem detalhes irrelevantes. Use SEMPRE "vicio", NUNCA "defeito". Encerrar com: "Diante da impossibilidade de resolucao em sede de atendimento preliminar, faz-se necessaria a abertura da presente reclamacao administrativa."
-3. DO DIREITO - cite apenas os 2-4 artigos do CDC mais aplicaveis. Texto corrido e fluido, sem reproduzir longos trechos da lei. As referencias legais devem aparecer de forma natural e integrada ao argumento juridico, como referencia ao final da frase (ex: "...configura pratica abusiva vedada pelo ordenamento consumerista (art. 39, V, CDC)"). NAO listar artigos separadamente nem explicar o que cada artigo diz. Se bem essencial: fundamente dispensa do prazo de 30 dias (art. 18 par.3o). Se prazo esgotado: fundamente art. 18 par.1o. Se financiado e negocio desfeito: art. 52 CDC.
+3. DO DIREITO - cite apenas os 2-4 artigos do CDC mais aplicaveis. Texto corrido, sem reproduzir longos trechos da lei. Se bem essencial: fundamente dispensa do prazo de 30 dias (art. 18 par.3o). Se prazo esgotado: fundamente art. 18 par.1o. Se financiado e negocio desfeito: art. 52 CDC.
 
 4. DOS PEDIDOS — lista numerada OBRIGATORIA com todos os pedidos do consumidor ao fornecedor. Cada item deve iniciar com VERBO NO INFINITIVO (ex: "Restituir o valor...", "Substituir o produto...", "Cancelar o contrato..."). NUNCA iniciar item com a palavra "que" (ex: NAO usar "que o fornecedor restitua"). Esta secao NAO pode ser omitida. Se bem essencial ou prazo esgotado: primeiro pedido = troca imediata. Se financiado: incluir cancelamento do financiamento sem onus. Prazo para resposta: 10 (dez) dias CONSECUTIVOS.
 
@@ -6034,69 +6053,7 @@ function copiarTel(pref) {
 function imprimirTel(pref) {
   const txt = document.getElementById('rtxt-' + pref)?.textContent || '';
   const w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Registro Telefonico - PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style><style id="mask-validation-css">
-.input-valid{border-color:#2ecc71!important;box-shadow:0 0 0 2px rgba(46,204,113,.15)!important}
-.input-invalid{border-color:#e74c3c!important;box-shadow:0 0 0 2px rgba(231,76,60,.15)!important}
-</style>
-</head><body><h3 style="text-align:center;margin-bottom:1rem">PROCON/VG - Registro de Atendimento Telefonico</h3><pre>' + txt.replace(/</g,'&lt;') + '</pre>
-<script id="novas-categorias-support">
-// Registrar pretensões e arquivos para novas categorias
-['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
-  if(typeof pretMulti!=="undefined") pretMulti[p]=[];
-  if(typeof arqs!=="undefined") arqs[p]=[];
-});
-// Listener para checkboxes de pretensão
-document.addEventListener('change', function(e) {
-  if (e.target.type === 'checkbox' && e.target.className.startsWith('pret-cb-')) {
-    var pref = e.target.className.replace('pret-cb-', '');
-    if (typeof pretMulti !== 'undefined') {
-      pretMulti[pref] = [];
-      document.querySelectorAll('.pret-cb-' + pref + ':checked').forEach(function(cb) {
-        pretMulti[pref].push(cb.value);
-      });
-    }
-  }
-  // Upload de arquivos
-  var fid = e.target.id;
-  if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
-    var p2 = fid.replace('arq-','');
-    if (['ps','tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
-      arqs[p2] = Array.from(e.target.files);
-      var list = document.getElementById('arq-list-' + p2);
-      if (list) list.textContent = arqs[p2].map(function(f){return f.name}).join(', ');
-    }
-  }
-});
-</script>
-
-<script id="mask-validation-script">
-(function(){
-function mCPF(v){v=v.replace(/\D/g,'').substring(0,11);v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');return v}
-function mCNPJ(v){v=v.replace(/\D/g,'').substring(0,14);v=v.replace(/^(\d{2})(\d)/,'$1.$2');v=v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');v=v.replace(/\.(\d{3})(\d)/,'.$1/$2');v=v.replace(/(\d{4})(\d)/,'$1-$2');return v}
-function mTel(v){v=v.replace(/\D/g,'').substring(0,11);if(v.length<=10){v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{4})(\d)/,'$1-$2')}else{v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{5})(\d)/,'$1-$2')}return v}
-function mData(v){v=v.replace(/\D/g,'').substring(0,8);v=v.replace(/(\d{2})(\d)/,'$1/$2');v=v.replace(/(\d{2})(\d)/,'$1/$2');return v}
-function mMoeda(v){v=v.replace(/\D/g,'');if(!v)return'';v=(parseInt(v,10)/100).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1.');return'R$ '+v}
-function vCPF(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1{10}$/.test(c))return false;var s=0,r;for(var i=1;i<=9;i++)s+=parseInt(c[i-1])*(11-i);r=(s*10)%11;if(r>=10)r=0;if(r!==parseInt(c[9]))return false;s=0;for(i=1;i<=10;i++)s+=parseInt(c[i-1])*(12-i);r=(s*10)%11;if(r>=10)r=0;return r===parseInt(c[10])}
-function vCNPJ(c){c=c.replace(/\D/g,'');if(c.length!==14||/^(\d)\1{13}$/.test(c))return false;var t=c.length-2,n=c.substring(0,t),d=c.substring(t),s=0,p=t-7;for(var i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}var r=s%11<2?0:11-s%11;if(r!=d.charAt(0))return false;t++;n=c.substring(0,t);s=0;p=t-7;for(i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}r=s%11<2?0:11-s%11;return r==d.charAt(1)}
-function vData(d){var m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return false;var dia=+m[1],mes=+m[2],ano=+m[3];if(mes<1||mes>12||dia<1||dia>31||ano<1900||ano>2100)return false;var dt=new Date(ano,mes-1,dia);return dt.getDate()===dia&&dt.getMonth()===mes-1}
-function sv(el,ok,empty){el.classList.remove('input-valid','input-invalid');if(!empty)el.classList.add(ok?'input-valid':'input-invalid')}
-function aplicar(){
-document.querySelectorAll('input[type="text"],input:not([type])').forEach(function(el){
-if(el.dataset.masked)return;var id=(el.id||'').toLowerCase();
-if(id.includes('cpf')&&!id.includes('cnpj')){el.maxLength=14;if(!el.placeholder)el.placeholder='000.000.000-00';el.addEventListener('input',function(){this.value=mCPF(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===11&&vCPF(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0000-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('tel')&&!id.includes('hotel')){el.maxLength=15;if(!el.placeholder)el.placeholder='(00) 00000-0000';el.addEventListener('input',function(){this.value=mTel(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length>=10,d.length===0)});el.dataset.masked='1'}
-else if((id.includes('data')||id.includes('date')||id.endsWith('assd'))&&!id.includes('database')){el.maxLength=10;if(!el.placeholder)el.placeholder='DD/MM/AAAA';el.addEventListener('input',function(){this.value=mData(this.value);sv(this,this.value.length===10&&vData(this.value),this.value.length===0)});el.dataset.masked='1'}
-else if(id.includes('valor')||id.includes('entrada')||id.includes('preco')){if(!el.placeholder)el.placeholder='R$ 0,00';el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
-})}
-aplicar();
-var obs=new MutationObserver(function(){setTimeout(aplicar,150)});
-obs.observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
-document.querySelectorAll('[data-tab],[onclick*="tab"],[onclick*="aba"],.tab-btn,.nav-link,.nav-item').forEach(function(t){t.addEventListener('click',function(){setTimeout(aplicar,200)})});
-console.log('Mascaras e validacoes ativadas');
-})();
-</script>
-</body></html>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Registro Telefonico - PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><h3 style="text-align:center;margin-bottom:1rem">PROCON/VG - Registro de Atendimento Telefonico</h3><pre>' + txt.replace(/</g,'&lt;') + '</pre></body></html>');
   w.document.close(); w.focus(); setTimeout(function(){ w.print(); }, 500);
 }
 
@@ -6225,69 +6182,7 @@ function copiarRec() {
 function imprimirRec() {
   const txt = document.getElementById('rt-vp').textContent;
   const w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style><style id="mask-validation-css">
-.input-valid{border-color:#2ecc71!important;box-shadow:0 0 0 2px rgba(46,204,113,.15)!important}
-.input-invalid{border-color:#e74c3c!important;box-shadow:0 0 0 2px rgba(231,76,60,.15)!important}
-</style>
-</head><body><pre>' + txt.replace(/</g,'&lt;') + '</pre>
-<script id="novas-categorias-support">
-// Registrar pretensões e arquivos para novas categorias
-['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
-  if(typeof pretMulti!=="undefined") pretMulti[p]=[];
-  if(typeof arqs!=="undefined") arqs[p]=[];
-});
-// Listener para checkboxes de pretensão
-document.addEventListener('change', function(e) {
-  if (e.target.type === 'checkbox' && e.target.className.startsWith('pret-cb-')) {
-    var pref = e.target.className.replace('pret-cb-', '');
-    if (typeof pretMulti !== 'undefined') {
-      pretMulti[pref] = [];
-      document.querySelectorAll('.pret-cb-' + pref + ':checked').forEach(function(cb) {
-        pretMulti[pref].push(cb.value);
-      });
-    }
-  }
-  // Upload de arquivos
-  var fid = e.target.id;
-  if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
-    var p2 = fid.replace('arq-','');
-    if (['ps','tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
-      arqs[p2] = Array.from(e.target.files);
-      var list = document.getElementById('arq-list-' + p2);
-      if (list) list.textContent = arqs[p2].map(function(f){return f.name}).join(', ');
-    }
-  }
-});
-</script>
-
-<script id="mask-validation-script">
-(function(){
-function mCPF(v){v=v.replace(/\D/g,'').substring(0,11);v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');return v}
-function mCNPJ(v){v=v.replace(/\D/g,'').substring(0,14);v=v.replace(/^(\d{2})(\d)/,'$1.$2');v=v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');v=v.replace(/\.(\d{3})(\d)/,'.$1/$2');v=v.replace(/(\d{4})(\d)/,'$1-$2');return v}
-function mTel(v){v=v.replace(/\D/g,'').substring(0,11);if(v.length<=10){v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{4})(\d)/,'$1-$2')}else{v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{5})(\d)/,'$1-$2')}return v}
-function mData(v){v=v.replace(/\D/g,'').substring(0,8);v=v.replace(/(\d{2})(\d)/,'$1/$2');v=v.replace(/(\d{2})(\d)/,'$1/$2');return v}
-function mMoeda(v){v=v.replace(/\D/g,'');if(!v)return'';v=(parseInt(v,10)/100).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1.');return'R$ '+v}
-function vCPF(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1{10}$/.test(c))return false;var s=0,r;for(var i=1;i<=9;i++)s+=parseInt(c[i-1])*(11-i);r=(s*10)%11;if(r>=10)r=0;if(r!==parseInt(c[9]))return false;s=0;for(i=1;i<=10;i++)s+=parseInt(c[i-1])*(12-i);r=(s*10)%11;if(r>=10)r=0;return r===parseInt(c[10])}
-function vCNPJ(c){c=c.replace(/\D/g,'');if(c.length!==14||/^(\d)\1{13}$/.test(c))return false;var t=c.length-2,n=c.substring(0,t),d=c.substring(t),s=0,p=t-7;for(var i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}var r=s%11<2?0:11-s%11;if(r!=d.charAt(0))return false;t++;n=c.substring(0,t);s=0;p=t-7;for(i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}r=s%11<2?0:11-s%11;return r==d.charAt(1)}
-function vData(d){var m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return false;var dia=+m[1],mes=+m[2],ano=+m[3];if(mes<1||mes>12||dia<1||dia>31||ano<1900||ano>2100)return false;var dt=new Date(ano,mes-1,dia);return dt.getDate()===dia&&dt.getMonth()===mes-1}
-function sv(el,ok,empty){el.classList.remove('input-valid','input-invalid');if(!empty)el.classList.add(ok?'input-valid':'input-invalid')}
-function aplicar(){
-document.querySelectorAll('input[type="text"],input:not([type])').forEach(function(el){
-if(el.dataset.masked)return;var id=(el.id||'').toLowerCase();
-if(id.includes('cpf')&&!id.includes('cnpj')){el.maxLength=14;if(!el.placeholder)el.placeholder='000.000.000-00';el.addEventListener('input',function(){this.value=mCPF(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===11&&vCPF(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0000-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('tel')&&!id.includes('hotel')){el.maxLength=15;if(!el.placeholder)el.placeholder='(00) 00000-0000';el.addEventListener('input',function(){this.value=mTel(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length>=10,d.length===0)});el.dataset.masked='1'}
-else if((id.includes('data')||id.includes('date')||id.endsWith('assd'))&&!id.includes('database')){el.maxLength=10;if(!el.placeholder)el.placeholder='DD/MM/AAAA';el.addEventListener('input',function(){this.value=mData(this.value);sv(this,this.value.length===10&&vData(this.value),this.value.length===0)});el.dataset.masked='1'}
-else if(id.includes('valor')||id.includes('entrada')||id.includes('preco')){if(!el.placeholder)el.placeholder='R$ 0,00';el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
-})}
-aplicar();
-var obs=new MutationObserver(function(){setTimeout(aplicar,150)});
-obs.observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
-document.querySelectorAll('[data-tab],[onclick*="tab"],[onclick*="aba"],.tab-btn,.nav-link,.nav-item').forEach(function(t){t.addEventListener('click',function(){setTimeout(aplicar,200)})});
-console.log('Mascaras e validacoes ativadas');
-})();
-</script>
-</body></html>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reclamacao PROCON/VG</title><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.85;margin:2cm}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><pre>' + txt.replace(/</g,'&lt;') + '</pre></body></html>');
   w.document.close(); w.focus(); setTimeout(function(){ w.print(); }, 500);
 }
 function limparRec() {
@@ -6935,11 +6830,7 @@ async function baixarWordFraude() {
   const estiloPar = 'text-align:justify;text-indent:1.25cm;font-family:Times New Roman,serif;font-size:12pt;line-height:1.5;margin:0 0 6pt 0';
   const corpo = paragrafos.map(function(p){return '<p style="'+estiloPar+'">' + p.replace(/\n/g,'<br>') + '</p>';}).join('');;
 
-  const html = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>@page{margin:3cm 2cm 2cm 3cm}body{font-family:Times New Roman,serif;font-size:12pt}.cab{border-bottom:2pt solid #8B0000;margin-bottom:14pt;padding-bottom:8pt}.cab-linha1{font-size:9pt;color:#555;text-align:center}.cab-titulo{font-size:13pt;font-weight:bold;text-align:center;color:#1a1a2e;margin:6pt 0 2pt}.cab-sub{font-size:9pt;text-align:center;color:#555}.info-box{background:#f5f5f5;border:1pt solid #ddd;padding:6pt 10pt;margin-bottom:10pt;font-size:10pt}.info-row{margin:2pt 0}.info-label{font-weight:bold}.secao{font-size:11pt;font-weight:bold;text-transform:uppercase;margin:12pt 0 4pt;border-bottom:0.5pt solid #999}.rodape{border-top:1pt solid #8B0000;margin-top:20pt;padding-top:6pt;font-size:8pt;color:#666;text-align:center}</style><style id="mask-validation-css">
-.input-valid{border-color:#2ecc71!important;box-shadow:0 0 0 2px rgba(46,204,113,.15)!important}
-.input-invalid{border-color:#e74c3c!important;box-shadow:0 0 0 2px rgba(231,76,60,.15)!important}
-</style>
-</head><body>'
+  const html = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>@page{margin:3cm 2cm 2cm 3cm}body{font-family:Times New Roman,serif;font-size:12pt}.cab{border-bottom:2pt solid #8B0000;margin-bottom:14pt;padding-bottom:8pt}.cab-linha1{font-size:9pt;color:#555;text-align:center}.cab-titulo{font-size:13pt;font-weight:bold;text-align:center;color:#1a1a2e;margin:6pt 0 2pt}.cab-sub{font-size:9pt;text-align:center;color:#555}.info-box{background:#f5f5f5;border:1pt solid #ddd;padding:6pt 10pt;margin-bottom:10pt;font-size:10pt}.info-row{margin:2pt 0}.info-label{font-weight:bold}.secao{font-size:11pt;font-weight:bold;text-transform:uppercase;margin:12pt 0 4pt;border-bottom:0.5pt solid #999}.rodape{border-top:1pt solid #8B0000;margin-top:20pt;padding-top:6pt;font-size:8pt;color:#666;text-align:center}</style></head><body>'
     + '<div class="cab"><div class="cab-linha1">ESTADO DE MATO GROSSO - PREFEITURA MUNICIPAL DE VARZEA GRANDE</div>'
     + '<div class="cab-titulo">COORDENADORIA DE DEFESA DO CONSUMIDOR - PROCON/VG</div>'
     + '<div class="cab-sub">Av. Castelo Branco, 2500 · Centro Sul · Varzea Grande/MT · (65) 3688-8056 · proconvg.mt@gmail.com</div></div>'
@@ -6964,65 +6855,7 @@ async function baixarWordFraude() {
     + '<p>[CARIMBO DO PROCON/VG]</p>'
     + '</div>'
     + '<div class="rodape">Av. Castelo Branco, 2500 · Centro Sul · Varzea Grande-MT · Tel.: (65) 3688-8056 · proconvg.mt@gmail.com</div>'
-    + '
-<script id="novas-categorias-support">
-// Registrar pretensões e arquivos para novas categorias
-['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
-  if(typeof pretMulti!=="undefined") pretMulti[p]=[];
-  if(typeof arqs!=="undefined") arqs[p]=[];
-});
-// Listener para checkboxes de pretensão
-document.addEventListener('change', function(e) {
-  if (e.target.type === 'checkbox' && e.target.className.startsWith('pret-cb-')) {
-    var pref = e.target.className.replace('pret-cb-', '');
-    if (typeof pretMulti !== 'undefined') {
-      pretMulti[pref] = [];
-      document.querySelectorAll('.pret-cb-' + pref + ':checked').forEach(function(cb) {
-        pretMulti[pref].push(cb.value);
-      });
-    }
-  }
-  // Upload de arquivos
-  var fid = e.target.id;
-  if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
-    var p2 = fid.replace('arq-','');
-    if (['ps','tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
-      arqs[p2] = Array.from(e.target.files);
-      var list = document.getElementById('arq-list-' + p2);
-      if (list) list.textContent = arqs[p2].map(function(f){return f.name}).join(', ');
-    }
-  }
-});
-</script>
-
-<script id="mask-validation-script">
-(function(){
-function mCPF(v){v=v.replace(/\D/g,'').substring(0,11);v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');return v}
-function mCNPJ(v){v=v.replace(/\D/g,'').substring(0,14);v=v.replace(/^(\d{2})(\d)/,'$1.$2');v=v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');v=v.replace(/\.(\d{3})(\d)/,'.$1/$2');v=v.replace(/(\d{4})(\d)/,'$1-$2');return v}
-function mTel(v){v=v.replace(/\D/g,'').substring(0,11);if(v.length<=10){v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{4})(\d)/,'$1-$2')}else{v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{5})(\d)/,'$1-$2')}return v}
-function mData(v){v=v.replace(/\D/g,'').substring(0,8);v=v.replace(/(\d{2})(\d)/,'$1/$2');v=v.replace(/(\d{2})(\d)/,'$1/$2');return v}
-function mMoeda(v){v=v.replace(/\D/g,'');if(!v)return'';v=(parseInt(v,10)/100).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1.');return'R$ '+v}
-function vCPF(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1{10}$/.test(c))return false;var s=0,r;for(var i=1;i<=9;i++)s+=parseInt(c[i-1])*(11-i);r=(s*10)%11;if(r>=10)r=0;if(r!==parseInt(c[9]))return false;s=0;for(i=1;i<=10;i++)s+=parseInt(c[i-1])*(12-i);r=(s*10)%11;if(r>=10)r=0;return r===parseInt(c[10])}
-function vCNPJ(c){c=c.replace(/\D/g,'');if(c.length!==14||/^(\d)\1{13}$/.test(c))return false;var t=c.length-2,n=c.substring(0,t),d=c.substring(t),s=0,p=t-7;for(var i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}var r=s%11<2?0:11-s%11;if(r!=d.charAt(0))return false;t++;n=c.substring(0,t);s=0;p=t-7;for(i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}r=s%11<2?0:11-s%11;return r==d.charAt(1)}
-function vData(d){var m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return false;var dia=+m[1],mes=+m[2],ano=+m[3];if(mes<1||mes>12||dia<1||dia>31||ano<1900||ano>2100)return false;var dt=new Date(ano,mes-1,dia);return dt.getDate()===dia&&dt.getMonth()===mes-1}
-function sv(el,ok,empty){el.classList.remove('input-valid','input-invalid');if(!empty)el.classList.add(ok?'input-valid':'input-invalid')}
-function aplicar(){
-document.querySelectorAll('input[type="text"],input:not([type])').forEach(function(el){
-if(el.dataset.masked)return;var id=(el.id||'').toLowerCase();
-if(id.includes('cpf')&&!id.includes('cnpj')){el.maxLength=14;if(!el.placeholder)el.placeholder='000.000.000-00';el.addEventListener('input',function(){this.value=mCPF(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===11&&vCPF(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0000-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('tel')&&!id.includes('hotel')){el.maxLength=15;if(!el.placeholder)el.placeholder='(00) 00000-0000';el.addEventListener('input',function(){this.value=mTel(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length>=10,d.length===0)});el.dataset.masked='1'}
-else if((id.includes('data')||id.includes('date')||id.endsWith('assd'))&&!id.includes('database')){el.maxLength=10;if(!el.placeholder)el.placeholder='DD/MM/AAAA';el.addEventListener('input',function(){this.value=mData(this.value);sv(this,this.value.length===10&&vData(this.value),this.value.length===0)});el.dataset.masked='1'}
-else if(id.includes('valor')||id.includes('entrada')||id.includes('preco')){if(!el.placeholder)el.placeholder='R$ 0,00';el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
-})}
-aplicar();
-var obs=new MutationObserver(function(){setTimeout(aplicar,150)});
-obs.observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
-document.querySelectorAll('[data-tab],[onclick*="tab"],[onclick*="aba"],.tab-btn,.nav-link,.nav-item').forEach(function(t){t.addEventListener('click',function(){setTimeout(aplicar,200)})});
-console.log('Mascaras e validacoes ativadas');
-})();
-</script>
-</body></html>';
+    + '</body></html>';
 
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
@@ -7338,11 +7171,7 @@ async function baixarWord(pref) {
     + '.linha-verde{border-bottom:2.5pt solid #00B050;margin-bottom:14pt;padding-bottom:0}'
     + '.titulo-prefeitura{font-family:"Times New Roman",serif;font-size:10pt;font-weight:bold;text-align:center;line-height:1.3}'
     + '.rodape-box{border-top:1pt solid #00B050;margin-top:24pt;padding-top:6pt;font-size:8pt;color:#666;text-align:center}'
-    + '</style><style id="mask-validation-css">
-.input-valid{border-color:#2ecc71!important;box-shadow:0 0 0 2px rgba(46,204,113,.15)!important}
-.input-invalid{border-color:#e74c3c!important;box-shadow:0 0 0 2px rgba(231,76,60,.15)!important}
-</style>
-</head><body>'
+    + '</style></head><body>'
     + '<div class="linha-verde">'
     + '<table><tr>'
     + '<td class="td-logo"><img src="data:image/png;base64,IMG1" width="116" height="55" alt="Prefeitura"></td>'
@@ -7352,65 +7181,7 @@ async function baixarWord(pref) {
     + '</div>'
     + corpo
     + '<div class="rodape-box">Av. Castelo Branco, 2500 &bull; Centro Sul &bull; Varzea Grande-MT &bull; CEP 78.115-050 &bull; Tel.: (65) 3688-8056 &bull; proconvg.mt@gmail.com</div>'
-    + '
-<script id="novas-categorias-support">
-// Registrar pretensões e arquivos para novas categorias
-['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
-  if(typeof pretMulti!=="undefined") pretMulti[p]=[];
-  if(typeof arqs!=="undefined") arqs[p]=[];
-});
-// Listener para checkboxes de pretensão
-document.addEventListener('change', function(e) {
-  if (e.target.type === 'checkbox' && e.target.className.startsWith('pret-cb-')) {
-    var pref = e.target.className.replace('pret-cb-', '');
-    if (typeof pretMulti !== 'undefined') {
-      pretMulti[pref] = [];
-      document.querySelectorAll('.pret-cb-' + pref + ':checked').forEach(function(cb) {
-        pretMulti[pref].push(cb.value);
-      });
-    }
-  }
-  // Upload de arquivos
-  var fid = e.target.id;
-  if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
-    var p2 = fid.replace('arq-','');
-    if (['ps','tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
-      arqs[p2] = Array.from(e.target.files);
-      var list = document.getElementById('arq-list-' + p2);
-      if (list) list.textContent = arqs[p2].map(function(f){return f.name}).join(', ');
-    }
-  }
-});
-</script>
-
-<script id="mask-validation-script">
-(function(){
-function mCPF(v){v=v.replace(/\D/g,'').substring(0,11);v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');return v}
-function mCNPJ(v){v=v.replace(/\D/g,'').substring(0,14);v=v.replace(/^(\d{2})(\d)/,'$1.$2');v=v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');v=v.replace(/\.(\d{3})(\d)/,'.$1/$2');v=v.replace(/(\d{4})(\d)/,'$1-$2');return v}
-function mTel(v){v=v.replace(/\D/g,'').substring(0,11);if(v.length<=10){v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{4})(\d)/,'$1-$2')}else{v=v.replace(/(\d{2})(\d)/,'($1) $2');v=v.replace(/(\d{5})(\d)/,'$1-$2')}return v}
-function mData(v){v=v.replace(/\D/g,'').substring(0,8);v=v.replace(/(\d{2})(\d)/,'$1/$2');v=v.replace(/(\d{2})(\d)/,'$1/$2');return v}
-function mMoeda(v){v=v.replace(/\D/g,'');if(!v)return'';v=(parseInt(v,10)/100).toFixed(2).replace('.',',').replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1.');return'R$ '+v}
-function vCPF(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1{10}$/.test(c))return false;var s=0,r;for(var i=1;i<=9;i++)s+=parseInt(c[i-1])*(11-i);r=(s*10)%11;if(r>=10)r=0;if(r!==parseInt(c[9]))return false;s=0;for(i=1;i<=10;i++)s+=parseInt(c[i-1])*(12-i);r=(s*10)%11;if(r>=10)r=0;return r===parseInt(c[10])}
-function vCNPJ(c){c=c.replace(/\D/g,'');if(c.length!==14||/^(\d)\1{13}$/.test(c))return false;var t=c.length-2,n=c.substring(0,t),d=c.substring(t),s=0,p=t-7;for(var i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}var r=s%11<2?0:11-s%11;if(r!=d.charAt(0))return false;t++;n=c.substring(0,t);s=0;p=t-7;for(i=t;i>=1;i--){s+=n.charAt(t-i)*p--;if(p<2)p=9}r=s%11<2?0:11-s%11;return r==d.charAt(1)}
-function vData(d){var m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return false;var dia=+m[1],mes=+m[2],ano=+m[3];if(mes<1||mes>12||dia<1||dia>31||ano<1900||ano>2100)return false;var dt=new Date(ano,mes-1,dia);return dt.getDate()===dia&&dt.getMonth()===mes-1}
-function sv(el,ok,empty){el.classList.remove('input-valid','input-invalid');if(!empty)el.classList.add(ok?'input-valid':'input-invalid')}
-function aplicar(){
-document.querySelectorAll('input[type="text"],input:not([type])').forEach(function(el){
-if(el.dataset.masked)return;var id=(el.id||'').toLowerCase();
-if(id.includes('cpf')&&!id.includes('cnpj')){el.maxLength=14;if(!el.placeholder)el.placeholder='000.000.000-00';el.addEventListener('input',function(){this.value=mCPF(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===11&&vCPF(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0000-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('tel')&&!id.includes('hotel')){el.maxLength=15;if(!el.placeholder)el.placeholder='(00) 00000-0000';el.addEventListener('input',function(){this.value=mTel(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length>=10,d.length===0)});el.dataset.masked='1'}
-else if((id.includes('data')||id.includes('date')||id.endsWith('assd'))&&!id.includes('database')){el.maxLength=10;if(!el.placeholder)el.placeholder='DD/MM/AAAA';el.addEventListener('input',function(){this.value=mData(this.value);sv(this,this.value.length===10&&vData(this.value),this.value.length===0)});el.dataset.masked='1'}
-else if(id.includes('valor')||id.includes('entrada')||id.includes('preco')){if(!el.placeholder)el.placeholder='R$ 0,00';el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
-})}
-aplicar();
-var obs=new MutationObserver(function(){setTimeout(aplicar,150)});
-obs.observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
-document.querySelectorAll('[data-tab],[onclick*="tab"],[onclick*="aba"],.tab-btn,.nav-link,.nav-item').forEach(function(t){t.addEventListener('click',function(){setTimeout(aplicar,200)})});
-console.log('Mascaras e validacoes ativadas');
-})();
-</script>
-</body></html>';
+    + '</body></html>';
 
   const docFinal = htmlDoc.replace('IMG1', IMG1_DATA).replace('IMG2', IMG2_DATA);
   const blob = new Blob([docFinal], { type: 'application/msword;charset=utf-8' });
@@ -7620,15 +7391,11 @@ async function gerarDecisaoTerminativa() {
   btn.disabled=false; btn.innerHTML='<i class="ti ti-gavel" style="font-size:18px"></i>Gerar Decisao Terminativa';
 }
 
-</script>
-
-<script id="novas-categorias-support">
-// Registrar pretensões e arquivos para novas categorias
+// === NOVAS CATEGORIAS: registrar pretensões e arquivos ===
 ['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
-  if(typeof pretMulti!=="undefined") pretMulti[p]=[];
-  if(typeof arqs!=="undefined") arqs[p]=[];
+  pretMulti[p]=[];
+  arqs[p]=[];
 });
-// Listener para checkboxes de pretensão
 document.addEventListener('change', function(e) {
   if (e.target.type === 'checkbox' && e.target.className.startsWith('pret-cb-')) {
     var pref = e.target.className.replace('pret-cb-', '');
@@ -7639,7 +7406,6 @@ document.addEventListener('change', function(e) {
       });
     }
   }
-  // Upload de arquivos
   var fid = e.target.id;
   if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
     var p2 = fid.replace('arq-','');
@@ -7650,9 +7416,8 @@ document.addEventListener('change', function(e) {
     }
   }
 });
-</script>
 
-<script id="mask-validation-script">
+// === MÁSCARAS E VALIDAÇÃO ===
 (function(){
 function mCPF(v){v=v.replace(/\D/g,'').substring(0,11);v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d)/,'$1.$2');v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');return v}
 function mCNPJ(v){v=v.replace(/\D/g,'').substring(0,14);v=v.replace(/^(\d{2})(\d)/,'$1.$2');v=v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');v=v.replace(/\.(\d{3})(\d)/,'.$1/$2');v=v.replace(/(\d{4})(\d)/,'$1-$2');return v}
@@ -7667,17 +7432,15 @@ function aplicar(){
 document.querySelectorAll('input[type="text"],input:not([type])').forEach(function(el){
 if(el.dataset.masked)return;var id=(el.id||'').toLowerCase();
 if(id.includes('cpf')&&!id.includes('cnpj')){el.maxLength=14;if(!el.placeholder)el.placeholder='000.000.000-00';el.addEventListener('input',function(){this.value=mCPF(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===11&&vCPF(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0000-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
-else if(id.includes('tel')&&!id.includes('hotel')){el.maxLength=15;if(!el.placeholder)el.placeholder='(00) 00000-0000';el.addEventListener('input',function(){this.value=mTel(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length>=10,d.length===0)});el.dataset.masked='1'}
-else if((id.includes('data')||id.includes('date')||id.endsWith('assd'))&&!id.includes('database')){el.maxLength=10;if(!el.placeholder)el.placeholder='DD/MM/AAAA';el.addEventListener('input',function(){this.value=mData(this.value);sv(this,this.value.length===10&&vData(this.value),this.value.length===0)});el.dataset.masked='1'}
-else if(id.includes('valor')||id.includes('entrada')||id.includes('preco')){if(!el.placeholder)el.placeholder='R$ 0,00';el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
-})}
+else if(id.includes('cnpj')){el.maxLength=18;if(!el.placeholder)el.placeholder='00.000.000/0001-00';el.addEventListener('input',function(){this.value=mCNPJ(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===14&&vCNPJ(this.value),d.length===0)});el.dataset.masked='1'}
+else if(id.includes('tel')||id.includes('fone')||id.includes('celular')||id.includes('whats')){el.maxLength=15;if(!el.placeholder)el.placeholder='(65) 99999-9999';el.addEventListener('input',function(){this.value=mTel(this.value)});el.dataset.masked='1'}
+else if((id.includes('data')||id.includes('dt-'))&&!id.includes('dataset')&&(el.placeholder||'').match(/dd|\//i)){el.maxLength=10;el.addEventListener('input',function(){this.value=mData(this.value);var d=this.value.replace(/\D/g,'');sv(this,d.length===8&&vData(this.value),d.length===0)});el.dataset.masked='1'}
+else if(id.includes('valor')||id.includes('preco')||id.includes('mensalidade')||id.includes('fatura')){el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
+});}
 aplicar();
-var obs=new MutationObserver(function(){setTimeout(aplicar,150)});
-obs.observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
-document.querySelectorAll('[data-tab],[onclick*="tab"],[onclick*="aba"],.tab-btn,.nav-link,.nav-item').forEach(function(t){t.addEventListener('click',function(){setTimeout(aplicar,200)})});
-console.log('Mascaras e validacoes ativadas');
+new MutationObserver(function(){aplicar()}).observe(document.body,{childList:true,subtree:true});
 })();
+
 </script>
 </body>
 </html>

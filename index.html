@@ -3169,7 +3169,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       <div class="sec-body open">
         <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Cole ou descreva o inteiro teor da reclamação administrativa — identificação das partes, fatos narrados e pedidos formulados pelo consumidor.</span></div>
         <div class="grid g2">
-          <div class="field"><label>Nº do processo</label><input type="text" id="ad-proc" placeholder="2025-0001"></div>
+          <div class="field"><label>Nº do processo</label><input type="text" id="ad-proc" placeholder="00.00.0000.000.00000-0" style="font-family:monospace;letter-spacing:0.5px"></div>
           <div class="field"><label>Consumidor</label><input type="text" id="ad-cons" placeholder="Nome do consumidor"></div>
         </div>
         <div class="field">
@@ -6372,39 +6372,46 @@ async function gerarMinuta() {
   });
   const interacoesTexto = interacoesTel.length > 0 ? interacoesTel.join('; ') : 'nenhuma interação registrada';
 
-  const prompt = 'Você é atendente técnico do PROCON de Várzea Grande-MT. Redija um DESPACHO SANEADOR administrativo seguindo EXATAMENTE a estrutura abaixo, em linguagem técnica, fluida e institucional — firmeza sem prolixidade.'
+  const prompt = 'Você é atendente técnico do PROCON Municipal de Várzea Grande-MT. Redija o documento administrativo indicado abaixo.'
+    + '\n\nREGRAS DE REDAÇÃO INVIOLÁVEIS:'
+    + '\n1. TEXTO CONCATENADO: redigir em texto corrido, sem subtítulos, sem numeração de seções, sem "I — DO RELATÓRIO" ou similares. O texto flui naturalmente do relato para a análise e para o dispositivo, com transições orgânicas entre os temas.'
+    + '\n2. SEM PROLIXIDADE: cada frase deve acrescentar informação nova. Nunca repetir um fato que já foi mencionado — se o relatório já narrou, a fundamentação não recontar. Cortar frases que apenas reformulam o que já foi dito.'
+    + '\n3. TERMINOLOGIA ADMINISTRATIVA: procedimento administrativo do PROCON, NÃO processo judicial. Nunca usar "homologação de acordo" — o termo correto é "extinção do procedimento com demanda fundamentadamente atendida". Não usar "sentença", "decisão judicial", "juiz" ou "vara".'
+    + '\n4. ESTILO: linguagem técnico-administrativa, fluida, institucional. Parágrafos não devem começar todos da mesma forma — variar as aberturas.'
     + '\n\n' + instrucaoEmpresas
-    + '\n\nESTRUTURA OBRIGATÓRIA DO DESPACHO:\n'
+    + '\n\nCABEÇALHO:\n'
     + '\nProcesso n.º ' + gv('ad-proc')
-    + '\nConsumidor: ' + gv('ad-cons')
+    + '\nReclamante: ' + gv('ad-cons')
     + '\nReclamada(s): ' + nomeEmpresas
     + '\n\nDESPACHO\n'
-    + '\n[PARÁGRAFO 1 — RELATÓRIO DA INICIAL: usar estilo haiku — frases curtas, diretas, sem conectivos desnecessários. Apenas os fatos essenciais: quem reclama, contra quem, o quê, quando, valor, qual o problema. Sem floreios, sem texto de preenchimento. Exemplo de tom: "Trata-se de reclamação de João Silva em face do Banco X. Empréstimo consignado no valor de R$ 3.400,00, contratado em 15/03/2025. Consumidor não reconhece a contratação. Descontos de R$ 234,00 incidem sobre o benefício de aposentadoria desde abril de 2025."]'
-    +    + '\\n\\n[PARÁGRAFO 2 — RELATÓRIO DA DEFESA: estilo meio-termo — objetivo e direto, mas com registro completo dos elementos relevantes. Seguir esta ordem: (a) SE a empresa arguiu preliminar (prescrição, ilegitimidade de parte, intempestividade ou outra): registrar primeiro — Em sede preliminar, a empresa arguiu [tipo], sustentando [resumo em uma frase]. NÃO analisar o mérito da preliminar — apenas documentar o que foi arguido. (b) Síntese objetiva do mérito da defesa — frases curtas e diretas. (c) O que não foi apresentado — documentos faltantes, provas ausentes. SE não houver preliminar: ir direto para (b) e (c), sem mencionar preliminar.]'
-    + '\n\n[PARÁGRAFO 3 — ANÁLISE TÉCNICA: aqui retorna o estilo técnico-jurídico normal — texto corrido, fundamentado, fluido. Cruzamento entre inicial e defesa, descrevendo objetivamente o que não foi comprovado e os fundamentos legais integrados ao raciocínio (CDC). NÃO declarar expressamente que "a defesa é insuficiente". A constatação deve decorrer naturalmente da descrição das lacunas.' + (parecerAbusividade ? ' Incorporar o parecer de abusividade contratual.' : '') + ']'
-    + '\n\nAnte o exposto, NOTIFIQUE-SE a(s) empresa(s) para que, no prazo de 10 (dez) dias consecutivos, contados do recebimento da presente notificação:'
-    + '\na) [determinação 1 — específica e exequível]'
-    + '\nb) [determinação 2]'
-    + '\nc) [determinação 3, se houver]'
+    + '\nRedija o despacho em texto corrido contendo todas as informações necessárias, sem limitar a quantidade de parágrafos mas sem ser prolixo. O texto deve conter:'
+    + '\n- Relato dos fatos essenciais (quem, contra quem, o quê, quando, valor, problema) em estilo direto e conciso.'
+    + '\n- Se houve defesa: o que a empresa alegou e apresentou, no mesmo fluxo do texto. Preliminares arguidas devem ser apenas registradas, sem análise de mérito.'
+    + '\n- Fundamentação jurídica integrada ao raciocínio — citar artigos do CDC no contexto da análise, não em bloco separado. NÃO recontar fatos já narrados.'
+    + '\n- Se houve resolução ou atendimento da demanda (cancelamento, estorno, etc.): registrar as evidências e fundamentar a extinção. Se o consumidor não retornou após intimação e há indícios de resolução, aplicar a presunção de atendimento.'
+    + (parecerAbusividade ? '\n- Incorporar o parecer de abusividade contratual na fundamentação.' : '')
+    + '\n- Dispositivo adequado ao caso:'
+    + '\n  • DESPACHO SANEADOR: "Ante o exposto, NOTIFIQUE-SE..." com alíneas específicas e exequíveis.'
+    + '\n  • EXTINÇÃO com demanda atendida: "Ante o exposto, DECLARO EXTINTO o presente procedimento administrativo, com demanda fundamentadamente atendida, nos termos do art. [fundamento]. Intimem-se as partes. Arquivem-se os autos."'
+    + '\n  • ENCAMINHAR para decisão: "Voltem os autos conclusos para decisão administrativa."'
+    + '\n  Escolher conforme as providências e observações do atendente.'
     + (temAud ? '\n\n' + aud : '')
-    + '\n\nA ausência de manifestação no prazo implicará julgamento no estado dos autos, com presunção de veracidade dos fatos alegados pelo consumidor, nos termos do art. 6º, VIII, do CDC.'
-    + '\n\nPublique-se. Intime-se. Após, retornem os autos conclusos para análise.'
     + '\n\nVárzea Grande-MT, [data].'
     + '\n\n---'
-    + '\n\nDados para preenchimento dos colchetes acima:'
+    + '\n\nDados do caso:'
     + '\nPROCESSO: ' + gv('ad-proc')
     + '\nCONSUMIDOR: ' + gv('ad-cons')
     + '\nEMPRESA(S): ' + nomeEmpresas
     + '\n\nRECLAMAÇÃO DO CONSUMIDOR:\n' + gv('ad-pedidos').substring(0,1500)
     + '\n\n' + defesasTexto
     + '\n\n' + linhaAnalisePrevia
-    + (parecerAbusividade ? '\nPARECER DE ABUSIVIDADE CONTRATUAL (incorporar no parágrafo 3): ' + (tipoAbusivo||'') + '. ' + parecerAbusividade + '\n' : '')
-    + '\nPEDIDOS DO CONSUMIDOR (usar nas alíneas): ' + (provAll.join('; ')||'notificar empresa')
-    + '\nINTERAÇÕES: ' + interacoesTexto
+    + (parecerAbusividade ? '\nPARECER DE ABUSIVIDADE CONTRATUAL: ' + (tipoAbusivo||'') + '. ' + parecerAbusividade + '\n' : '')
+    + '\nPROVIDÊNCIAS SOLICITADAS: ' + (provAll.join('; ')||'notificar empresa')
+    + '\nINTERAÇÕES COM EMPRESA: ' + interacoesTexto
     + '\nDOCUMENTOS DO CONSUMIDOR PÓS-DEFESA: ' + (gv('ad-docs-pos-texto')||'nenhum documento apresentado')
     + '\nPROVIDÊNCIAS PROCESSUAIS (checklist): ' + (providenciasPP||'nenhuma marcada')
     + '\nOBSERVAÇÕES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma')
-    + '\n\nRegras finais: acentuação e ortografia completas em português. Prazos sempre em dias consecutivos. Não incluir seção de encerramento além do que está na estrutura acima. Dano moral fora da competência administrativa — orientar para Defensoria Pública se mencionado.';
+    + '\n\nRegras finais: acentuação e ortografia completas em português. Prazos em dias consecutivos. Dano moral fora da competência administrativa — orientar para Defensoria Pública se mencionado.';
 
   try {
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})});

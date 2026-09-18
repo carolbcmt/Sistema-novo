@@ -461,11 +461,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       <i class="ti ti-file-plus"></i>
       <span>Requerimentos</span>
     </div>
-    <div class="nav-item" id="nav-ad" onclick="openForm('ad')">
-      <i class="ti ti-analyze"></i>
-      <span>Análise de Defesa</span>
-      <span class="nav-badge">IA</span>
-    </div>
+
 
     <div class="nav-divider"></div>
     <div class="sidebar-section"><div class="sidebar-section-label">Base Jurídica</div></div>
@@ -512,11 +508,6 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
     <div class="nav-divider"></div>
     <div class="sidebar-section"><div class="sidebar-section-label">Novas Categorias</div></div>
-    <div class="nav-item" id="nav-ps" onclick="openForm('ps')">
-      <i class="ti ti-heartbeat"></i>
-      <span>Plano de Saúde</span>
-      <span class="nav-badge">Lei 9.656</span>
-    </div>
     <div class="nav-item" id="nav-tc" onclick="openForm('tc')">
       <i class="ti ti-antenna-bars-5"></i>
       <span>Telecomunicações</span>
@@ -545,9 +536,14 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
     <div class="nav-divider"></div>
     <div class="sidebar-section"><div class="sidebar-section-label">Gestão Processual</div></div>
-    <div class="nav-item" id="nav-pp" onclick="openForm('pp')">
-      <i class="ti ti-checklist"></i>
-      <span>Providências Processuais</span>
+    <div class="nav-item" id="nav-ad" onclick="openForm('ad')">
+      <i class="ti ti-analyze"></i>
+      <span>Análise de Defesa</span>
+      <span class="nav-badge">IA</span>
+    </div>
+    <div class="nav-item" id="nav-san" onclick="openForm('san')">
+      <i class="ti ti-alert-octagon"></i>
+      <span>Procedimento Sancionatório</span>
     </div>
     <div class="nav-item" id="nav-dt" onclick="openForm('dt')">
       <i class="ti ti-gavel"></i>
@@ -3166,7 +3162,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
     <!-- ======== ANÁLISE DE DEFESA ADMINISTRATIVA ======== -->
     <div id="screen-ad" style="display:none">
-      <div class="form-head"><div class="form-head-icon"><i class="ti ti-analyze"></i></div><div><h1>Análise de Defesa Administrativa</h1><p>PROCON/VG · Reclamação × Defesa × Análise × Sugestão × Minuta — formatação ABNT</p></div></div>
+      <div class="form-head"><div class="form-head-icon"><i class="ti ti-analyze"></i></div><div><h1>Análise de Defesa</h1><p>PROCON/VG · Reclamação × Defesa × Providências × Despacho Saneador — formatação ABNT</p></div></div>
 
       <!-- SEÇÃO 1: RECLAMAÇÃO -->
       <div class="sec"><div class="sec-head open" onclick="toggleSec(this)"><div class="sec-num">1</div><span class="sec-title">Reclamação</span><i class="ti ti-chevron-down sec-arrow"></i></div>
@@ -3229,29 +3225,39 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
           </div>
         </div>
         <div id="ad-defesas-extras"></div>
+
+        <!-- Documentos do consumidor pós-defesa -->
+        <div style="margin-top:16px;padding:14px;border:1px solid var(--border);border-radius:10px;background:rgba(37,99,168,0.03)">
+          <div class="field"><label style="font-size:13px;font-weight:600;color:var(--blue)"><i class="ti ti-file-check" style="font-size:16px"></i> O consumidor produziu documentos após a defesa?</label>
+            <div class="opts" id="og-ad-docs-pos" style="margin-top:6px">
+              <div class="opt" onclick="selOpt('og-ad-docs-pos',this,'Sim');document.getElementById('ad-docs-pos-bloco').style.display='block'">Sim</div>
+              <div class="opt" onclick="selOpt('og-ad-docs-pos',this,'Nao');document.getElementById('ad-docs-pos-bloco').style.display='none'">Não</div>
+            </div>
+            <input type="hidden" id="ad-docs-pos">
+          </div>
+          <div id="ad-docs-pos-bloco" style="display:none;margin-top:10px">
+            <div class="field"><label>Anexar documentos do consumidor (PDF, DOCX, imagem)</label>
+              <div class="upload-zone" id="uz-ad-docs-pos" onclick="document.getElementById('fi-ad-docs-pos').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'ad-docs-pos')" style="padding:.75rem">
+                <input type="file" id="fi-ad-docs-pos" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'ad-docs-pos')">
+                <div class="uz-icon" style="font-size:18px"><i class="ti ti-cloud-upload"></i></div>
+                <div class="uz-title" style="font-size:12px">Clique ou arraste os documentos aqui</div>
+                <div class="uz-sub">PDF, DOCX, JPG, PNG · até 10 MB</div>
+              </div>
+              <div class="file-list" id="fl-ad-docs-pos"></div>
+            </div>
+            <div class="field" style="margin-top:8px"><label>Descrição / resumo dos documentos do consumidor</label>
+              <textarea id="ad-docs-pos-texto" autocomplete="off" rows="3" placeholder="Descreva ou cole o conteúdo dos documentos apresentados pelo consumidor após a defesa da empresa..."></textarea>
+            </div>
+          </div>
+        </div>
+
         <button onclick="addDefesaAD()" id="btn-add-defesa" style="background:transparent;border:1px dashed var(--blue);color:var(--blue);border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;display:none;align-items:center;gap:5px;margin-top:4px"><i class="ti ti-plus"></i> Adicionar defesa de outra empresa</button>
       </div></div>
 
-      <!-- SEÇÃO 3: ANÁLISE COMPARATIVA -->
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">3</div><span class="sec-title">Análise Comparativa</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA</span><i class="ti ti-chevron-down sec-arrow"></i></div>
-      <div class="sec-body">
-        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">A IA confronta a reclamação com a defesa e aponta o que foi atendido, o que foi recusado e as fragilidades dos argumentos da empresa.</p>
-        <button class="gen-btn" onclick="analisarDefesa()" id="btn-analisar" style="margin-top:0;margin-bottom:12px;background:var(--blue)"><i class="ti ti-sparkles" style="font-size:18px"></i>Gerar análise comparativa com IA</button>
-        <div class="ia-result" id="ir-analise" style="display:none;max-height:none">
-          <div class="ia-result-label"><i class="ti ti-sparkles"></i>Análise comparativa</div>
-          <div class="ia-result-text" id="irt-analise" style="font-size:13px;line-height:1.7;font-family:'Times New Roman',serif"></div>
-          <div class="ia-result-actions">
-            <button class="use" onclick="document.getElementById('ad-analise-texto').value=document.getElementById('irt-analise').textContent">Usar na minuta</button>
-            <button onclick="fecharIA('ir-analise')">Fechar</button>
-          </div>
-        </div>
-        <div class="field" style="margin-top:10px"><label>Editar / complementar análise</label>
-          <textarea id="ad-analise-texto" autocomplete="off" rows="4" placeholder="A análise gerada pela IA aparecerá aqui. Você pode editar antes de usar na minuta..."></textarea>
-        </div>
-      </div></div>
+
 
       <!-- SEÇÃO 4: ANÁLISE DE ABUSIVIDADE CONTRATUAL -->
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Análise de Abusividade Contratual</span><span class="sec-badge" style="background:#fef9ec;color:#b45309"><i class="ti ti-gavel" style="font-size:11px"></i>CDC Art. 51</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">3</div><span class="sec-title">Análise de Abusividade Contratual</span><span class="sec-badge" style="background:#fef9ec;color:#b45309"><i class="ti ti-gavel" style="font-size:11px"></i>CDC Art. 51</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
         <div class="alert alert-yellow"><i class="ti ti-info-circle"></i><span>Se houver cláusula contratual abusiva (juros excessivos, encargos não informados, vantagem manifestamente desproporcional, etc — CDC art. 51), registre aqui o parecer da análise. Esse parecer será levado em consideração na minuta do despacho.</span></div>
         <div class="field"><label>Há indício de abusividade contratual neste caso?</label>
@@ -3295,6 +3301,77 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
         </div>
       </div></div>
 
+      <!-- SEÇÃO 4: PROVIDÊNCIAS PROCESSUAIS (CHECKLIST) -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">4</div><span class="sec-title">Providências Processuais</span><span class="sec-badge"><i class="ti ti-checklist" style="font-size:11px"></i>Checklist</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <div class="sec-body">
+        <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Marque as providências aplicáveis ao caso. Serão incorporadas automaticamente no despacho saneador.</span></div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px" id="checklist-ad-pp">
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck1" value="notificar-consumidor" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Notificar consumidor sobre a defesa</strong><br><span style="font-size:12px;color:var(--text2)">Intimar o consumidor para ciência da defesa apresentada, com prazo de 10 dias para manifestação</span></div>
+          </label>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck2" value="intimar-fornecedor" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Intimar fornecedor para complementar defesa</strong><br><span style="font-size:12px;color:var(--text2)">Conceder prazo para apresentação de laudo técnico, documentos complementares ou esclarecimentos</span></div>
+          </label>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck3" value="prazo-documentos" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Conceder prazo para juntada de documentos</strong><br><span style="font-size:12px;color:var(--text2)">Prazo de 10 dias para que a parte apresente documentos ou provas complementares</span></div>
+          </label>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck4" value="polo-passivo" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Inserir fornecedor(es) no polo passivo</strong><br><span style="font-size:12px;color:var(--text2)">Incluir novo fornecedor na reclamação, com notificação e prazo de defesa</span></div>
+          </label>
+
+          <div id="ad-pp-sub-polo" class="sub-sec" style="margin-left:28px;padding:10px;border:1px dashed var(--border);border-radius:8px">
+            <div class="grid g2">
+              <div class="field"><label>Novo Fornecedor</label><input type="text" id="ad-pp-novo-forn" placeholder="Razão Social"></div>
+              <div class="field"><label>CNPJ</label><input type="text" id="ad-pp-novo-cnpj" placeholder="00.000.000/0000-00"></div>
+            </div>
+          </div>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck5" value="audiencia" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer" onchange="document.getElementById('ad-pp-sub-audiencia').classList.toggle('open',this.checked)">
+            <div><strong style="font-size:13px">Agendar audiência de conciliação</strong><br><span style="font-size:12px;color:var(--text2)">Formato híbrido: presencial na sede do PROCON/VG ou por videoconferência via Microsoft Teams</span></div>
+          </label>
+
+          <div id="ad-pp-sub-audiencia" class="sub-sec" style="margin-left:28px;padding:12px;border:1px dashed var(--border);border-radius:8px">
+            <div class="alert alert-blue" style="margin-top:0"><i class="ti ti-video"></i>Audiência em formato híbrido — presencial + Microsoft Teams.</div>
+            <div class="grid g3" style="margin-top:10px">
+              <div class="field"><label>Data da Audiência</label><input type="date" id="ad-pp-aud-data"></div>
+              <div class="field"><label>Horário</label><input type="time" id="ad-pp-aud-hora"></div>
+              <div class="field"><label>Antecedência mínima</label><select id="ad-pp-aud-antec"><option value="10">10 dias</option><option value="15">15 dias</option><option value="5">5 dias</option></select></div>
+            </div>
+          </div>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck6" value="certidao-comparecimento" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Certidão de comparecimento do consumidor</strong><br><span style="font-size:12px;color:var(--text2)">Registrar comparecimento e motivo da não aceitação da proposta do fornecedor</span></div>
+          </label>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck7" value="deferir-indeferir" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer" onchange="document.getElementById('ad-pp-sub-requerimentos').classList.toggle('open',this.checked)">
+            <div><strong style="font-size:13px">Deferir/Indeferir requerimentos da defesa</strong><br><span style="font-size:12px;color:var(--text2)">Analisar e decidir sobre pedidos formulados pela reclamada em sua defesa</span></div>
+          </label>
+
+          <div id="ad-pp-sub-requerimentos" class="sub-sec" style="margin-left:28px;padding:10px;border:1px dashed var(--border);border-radius:8px">
+            <div class="field"><label>Requerimento deferido</label><textarea id="ad-pp-req-deferido" rows="2" placeholder="Descreva o que foi deferido e a justificativa"></textarea></div>
+            <div class="field" style="margin-top:8px"><label>Requerimento indeferido</label><textarea id="ad-pp-req-indeferido" rows="2" placeholder="Descreva o que foi indeferido e a justificativa"></textarea></div>
+          </div>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck8" value="encaminhar-decisao" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Encaminhar para decisão</strong><br><span style="font-size:12px;color:var(--text2)">Transcorridos os prazos, voltem os autos conclusos para decisão administrativa</span></div>
+          </label>
+
+        </div>
+      </div></div>
+
       <!-- SEÇÃO 5: SUGESTÃO E PROVIDÊNCIAS -->
       <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Sugestão e Providências</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
@@ -3306,7 +3383,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
             <div class="opt" onclick="toggleMulti(this,'ad','Agendar audiência de conciliação');showSubSec('sub-ad-aud')"><i class="ti ti-calendar-event" style="font-size:14px"></i>Agendar audiência de conciliação</div>
             <div class="opt" onclick="toggleMulti(this,'ad','Solicitar documentos adicionais à fornecedora')"><i class="ti ti-building" style="font-size:14px"></i>Solicitar documentos adicionais à fornecedora</div>
             <div class="opt" onclick="toggleMulti(this,'ad','Encaminhar para autuação de processo administrativo sancionador')"><i class="ti ti-alert-triangle" style="font-size:14px"></i>Encaminhar para autuação sancionadora</div>
-            <div class="opt" onclick="toggleMulti(this,'ad','Arquivar o processo por acordo entre as partes')"><i class="ti ti-archive" style="font-size:14px"></i>Arquivar por acordo</div>
+
           </div>
         </div>
         <div class="sub-sec" id="sub-ad-aud">
@@ -3343,10 +3420,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
           </div>
           <div class="file-list" id="fl-ad-min"></div>
         </div>
-        <div class="field" style="margin-bottom:10px;display:flex;align-items:center;gap:8px">
-          <input type="checkbox" id="ad-ignorar-analise-previa" style="width:16px;height:16px;cursor:pointer">
-          <label for="ad-ignorar-analise-previa" style="font-size:12px;color:var(--text2);cursor:pointer;margin:0">Ignorar análise comparativa salva acima e fazer a IA reanalisar do zero (use se a análise estiver curta ou desatualizada)</label>
-        </div>
+
         <button class="gen-btn gen-btn-accent" onclick="gerarMinuta()" id="btn-minuta"><i class="ti ti-file-text" style="font-size:18px"></i>Gerar minuta com IA</button>
         <div class="result-box" id="result-ad" style="margin-top:12px">
           <div class="result-head"><h2><i class="ti ti-file-text"></i>Minuta — PROCON/VG</h2><p>Texto em prosa corrida · Formatação ABNT · Pronto para revisão</p></div>
@@ -4747,13 +4821,15 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
 
 
   <!-- PROVIDÊNCIAS PROCESSUAIS -->
-  <div id="screen-pp" style="display:none">
 
+  
+  <!-- PROCEDIMENTO SANCIONATÓRIO -->
+  <div id="screen-san" style="display:none">
     <div class="form-head">
-      <div class="form-head-icon"><i class="ti ti-checklist"></i></div>
+      <div class="form-head-icon"><i class="ti ti-alert-octagon"></i></div>
       <div>
-        <h1>Providências Processuais</h1>
-        <p>Checklist do Despacho Saneador — Gestão do processo administrativo</p>
+        <h1>Despacho — Procedimento Sancionatório</h1>
+        <p>Instauração de procedimento administrativo sancionador — CDC + Decreto 2.181/1997</p>
       </div>
     </div>
 
@@ -4766,123 +4842,100 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
       </div>
       <div class="sec-body open">
         <div class="grid g3">
-          <div class="field"><label>Nº do Processo <span class="req">*</span></label><input type="text" id="pp-proc" placeholder="2025/______-PROCON/VG"></div>
-          <div class="field"><label>Data do Despacho <span class="req">*</span></label><input type="date" id="pp-data"></div>
-          <div class="field"><label>Coordenador(a)</label><input type="text" id="pp-coord" placeholder="Nome do coordenador(a)"></div>
+          <div class="field"><label>Nº do Processo <span class="req">*</span></label><input type="text" id="san-proc" placeholder="2025/______-PROCON/VG"></div>
+          <div class="field"><label>Data do Despacho <span class="req">*</span></label><input type="date" id="san-data"></div>
+          <div class="field"><label>Coordenador(a)</label><input type="text" id="san-coord" placeholder="Nome do coordenador(a)"></div>
         </div>
         <div class="grid g2">
-          <div class="field"><label>Reclamante (Consumidor) <span class="req">*</span></label><input type="text" id="pp-consumidor" placeholder="Nome completo"></div>
-          <div class="field"><label>CPF</label><input type="text" id="pp-cpf" placeholder="000.000.000-00"></div>
+          <div class="field"><label>Reclamante (Consumidor)</label><input type="text" id="san-consumidor" placeholder="Nome completo"></div>
+          <div class="field"><label>CPF</label><input type="text" id="san-cpf" placeholder="000.000.000-00"></div>
         </div>
         <div class="grid g2">
-          <div class="field"><label>Reclamada (Fornecedor) <span class="req">*</span></label><input type="text" id="pp-fornecedor" placeholder="Razão Social"></div>
-          <div class="field"><label>CNPJ</label><input type="text" id="pp-cnpj" placeholder="00.000.000/0000-00"></div>
+          <div class="field"><label>Reclamada (Fornecedor) <span class="req">*</span></label><input type="text" id="san-fornecedor" placeholder="Razão Social"></div>
+          <div class="field"><label>CNPJ <span class="req">*</span></label><input type="text" id="san-cnpj" placeholder="00.000.000/0000-00"></div>
         </div>
-        <div class="field"><label>Objeto da reclamação</label><textarea id="pp-objeto" rows="2" placeholder="Descrição sucinta do objeto da reclamação"></textarea></div>
       </div>
     </div>
 
-    <!-- Checklist de Providências -->
+    <!-- Infração Identificada -->
     <div class="sec">
       <div class="sec-head open" onclick="toggleSec(this)">
         <div class="sec-num">2</div>
-        <span class="sec-title">Checklist de Providências</span>
+        <span class="sec-title">Infração Identificada</span>
         <i class="ti ti-chevron-down sec-arrow"></i>
       </div>
       <div class="sec-body open">
-        <div class="alert alert-blue"><i class="ti ti-info-circle"></i>Marque as providências aplicáveis ao caso. O despacho será gerado automaticamente com as determinações selecionadas.</div>
+        <div class="alert alert-yellow"><i class="ti ti-alert-triangle"></i><span>Descreva a infração que fundamenta a instauração do procedimento sancionatório. A empresa será intimada para apresentar defesa prévia.</span></div>
 
-        <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px" id="checklist-pp">
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck1" value="notificar-consumidor" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
-            <div><strong style="font-size:13px">Notificar consumidor sobre a defesa</strong><br><span style="font-size:12px;color:var(--text2)">Intimar o consumidor para ciência da defesa apresentada, com prazo de 10 dias para manifestação</span></div>
-          </label>
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck2" value="intimar-fornecedor" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
-            <div><strong style="font-size:13px">Intimar fornecedor para complementar defesa</strong><br><span style="font-size:12px;color:var(--text2)">Conceder prazo para apresentação de laudo técnico, documentos complementares ou esclarecimentos</span></div>
-          </label>
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck3" value="prazo-documentos" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
-            <div><strong style="font-size:13px">Conceder prazo para juntada de documentos</strong><br><span style="font-size:12px;color:var(--text2)">Prazo de 10 dias para que a parte apresente documentos ou provas complementares</span></div>
-          </label>
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck4" value="polo-passivo" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
-            <div><strong style="font-size:13px">Inserir fornecedor(es) no polo passivo</strong><br><span style="font-size:12px;color:var(--text2)">Incluir novo fornecedor na reclamação, com notificação e prazo de defesa</span></div>
-          </label>
-
-          <div id="pp-sub-polo" class="sub-sec" style="margin-left:28px;padding:10px;border:1px dashed var(--border);border-radius:8px">
-            <div class="grid g2">
-              <div class="field"><label>Novo Fornecedor</label><input type="text" id="pp-novo-forn" placeholder="Razão Social"></div>
-              <div class="field"><label>CNPJ</label><input type="text" id="pp-novo-cnpj" placeholder="00.000.000/0000-00"></div>
-            </div>
+        <div class="field" style="margin-top:10px"><label>Tipo de infração <span class="req">*</span></label>
+          <div class="opts" id="og-san-tipo" style="flex-direction:column;align-items:flex-start;margin-top:6px">
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Descumprimento de determinação do PROCON (art. 55, §4º, CDC)')">Descumprimento de determinação do PROCON</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Prática abusiva (art. 39, CDC)')">Prática abusiva (art. 39, CDC)</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Publicidade enganosa ou abusiva (arts. 36-38, CDC)')">Publicidade enganosa ou abusiva</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Cobrança indevida reiterada (art. 42, CDC)')">Cobrança indevida reiterada</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Não atendimento à notificação no prazo legal (art. 33, Decreto 2.181/97)')">Não atendimento à notificação</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Cláusula contratual abusiva (art. 51, CDC)')">Cláusula contratual abusiva</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-tipo','Vício de qualidade ou quantidade (arts. 18-20, CDC)')">Vício de qualidade ou quantidade</div>
           </div>
+          <input type="hidden" id="san-tipo">
+        </div>
 
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck5" value="audiencia" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer" onchange="document.getElementById('pp-sub-audiencia').classList.toggle('open',this.checked)">
-            <div><strong style="font-size:13px">Agendar audiência de conciliação</strong><br><span style="font-size:12px;color:var(--text2)">Formato híbrido: presencial na sede do PROCON/VG ou por videoconferência via Microsoft Teams</span></div>
-          </label>
+        <div class="field" style="margin-top:10px"><label>Descrição da infração <span class="req">*</span></label>
+          <textarea id="san-descricao" rows="4" placeholder="Descreva detalhadamente a infração: fatos, datas, valores, documentos comprobatórios..."></textarea>
+        </div>
 
-          <div id="pp-sub-audiencia" class="sub-sec" style="margin-left:28px;padding:12px;border:1px dashed var(--border);border-radius:8px">
-            <div class="alert alert-blue" style="margin-top:0"><i class="ti ti-video"></i>Audiência em formato híbrido — presencial + Microsoft Teams. O link de acesso será encaminhado junto com a intimação.</div>
-            <div class="grid g3" style="margin-top:10px">
-              <div class="field"><label>Data da Audiência</label><input type="date" id="pp-aud-data"></div>
-              <div class="field"><label>Horário</label><input type="time" id="pp-aud-hora"></div>
-              <div class="field"><label>Antecedência mínima</label><select id="pp-aud-antec"><option value="10">10 dias</option><option value="15">15 dias</option><option value="5">5 dias</option></select></div>
-            </div>
+        <div class="field" style="margin-top:10px"><label>Fundamentação legal complementar</label>
+          <textarea id="san-fundamentacao" rows="2" placeholder="Artigos do CDC, Decreto 2.181/97, Decreto Municipal nº 39/2012 e outros dispositivos aplicáveis..."></textarea>
+        </div>
+
+        <div class="field" style="margin-top:10px"><label>Anexar documentos comprobatórios (opcional)</label>
+          <div class="upload-zone" id="uz-san" onclick="document.getElementById('fi-san').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="doDrop(event,'san')">
+            <input type="file" id="fi-san" multiple accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="doFiles(this.files,'san')">
+            <div class="uz-icon"><i class="ti ti-cloud-upload"></i></div>
+            <div class="uz-title">Clique ou arraste os documentos</div>
+            <div class="uz-sub">PDF, DOCX, JPG, PNG · até 10 MB</div>
           </div>
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck6" value="certidao-comparecimento" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
-            <div><strong style="font-size:13px">Certidão de comparecimento do consumidor</strong><br><span style="font-size:12px;color:var(--text2)">Registrar comparecimento e motivo da não aceitação da proposta do fornecedor</span></div>
-          </label>
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck7" value="deferir-indeferir" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer" onchange="document.getElementById('pp-sub-requerimentos').classList.toggle('open',this.checked)">
-            <div><strong style="font-size:13px">Deferir/Indeferir requerimentos da defesa</strong><br><span style="font-size:12px;color:var(--text2)">Analisar e decidir sobre pedidos formulados pela reclamada em sua defesa</span></div>
-          </label>
-
-          <div id="pp-sub-requerimentos" class="sub-sec" style="margin-left:28px;padding:10px;border:1px dashed var(--border);border-radius:8px">
-            <div class="field"><label>Requerimento deferido</label><textarea id="pp-req-deferido" rows="2" placeholder="Descreva o que foi deferido e a justificativa"></textarea></div>
-            <div class="field" style="margin-top:8px"><label>Requerimento indeferido</label><textarea id="pp-req-indeferido" rows="2" placeholder="Descreva o que foi indeferido e a justificativa"></textarea></div>
-          </div>
-
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
-            <input type="checkbox" id="pp-ck8" value="encaminhar-decisao" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
-            <div><strong style="font-size:13px">Encaminhar para decisão</strong><br><span style="font-size:12px;color:var(--text2)">Transcorridos os prazos, voltem os autos conclusos para decisão administrativa</span></div>
-          </label>
-
+          <div class="file-list" id="fl-san"></div>
         </div>
       </div>
     </div>
 
-    <!-- Observações -->
+    <!-- Sanções Aplicáveis -->
     <div class="sec">
       <div class="sec-head" onclick="toggleSec(this)">
         <div class="sec-num">3</div>
-        <span class="sec-title">Observações Adicionais</span>
+        <span class="sec-title">Sanções Aplicáveis</span>
         <i class="ti ti-chevron-down sec-arrow"></i>
       </div>
       <div class="sec-body">
-        <div class="field"><label>Resumo da defesa apresentada</label><textarea id="pp-resumo-defesa" rows="3" placeholder="Síntese dos argumentos da defesa (para fundamentação do despacho)"></textarea></div>
-        <div class="field"><label>Observações complementares</label><textarea id="pp-obs" rows="2" placeholder="Informações adicionais relevantes"></textarea></div>
+        <div class="field"><label>Sanção(ões) a considerar</label>
+          <div class="opts" id="og-san-sancao" style="flex-direction:column;align-items:flex-start;margin-top:6px">
+            <div class="opt" onclick="toggleMultiHidden(this,'san-sancao','Multa administrativa (art. 56, I, CDC)')">Multa administrativa (art. 56, I)</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-sancao','Apreensão do produto (art. 56, II, CDC)')">Apreensão do produto (art. 56, II)</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-sancao','Inutilização do produto (art. 56, III, CDC)')">Inutilização do produto (art. 56, III)</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-sancao','Cassação de registro/licença (art. 56, IV, CDC)')">Cassação de registro/licença (art. 56, IV)</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-sancao','Suspensão temporária de atividade (art. 56, VI, CDC)')">Suspensão temporária (art. 56, VI)</div>
+            <div class="opt" onclick="toggleMultiHidden(this,'san-sancao','Contrapropaganda (art. 56, XII, CDC)')">Contrapropaganda (art. 56, XII)</div>
+          </div>
+          <input type="hidden" id="san-sancao">
+        </div>
+        <div class="field" style="margin-top:8px"><label>Observações adicionais</label>
+          <textarea id="san-obs" rows="2" placeholder="Circunstâncias agravantes, reincidência, etc."></textarea>
+        </div>
       </div>
     </div>
 
-    <button class="gen-btn gen-btn-accent" onclick="gerarDespachoSaneador()" id="btn-gerar-pp"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Despacho Saneador</button>
+    <button class="gen-btn gen-btn-accent" onclick="gerarDespachoSancionatorio()" id="btn-gerar-san"><i class="ti ti-alert-octagon" style="font-size:18px"></i>Gerar Despacho — Procedimento Sancionatório</button>
 
-    <div class="result-box" id="result-pp"><div class="result-head"><h2><i class="ti ti-file-certificate"></i>Despacho Saneador</h2><p>Providências Processuais — PROCON/VG</p></div>
-      <div class="result-body"><div class="result-loading" id="rl-pp"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando despacho...</div>
-        <div class="result-text" id="rt-pp"></div><div class="art-tags" id="at-pp"></div>
-        <div class="result-actions" id="ra-pp"><button class="primary" onclick="copiarGenerico('pp')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('pp')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('pp')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('pp')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
+    <div class="result-box" id="result-san"><div class="result-head"><h2><i class="ti ti-alert-octagon"></i>Despacho — Procedimento Sancionatório</h2><p>PROCON/VG · Instauração de Procedimento Administrativo</p></div>
+      <div class="result-body"><div class="result-loading" id="rl-san"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando despacho...</div>
+        <div class="result-text" id="rt-san"></div><div class="art-tags" id="at-san"></div>
+        <div class="result-actions" id="ra-san"><button class="primary" onclick="copiarGenerico('san')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('san')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="baixarWord('san')"><i class="ti ti-file-word"></i>Word</button><button onclick="limparGenerico('san')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
       </div>
     </div>
   </div>
 
-  <!-- DECISÕES TERMINATIVAS -->
+    <!-- DECISÕES TERMINATIVAS -->
   <div id="screen-dt" style="display:none">
 
     <div class="form-head">
@@ -5049,48 +5102,7 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
   </div>
 
 
-  <div id="screen-ps" style="display:none">
-    <div class="card">
-      <div class="card-header"><h2><i class="ti ti-heartbeat"></i>Plano de Saúde</h2><p>Reclamação Formal — Lei 9.656/1998</p></div>
-      <div class="card-body">
-        <div class="field"><label>Nome do Consumidor</label><input type="text" id="ps-consumidor" placeholder="Nome completo"></div>
-        <div class="field"><label>CPF</label><input type="text" id="ps-cpf" placeholder="000.000.000-00"></div>
-        <div class="field"><label>Operadora / Empresa</label><input type="text" id="ps-operadora" placeholder="Nome da operadora"></div>
-        <div class="field"><label>CNPJ</label><input type="text" id="ps-cnpj" placeholder="00.000.000/0001-00"></div>
-        <div class="field"><label>Tipo de Plano</label><input type="text" id="ps-plano" placeholder="Individual, familiar, empresarial..."></div>
-        <div class="field"><label>Nº do Contrato/Carteirinha</label><input type="text" id="ps-numero-contrato" placeholder=""></div>
-        <div class="field"><label>Data do Fato</label><input type="text" id="ps-data-fato" placeholder="DD/MM/AAAA"></div>
-        <div class="field"><label>Valor da Mensalidade</label><input type="text" id="ps-valor" placeholder="R$ 0,00"></div>
-        <div class="field"><label>Descrição do Problema</label><textarea id="ps-descricao" rows="3" placeholder="Descreva o problema com o plano de saúde..."></textarea></div>
-        <div class="field"><label>Observações</label><textarea id="ps-obs" rows="3" placeholder="Informações adicionais"></textarea></div>
-        <div class="field"><label>Pretensões do Consumidor</label>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Cobertura do procedimento negado"> Cobertura do procedimento negado</label>
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Redução do reajuste abusivo"> Redução do reajuste abusivo</label>
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Restituição de valores cobrados indevidamente"> Restituição de valores cobrados indevidamente</label>
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Manutenção do plano sem alteração unilateral"> Manutenção do plano sem alteração unilateral</label>
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox" class="pret-cb-ps" value="Portabilidade de carências"> Portabilidade de carências</label>
-            <input type="text" id="ps-pret-outro" placeholder="Outra pretensão (digite aqui)" style="margin-top:4px">
-          </div>
-        </div>
-        <div class="field"><label>Documentos Anexos</label>
-          <input type="file" id="arq-ps" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
-          <small id="arq-list-ps" style="color:var(--text2);margin-top:4px;display:block"></small>
-        </div>
-      </div>
-    </div>
-
-    <button class="gen-btn gen-btn-accent" onclick="gerarGenerica('ps','Plano de Saúde','Lei 9.656/1998')" id="btn-gerar-ps"><i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Reclamação Formal — Plano de Saúde (Lei 9.656/1998)</button>
-
-    <div class="result-box" id="result-ps"><div class="result-head"><h2><i class="ti ti-heartbeat"></i>Reclamação Formal</h2><p>Plano de Saúde — PROCON/VG</p></div>
-      <div class="result-body"><div class="result-loading" id="rl-ps"><div class="spin spin-blue" style="width:20px;height:20px;margin:0 auto 10px"></div>Gerando reclamação...</div>
-        <div class="result-text" id="rt-ps"></div><div class="art-tags" id="at-ps"></div>
-        <div class="result-actions" id="ra-ps"><button class="primary" onclick="copiarGenerico('ps')"><i class="ti ti-copy"></i>Copiar</button><button onclick="imprimirGenerico('ps')"><i class="ti ti-printer"></i>Imprimir</button><button onclick="limparGenerico('ps')"><i class="ti ti-refresh"></i>Gerar novamente</button></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="screen-tc" style="display:none">
+<div id="screen-tc" style="display:none">
     <div class="card">
       <div class="card-header"><h2><i class="ti ti-antenna-bars-5"></i>Telecomunicações</h2><p>Reclamação Formal — CDC + Res. ANATEL</p></div>
       <div class="card-body">
@@ -6311,7 +6323,33 @@ async function gerarMinuta() {
     defesasTexto = 'DEFESA (' + dataPrincipal + '):\n' + defPrincipal.substring(0,1500);
   }
 
-  const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro')].filter(Boolean);
+  // Collect providências from checklist + from suggestion section
+  const checksPP = [];
+  for (let i = 1; i <= 8; i++) {
+    const ck = document.getElementById('ad-pp-ck' + i);
+    if (ck && ck.checked) checksPP.push(ck.value);
+  }
+  let providenciasPP = '';
+  if (checksPP.includes('notificar-consumidor')) providenciasPP += 'Notificar o consumidor sobre a defesa apresentada (10 dias para manifestacao). ';
+  if (checksPP.includes('intimar-fornecedor')) providenciasPP += 'Intimar o fornecedor para complementar defesa. ';
+  if (checksPP.includes('prazo-documentos')) providenciasPP += 'Conceder prazo de 10 dias para juntada de documentos. ';
+  if (checksPP.includes('polo-passivo')) {
+    const nf = gv('ad-pp-novo-forn'); const nc = gv('ad-pp-novo-cnpj');
+    providenciasPP += 'Inserir no polo passivo: ' + (nf||'[novo fornecedor]') + ' (CNPJ: ' + (nc||'___') + '). ';
+  }
+  if (checksPP.includes('audiencia')) {
+    const ad2 = gv('ad-pp-aud-data'); const ah2 = gv('ad-pp-aud-hora'); const aa2 = gv('ad-pp-aud-antec')||'10';
+    providenciasPP += 'Designar audiencia de conciliacao hibrida. Data: ' + (ad2||'___') + ' as ' + (ah2||'___h') + '. Antecedencia: ' + aa2 + ' dias. ';
+  }
+  if (checksPP.includes('certidao-comparecimento')) providenciasPP += 'Expedir certidao de comparecimento. ';
+  if (checksPP.includes('deferir-indeferir')) {
+    const def2 = gv('ad-pp-req-deferido'); const ind2 = gv('ad-pp-req-indeferido');
+    if (def2) providenciasPP += 'DEFERIR: ' + def2 + '. ';
+    if (ind2) providenciasPP += 'INDEFERIR: ' + ind2 + '. ';
+  }
+  if (checksPP.includes('encaminhar-decisao')) providenciasPP += 'Voltem os autos conclusos para decisao. ';
+
+  const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro'),providenciasPP].filter(Boolean);
   const audData = gv('ad-auddata');
   const audHora = gv('ad-audhora');
   const audModal = gv('ad-modal') || document.getElementById('ad-modal')&&document.getElementById('ad-modal').value || '';
@@ -6320,7 +6358,7 @@ async function gerarMinuta() {
     ? 'Fica designada audiência de conciliação para o dia ' + (audData||'a definir') + ' às ' + (audHora||'a definir') + ', na modalidade ' + (audModal||'presencial') + '. As partes deverão comparecer devidamente representadas.'
     : '';
 
-  const ignorarAnalisePrevia = document.getElementById('ad-ignorar-analise-previa')&&document.getElementById('ad-ignorar-analise-previa').checked;
+  const ignorarAnalisePrevia = false; // análise comparativa removida
   const analise = ignorarAnalisePrevia ? '' : (gv('ad-analise-texto') || (document.getElementById('irt-analise')&&document.getElementById('irt-analise').textContent) || '');
   const analiseTrunc = analise ? analise.substring(0,1500) : '';
   const linhaAnalisePrevia = analiseTrunc
@@ -6368,6 +6406,8 @@ async function gerarMinuta() {
     + (parecerAbusividade ? '\nPARECER DE ABUSIVIDADE CONTRATUAL (incorporar no parágrafo 3): ' + (tipoAbusivo||'') + '. ' + parecerAbusividade + '\n' : '')
     + '\nPEDIDOS DO CONSUMIDOR (usar nas alíneas): ' + (provAll.join('; ')||'notificar empresa')
     + '\nINTERAÇÕES: ' + interacoesTexto
+    + '\nDOCUMENTOS DO CONSUMIDOR PÓS-DEFESA: ' + (gv('ad-docs-pos-texto')||'nenhum documento apresentado')
+    + '\nPROVIDÊNCIAS PROCESSUAIS (checklist): ' + (providenciasPP||'nenhuma marcada')
     + '\nOBSERVAÇÕES DO ATENDENTE: ' + (gv('ad-obs')||'nenhuma')
     + '\n\nRegras finais: acentuação e ortografia completas em português. Prazos sempre em dias consecutivos. Não incluir seção de encerramento além do que está na estrutura acima. Dano moral fora da competência administrativa — orientar para Defensoria Pública se mencionado.';
 
@@ -7228,78 +7268,8 @@ function selOptAcordo(btn, forma) {
   document.getElementById('dt-sub-decurso').classList.toggle('open', forma === 'decurso');
 }
 
-async function gerarDespachoSaneador() {
-  const box=document.getElementById('result-pp'), load=document.getElementById('rl-pp'),
-    txt=document.getElementById('rt-pp'), ra=document.getElementById('ra-pp'), btn=document.getElementById('btn-gerar-pp');
-  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
-  load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
-  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+// gerarDespachoSaneador removido — funcionalidade incorporada em gerarMinuta via tela unificada
 
-  const checks = [];
-  for (let i = 1; i <= 8; i++) {
-    const ck = document.getElementById('pp-ck' + i);
-    if (ck && ck.checked) checks.push(ck.value);
-  }
-
-  if (checks.length === 0) {
-    load.classList.remove('show');
-    txt.textContent = 'Selecione ao menos uma providência no checklist.';
-    txt.classList.add('show');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Despacho Saneador';
-    return;
-  }
-
-  const instrucaoAcentos = 'IMPORTANTE: responda em portugues do Brasil formal, com todos os acentos e cedilhas corretos (nao omita acentos). Use linguagem tecnico-juridica, impessoal e objetiva. ';
-
-  let providencias = '';
-  if (checks.includes('notificar-consumidor')) providencias += '- Notificar o consumidor sobre a defesa apresentada, concedendo prazo de 10 dias para manifestacao.\n';
-  if (checks.includes('intimar-fornecedor')) providencias += '- Intimar o fornecedor para complementar defesa com laudo tecnico ou documentos.\n';
-  if (checks.includes('prazo-documentos')) providencias += '- Conceder prazo de 10 dias para juntada de documentos complementares.\n';
-  if (checks.includes('polo-passivo')) {
-    const novoForn = gv('pp-novo-forn');
-    const novoCnpj = gv('pp-novo-cnpj');
-    providencias += '- Inserir no polo passivo: ' + (novoForn || '[novo fornecedor]') + ' (CNPJ: ' + (novoCnpj || '___') + ').\n';
-  }
-  if (checks.includes('audiencia')) {
-    const audData = gv('pp-aud-data');
-    const audHora = gv('pp-aud-hora');
-    const audAntec = gv('pp-aud-antec') || '10';
-    providencias += '- Designar audiencia de conciliacao em formato hibrido (presencial na sede do PROCON/VG ou por videoconferencia via Microsoft Teams). Data: ' + (audData || '___/___/______') + ' as ' + (audHora || '___h') + '. Intimacao com antecedencia minima de ' + audAntec + ' dias. O link de acesso sera encaminhado as partes juntamente com a intimacao.\n';
-  }
-  if (checks.includes('certidao-comparecimento')) providencias += '- Expedir certidao de comparecimento do consumidor.\n';
-  if (checks.includes('deferir-indeferir')) {
-    const deferido = gv('pp-req-deferido');
-    const indeferido = gv('pp-req-indeferido');
-    if (deferido) providencias += '- DEFERIR: ' + deferido + '.\n';
-    if (indeferido) providencias += '- INDEFERIR: ' + indeferido + '.\n';
-  }
-  if (checks.includes('encaminhar-decisao')) providencias += '- Transcorridos os prazos, voltem os autos conclusos para decisao.\n';
-
-  const prompt = instrucaoAcentos
-    + 'Elabore um DESPACHO SANEADOR para processo administrativo do PROCON Municipal de Varzea Grande/MT. '
-    + 'ESTRUTURA OBRIGATORIA: '
-    + '1) Cabecalho: PROCON MUNICIPAL DE VARZEA GRANDE / COORDENADORIA DE PROTECAO E DEFESA DO CONSUMIDOR '
-    + '2) Dados: Processo n.: ' + gv('pp-proc') + ' | Reclamante: ' + gv('pp-consumidor') + ' (CPF: ' + gv('pp-cpf') + ') | Reclamada: ' + gv('pp-fornecedor') + ' (CNPJ: ' + gv('pp-cnpj') + ') '
-    + '3) Titulo: DESPACHO SANEADOR '
-    + '4) Relatorio sucinto do caso: ' + gv('pp-objeto') + '. Resumo da defesa: ' + gv('pp-resumo-defesa') + '. '
-    + '5) Analise da defesa. '
-    + '6) Dispositivo no estilo judicial "Isto posto:" seguido das determinacoes usando DEFIRO/INDEFIRO/DETERMINO em caixa alta. '
-    + 'PROVIDENCIAS DETERMINADAS:\n' + providencias
-    + '7) "Intimem-se as partes." '
-    + '8) Local e data: Varzea Grande/MT, [data]. Linha de assinatura: Coordenador(a) de Protecao e Defesa do Consumidor - PROCON Municipal de Varzea Grande/MT. '
-    + (gv('pp-obs') ? 'Observacoes adicionais: ' + gv('pp-obs') : '');
-
-  try {
-    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:2500, messages:[{role:'user', content:prompt}]})});
-    const d = await r.json();
-    if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
-    const raw = d.content && d.content[0] ? d.content[0].text.trim() : 'Erro ao gerar.';
-    txt.textContent = limparTexto(raw);
-    load.classList.remove('show'); txt.classList.add('show'); if(ra){ra.style.display='flex';}
-  } catch(e) { load.classList.remove('show'); txt.textContent='Erro: '+e.message; txt.classList.add('show'); }
-  btn.disabled=false; btn.innerHTML='<i class="ti ti-file-certificate" style="font-size:18px"></i>Gerar Despacho Saneador';
-}
 
 async function gerarDecisaoTerminativa() {
   const box=document.getElementById('result-dt'), load=document.getElementById('rl-dt'),
@@ -7392,7 +7362,7 @@ async function gerarDecisaoTerminativa() {
 }
 
 // === NOVAS CATEGORIAS: registrar pretensões e arquivos ===
-['ps','tc','sb','ecom','edu','ae'].forEach(function(p){
+['tc','sb','ecom','edu','ae'].forEach(function(p){
   pretMulti[p]=[];
   arqs[p]=[];
 });
@@ -7409,7 +7379,7 @@ document.addEventListener('change', function(e) {
   var fid = e.target.id;
   if (fid && fid.startsWith('arq-') && typeof arqs !== 'undefined') {
     var p2 = fid.replace('arq-','');
-    if (['ps','tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
+    if (['tc','sb','ecom','edu','ae'].indexOf(p2) >= 0) {
       arqs[p2] = Array.from(e.target.files);
       var list = document.getElementById('arq-list-' + p2);
       if (list) list.textContent = arqs[p2].map(function(f){return f.name}).join(', ');
@@ -7438,6 +7408,66 @@ else if((id.includes('data')||id.includes('dt-'))&&!id.includes('dataset')&&(el.
 else if(id.includes('valor')||id.includes('preco')||id.includes('mensalidade')||id.includes('fatura')){el.addEventListener('input',function(){this.value=mMoeda(this.value)});el.dataset.masked='1'}
 });}
 aplicar();
+
+// --- Procedimento Sancionatório ---
+arqs['san'] = [];
+
+async function gerarDespachoSancionatorio() {
+  const box=document.getElementById('result-san'), load=document.getElementById('rl-san'),
+    txt=document.getElementById('rt-san'), ra=document.getElementById('ra-san'), btn=document.getElementById('btn-gerar-san');
+  box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'start'});
+  load.classList.add('show'); txt.classList.remove('show'); if(ra)ra.style.display='none';
+  btn.disabled=true; btn.innerHTML='<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> Gerando...';
+
+  const tipoInfracao = gv('san-tipo') || 'nao especificada';
+  const descricao = gv('san-descricao');
+  if (!descricao.trim()) {
+    load.classList.remove('show');
+    txt.textContent = 'Descreva a infração identificada antes de gerar o despacho.';
+    txt.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-alert-octagon" style="font-size:18px"></i>Gerar Despacho — Procedimento Sancionatório';
+    return;
+  }
+
+  const sancoes = gv('san-sancao') || 'multa administrativa';
+
+  const instrucaoAcentos = 'IMPORTANTE: responda em portugues do Brasil formal, com todos os acentos e cedilhas corretos. Use linguagem tecnico-juridica, impessoal e objetiva. ';
+
+  const prompt = instrucaoAcentos
+    + 'Elabore um DESPACHO DE INSTAURACAO DE PROCEDIMENTO ADMINISTRATIVO SANCIONATORIO para o PROCON Municipal de Varzea Grande/MT. '
+    + 'CABECALHO: PROCON MUNICIPAL DE VARZEA GRANDE / COORDENADORIA DE PROTECAO E DEFESA DO CONSUMIDOR. '
+    + 'DADOS: Processo n.: ' + gv('san-proc') + ' | Reclamante: ' + gv('san-consumidor') + ' (CPF: ' + gv('san-cpf') + ') | Reclamada: ' + gv('san-fornecedor') + ' (CNPJ: ' + gv('san-cnpj') + '). '
+    + 'TITULO: DESPACHO — INSTAURACAO DE PROCEDIMENTO ADMINISTRATIVO SANCIONATORIO. '
+    + 'ESTRUTURA: '
+    + 'I - DO RELATORIO: resumo do processo administrativo e dos fatos que ensejam a instauracao do procedimento sancionatorio. '
+    + 'II - DA INFRACAO IDENTIFICADA: tipo: ' + tipoInfracao + '. Descricao: ' + descricao.substring(0, 2000) + '. '
+    + (gv('san-fundamentacao') ? 'Fundamentacao complementar: ' + gv('san-fundamentacao') + '. ' : '')
+    + 'III - DO FUNDAMENTO LEGAL: fundamentar com base no CDC (Lei 8.078/1990), Decreto Federal n. 2.181/1997 (arts. 33 a 41 — procedimento administrativo), e Decreto Municipal n. 39/2012. Citar os artigos especificos aplicaveis ao caso. '
+    + 'IV - DAS SANCOES APLICAVEIS: ' + sancoes + '. Mencionar o art. 56 e incisos do CDC e art. 57 (criterios de dosimetria da pena). '
+    + 'V - DA DECISAO: "Isto posto:" seguido de: '
+    + 'a) DETERMINO a instauracao do procedimento administrativo sancionatorio em face da empresa; '
+    + 'b) DETERMINO a intimacao da reclamada para, no prazo de 10 (dez) dias consecutivos, apresentar defesa previa por escrito; '
+    + 'c) Advertir que a ausencia de defesa implicara revelia e presuncao de veracidade dos fatos; '
+    + 'd) Apos decurso do prazo, retornem os autos conclusos para decisao. '
+    + 'Intimem-se as partes. '
+    + 'Local: Varzea Grande/MT, [data]. Assinatura: Coordenador(a) de Protecao e Defesa do Consumidor - PROCON Municipal de Varzea Grande/MT. '
+    + (gv('san-obs') ? 'Observacoes: ' + gv('san-obs') : '');
+
+  try {
+    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:3000, messages:[{role:'user', content:prompt}]})});
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+    const raw = d.content && d.content[0] ? d.content[0].text.trim() : 'Erro ao gerar.';
+    txt.textContent = limparTexto(raw);
+    load.classList.remove('show'); txt.classList.add('show'); if(ra){ra.style.display='flex';}
+  } catch(e) { load.classList.remove('show'); txt.textContent='Erro: '+e.message; txt.classList.add('show'); }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-alert-octagon" style="font-size:18px"></i>Gerar Despacho — Procedimento Sancionatório';
+}
+
+// --- Registrar arqs para docs do consumidor pós-defesa ---
+arqs['ad-docs-pos'] = [];
+
 new MutationObserver(function(){aplicar()}).observe(document.body,{childList:true,subtree:true});
 })();
 

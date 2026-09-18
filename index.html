@@ -3369,46 +3369,37 @@ function fazerLogin(){var u=document.getElementById('login-usuario').value.trim(
             <div><strong style="font-size:13px">Encaminhar para decisão</strong><br><span style="font-size:12px;color:var(--text2)">Transcorridos os prazos, voltem os autos conclusos para decisão administrativa</span></div>
           </label>
 
-        </div>
-      </div></div>
 
-      <!-- SEÇÃO 5: SUGESTÃO E PROVIDÊNCIAS -->
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Sugestão e Providências</span><i class="ti ti-chevron-down sec-arrow"></i></div>
-      <div class="sec-body">
-        <div class="field"><label>Providências necessárias <span style="font-size:11px;color:var(--text3)">(pode marcar mais de um)</span></label>
-          <div class="opts" id="og-ad-prov" style="flex-direction:column;align-items:flex-start;margin-top:6px">
-            <div class="opt" onclick="toggleMulti(this,'ad','Solicitar novos documentos ao consumidor')"><i class="ti ti-file-plus" style="font-size:14px"></i>Solicitar novos documentos ao consumidor</div>
-            <div class="opt" onclick="toggleMulti(this,'ad','Incluir nova fornecedora no polo passivo')"><i class="ti ti-building-plus" style="font-size:14px"></i>Incluir nova fornecedora no polo passivo</div>
-            <div class="opt" onclick="toggleMulti(this,'ad','Retificação do polo passivo')"><i class="ti ti-edit" style="font-size:14px"></i>Retificação do polo passivo</div>
-            <div class="opt" onclick="toggleMulti(this,'ad','Agendar audiência de conciliação');showSubSec('sub-ad-aud')"><i class="ti ti-calendar-event" style="font-size:14px"></i>Agendar audiência de conciliação</div>
-            <div class="opt" onclick="toggleMulti(this,'ad','Solicitar documentos adicionais à fornecedora')"><i class="ti ti-building" style="font-size:14px"></i>Solicitar documentos adicionais à fornecedora</div>
-            <div class="opt" onclick="toggleMulti(this,'ad','Encaminhar para autuação de processo administrativo sancionador')"><i class="ti ti-alert-triangle" style="font-size:14px"></i>Encaminhar para autuação sancionadora</div>
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck9" value="solicitar-docs-consumidor" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Solicitar novos documentos ao consumidor</strong><br><span style="font-size:12px;color:var(--text2)">Intimar o consumidor para apresentar documentos complementares no prazo de 10 dias</span></div>
+          </label>
 
-          </div>
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck10" value="retificar-polo" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Retificação do polo passivo</strong><br><span style="font-size:12px;color:var(--text2)">Corrigir a qualificação da empresa reclamada (razão social, CNPJ ou endereço)</span></div>
+          </label>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck11" value="solicitar-docs-fornecedora" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Solicitar documentos adicionais à fornecedora</strong><br><span style="font-size:12px;color:var(--text2)">Intimar a empresa para apresentar documentos específicos ou esclarecimentos complementares</span></div>
+          </label>
+
+          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s" onchange="this.style.borderColor=this.querySelector('input').checked?'var(--accent)':'var(--border)';this.style.background=this.querySelector('input').checked?'rgba(198,40,40,0.04)':'transparent'">
+            <input type="checkbox" id="ad-pp-ck12" value="encaminhar-sancao" style="width:18px;height:18px;margin-top:2px;accent-color:var(--accent);cursor:pointer">
+            <div><strong style="font-size:13px">Encaminhar para autuação sancionadora</strong><br><span style="font-size:12px;color:var(--text2)">Encaminhar para instauração de processo administrativo sancionatório</span></div>
+          </label>
+
         </div>
-        <div class="sub-sec" id="sub-ad-aud">
-          <div class="grid g3">
-            <div class="field"><label>Data da audiência</label><input type="date" id="ad-auddata"></div>
-            <div class="field"><label>Horário</label><input type="text" id="ad-audhora" placeholder="09h00"></div>
-            <div class="field"><label>Modalidade</label>
-              <div class="opts" id="og-ad-modal">
-                <div class="opt" onclick="selOpt('og-ad-modal',this,'Presencial')">Presencial</div>
-                <div class="opt" onclick="selOpt('og-ad-modal',this,'Videoconferência')">Videoconferência</div>
-              </div>
-              <input type="hidden" id="ad-modal">
-            </div>
-          </div>
-        </div>
-        <div class="field" style="margin-top:8px"><label>Outra providência / sugestão</label>
-          <textarea id="ad-prov-outro" rows="2" placeholder="Descreva outra providência ou sugestão de encaminhamento..."></textarea>
-        </div>
-        <div class="field" style="margin-top:8px"><label>Observações do atendente</label>
+
+        <div class="field" style="margin-top:14px"><label>Observações do atendente</label>
           <textarea id="ad-obs" rows="3" placeholder="Observações internas, alertas de prazo, informações relevantes..."></textarea>
         </div>
       </div></div>
 
-      <!-- SEÇÃO 6: MINUTA FINAL -->
-      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">6</div><span class="sec-title">Minuta — Despacho / Decisão</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA · ABNT</span><i class="ti ti-chevron-down sec-arrow"></i></div>
+      <!-- SEÇÃO 5: MINUTA FINAL -->
+      <!-- SEÇÃO 5: MINUTA FINAL -->
+      <div class="sec"><div class="sec-head" onclick="toggleSec(this)"><div class="sec-num">5</div><span class="sec-title">Minuta — Despacho / Decisão</span><span class="sec-badge ia"><i class="ti ti-sparkles" style="font-size:11px"></i>IA · ABNT</span><i class="ti ti-chevron-down sec-arrow"></i></div>
       <div class="sec-body">
         <div class="alert alert-blue"><i class="ti ti-info-circle"></i><span>Gera minuta em prosa corrida, sem marcadores, em linguagem administrativa-jurídica concisa, formatação ABNT — Times New Roman 12pt, espaçamento 1,5, parágrafos justificados com recuo.</span></div>
         <div class="field" style="margin-bottom:10px"><label>Anexar documentos adicionais para a minuta (opcional)</label>
@@ -6348,11 +6339,15 @@ async function gerarMinuta() {
     if (ind2) providenciasPP += 'INDEFERIR: ' + ind2 + '. ';
   }
   if (checksPP.includes('encaminhar-decisao')) providenciasPP += 'Voltem os autos conclusos para decisao. ';
+  if (checksPP.includes('solicitar-docs-consumidor')) providenciasPP += 'Solicitar novos documentos ao consumidor, com prazo de 10 dias. ';
+  if (checksPP.includes('retificar-polo')) providenciasPP += 'Retificar o polo passivo da reclamacao. ';
+  if (checksPP.includes('solicitar-docs-fornecedora')) providenciasPP += 'Solicitar documentos adicionais a fornecedora. ';
+  if (checksPP.includes('encaminhar-sancao')) providenciasPP += 'Encaminhar para instauracao de processo administrativo sancionatorio. ';
 
-  const provAll=[...(pretMulti['ad']||[]),gv('ad-prov-outro'),providenciasPP].filter(Boolean);
-  const audData = gv('ad-auddata');
-  const audHora = gv('ad-audhora');
-  const audModal = gv('ad-modal') || document.getElementById('ad-modal')&&document.getElementById('ad-modal').value || '';
+  const provAll=[providenciasPP].filter(Boolean);
+  const audData = gv('ad-pp-aud-data');
+  const audHora = gv('ad-pp-aud-hora');
+  const audModal = '';
   const temAud = provAll.some(function(p){return p.includes('audiencia');}) || audData;
   const aud = temAud
     ? 'Fica designada audiência de conciliação para o dia ' + (audData||'a definir') + ' às ' + (audHora||'a definir') + ', na modalidade ' + (audModal||'presencial') + '. As partes deverão comparecer devidamente representadas.'
